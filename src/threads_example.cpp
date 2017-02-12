@@ -17,10 +17,11 @@
 #include <vector>
 //#include <deque>
 
-#include "blocking_queue.h"
+//#include "blocking_queue.h"
+
+#include "app_threads.h"
 
 using namespace std;
-
 
 class thread_guard
 {
@@ -55,137 +56,32 @@ public:
  *
  */
 
-void reader_loop(safe_queue<string> &queueOutput)
-{
-	string gcode_example[] = {"M 0,0",   \
-							"X 100,0",   \
-							"X 100,100", \
-							"X 0,100",   \
-							"X 0,0",     \
-							"KONEC"};
-	std::cout << "sizeof(gcode_example): " << sizeof(gcode_example) << std::endl;
-	std::cout << "sizeof(gcode_example[0]): " << sizeof(gcode_example[0]) << std::endl;
-
-	for (int i = 0; i < (sizeof(gcode_example)/sizeof(gcode_example[0])); i++)
-	{
-		std::cout << "Thread: " << __FUNCTION__ << std::endl;
-		queueOutput.send(gcode_example[i]);
-		auto delay = std::chrono::milliseconds(100);
-		std::this_thread::sleep_for(delay);
-	}
-}
-
-void parser_loop(safe_queue<string> &queueInput, safe_queue<string> &queueOutput)
-{
-	while(1)
-	{
-		string receivedData;
-		queueInput.receive(receivedData);
-
-		std::cout << "Thread: " << __FUNCTION__ << ", DATA: " << receivedData <<std::endl;
-
-		std::ostringstream os;
-		os << "line_to(" << receivedData << ")";
-
-		queueOutput.send(os.str());
-
-		if (receivedData == "KONEC")
-		{
-			break;
-		}
-	}
-}
-
-void movementControl_loop(safe_queue<string> &queueInput, safe_queue<string> &queueOutput)
-{
-	while(1)
-	{
-		string receivedData;
-		queueInput.receive(receivedData);
-
-		std::cout << "Thread: " << __FUNCTION__ << ", DATA: " << receivedData <<std::endl;
-
-		std::ostringstream os;
-		os << "requested_steppers_positions(" << receivedData << ")";
-
-		queueOutput.send(os.str());
-
-		if (receivedData == "KONEC")
-		{
-			break;
-		}
-	}
-}
-
-void motorControl_loop(safe_queue<string> &queueInput, safe_queue<string> &queueOutput)
-{
-	while(1)
-	{
-		string receivedData;
-		queueInput.receive(receivedData);
-		//while(!queueInput.receive(receivedData))
-		//{
-		//}
-
-		std::cout << "Thread: " << __FUNCTION__ << ", DATA: " << receivedData <<std::endl;
-
-		std::ostringstream os;
-		os << "stepper_update_loop(" << receivedData << ")";
-
-		queueOutput.send(os.str());
-
-		if (receivedData == "KONEC")
-		{
-			break;
-		}
-	}
-}
-
-void GUI_loop(safe_queue<string> &queueInput)
-{
-	while(1)
-	{
-		string receivedData;
-		queueInput.receive(receivedData);
-
-		std::cout << "Thread: " << __FUNCTION__ << ", DATA: " << receivedData <<std::endl;
-
-		std::ostringstream os;
-		os << "GUI_plot(" << receivedData << ")";
-
-		std::cout << os.str() << std::endl;
-
-		if (receivedData == "KONEC")
-		{
-			break;
-		}
-	}
-}
-
 int main(int argc, char** argv)
 {
 	unsigned int pocetProcesoru = std::thread::hardware_concurrency();
 
-	//std::thread::native_handle_type x = std::thread::native_handle();
 	std::cout << "Pocet procesoru: " << pocetProcesoru << std::endl;
 
 	std::vector<std::thread> threadPool;
 
 	safe_queue<string> queue_reader_parser;
-	safe_queue<string> queue_parser_movementControl;
-	safe_queue<string> queue_movementControl_motorControl;
-	safe_queue<string> queue_motorControl_GUI;
+	//safe_queue<string> queue_parser_movementControl;
+	safe_queue<guiCommand> queue_parser_GUI;
+	//safe_queue<string> queue_movementControl_motorControl;
+	//safe_queue<guiCommand> queue_motorControl_GUI;
 
-	std::thread thr_reader(&reader_loop, std::ref(queue_reader_parser));
-	std::thread thr_parser(&parser_loop, std::ref(queue_reader_parser), std::ref(queue_parser_movementControl));
-	std::thread thr_movementControl(&movementControl_loop, std::ref(queue_parser_movementControl), std::ref(queue_movementControl_motorControl));
-	std::thread thr_motorControl(&motorControl_loop, std::ref(queue_movementControl_motorControl), std::ref(queue_motorControl_GUI));
-	std::thread thr_GUI(&GUI_loop, std::ref(queue_motorControl_GUI));
+	//std::thread thr_reader(&reader_loop, std::ref(queue_reader_parser));
+	//std::thread thr_parser(&parser_loop, std::ref(queue_reader_parser), std::ref(queue_parser_movementControl));
+	//std::thread thr_movementControl(&movementControl_loop, std::ref(queue_parser_movementControl), std::ref(queue_movementControl_motorControl));
+	//std::thread thr_motorControl(&motorControl_loop, std::ref(queue_movementControl_motorControl), std::ref(queue_motorControl_GUI));
+	//std::thread thr_GUI(&GUI_loop, std::ref(queue_motorControl_GUI));
+	std::thread thr_parser(&parser_loop, std::ref(queue_reader_parser), std::ref(queue_parser_GUI));
+	std::thread thr_GUI(&GUI_loop, std::ref(queue_parser_GUI));
 
-	threadPool.push_back(move(thr_reader));
+	//threadPool.push_back(move(thr_reader));
 	threadPool.push_back(move(thr_parser));
-	threadPool.push_back(move(thr_movementControl));
-	threadPool.push_back(move(thr_motorControl));
+	//threadPool.push_back(move(thr_movementControl));
+	//threadPool.push_back(move(thr_motorControl));
 	threadPool.push_back(move(thr_GUI));
 
 	std::cout << "Main task..." << std::endl;
@@ -194,6 +90,8 @@ int main(int argc, char** argv)
 	{
 		(*it).join();
 	}
+
+	std::cout << "PROGRAM END" << std::endl;
 
 	/*
 	for( std::thread& t : threadPool )

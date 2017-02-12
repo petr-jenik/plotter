@@ -34,7 +34,7 @@ public:
 	{
 		std::unique_lock<std::mutex> hold(m_lock);
 		m_cv.wait( hold, [=] {return !m_queue.empty();});
-		val = move( m_queue.back());
+		val = std::move( m_queue.back());
 		m_queue.pop_back();
 	}
 };
