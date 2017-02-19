@@ -22,17 +22,32 @@ void mouseHandler(int button, int state, int x, int y)
     cout << "y: " << y << endl;
 }
 
+float zoom = 5;
+
+position center(position pos)
+{
+    position windowSize = Gui::getWindowSize();
+
+    position result;
+
+    result.x = (windowSize.x / 2) + zoom * pos.x;
+    result.y = (windowSize.y / 2) + zoom * pos.y;
+    result.z = zoom * pos.z;
+    return result;
+}
+
 void update(void)
 {
     Gui::clear();
 
-    static eColor color = eColor_blue;
-    color = static_cast<eColor>((static_cast<int>(color) + 1) % static_cast<int>(eColor_COUNT));
-    Gui::glSelectColor(color);
+    ////color = static_cast<eColor>((static_cast<int>(color) + 1) % static_cast<int>(eColor_COUNT));
+    //Gui::glSelectColor(color);
 
     for (auto command : drawList)
     {
-    	drawLine(command.pos1,command.pos2);
+        eColor color = (command.type == eLine)? eColor_blue : eColor_red;
+        Gui::glSelectColor(color);
+        drawLine(center(command.pos1), center(command.pos2));
     }
 }
 
@@ -42,6 +57,15 @@ void _receiveFromQueue(safe_queue<guiCommand> &queueInput)
 	{
 	    guiCommand command;
 		queueInput.receive(command);
+
+		static float zPosition = command.pos1.z;
+
+		if (zPosition != command.pos1.z)
+		{
+			drawList.erase(drawList.begin(),drawList.end());
+		}
+
+		zPosition = command.pos1.z;
 
 		drawList.push_back(command);
 

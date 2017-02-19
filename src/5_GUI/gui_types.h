@@ -12,6 +12,8 @@
 extern "C" {
 #endif
 
+#include "global.h"
+
 typedef enum
 {
     eColor_blue,
@@ -25,16 +27,10 @@ typedef enum
     eColor_white
 } eColor;
 
-typedef struct
-{
-    float x;
-    float y;
-    float z;
-} position;
-
 typedef enum
 {
-	eLine
+	eLine,
+	eMove
 } guiCommandType;
 
 typedef struct

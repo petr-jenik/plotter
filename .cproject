@@ -27,10 +27,11 @@
 								<option id="gnu.cpp.compiler.option.include.paths.1308932124" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/1_reader}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/5_GUI}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser/sub/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_motorControl}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/5_GUI}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.16713125" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -41,6 +42,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/1_reader}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser/sub/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_motorControl}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/5_GUI}&quot;"/>
@@ -63,17 +65,18 @@
 								<option id="gnu.both.asm.option.include.paths.1792561612" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/1_reader}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/5_GUI}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser/sub/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_motorControl}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/5_GUI}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1005070632" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="2_parser/sub/src/main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -108,6 +111,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/5_GUI}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_motorControl}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser/sub/src}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.135917969" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -121,6 +125,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/5_GUI}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_motorControl}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser/sub/src}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.2130078451" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -139,13 +144,14 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/5_GUI}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_motorControl}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser/sub/src}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1680689699" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="2_parser/sub/src/main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

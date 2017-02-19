@@ -1,0 +1,6 @@
+[submodule "src/2_parser_submodule"]
+	path = src/2_parser_submodule
+	url = ../gcode_parser
+[submodule "src/2_parser/sub"]
+	path = src/2_parser/sub
+	url = ../gcode_parser
