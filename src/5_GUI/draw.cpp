@@ -5,24 +5,41 @@
  *      Author: apollo
  */
 
-#include "draw.h"
-//#include "gui_types.h"
-#include "gui.h"
 #include <math.h>
-
 #include <unistd.h>
+#include "draw.h"
+#include "gui.h"
+
+float zoom = 1;
+
+position center(position pos)
+{
+    position windowSize = Gui::getWindowSize();
+
+    position result;
+
+    result.x = (windowSize.x / 2) + zoom * pos.x;
+    result.y = (windowSize.y / 2) + zoom * pos.y;
+    result.z = zoom * pos.z;
+    return result;
+}
+
+
 
 float toRads(float angle)
 {
     return (angle * 2 * M_PI)/360;
 }
 
-void drawLine(position start, position end)
+void drawLine(position _start, position _end)
 {
     position windowSize = Gui::getWindowSize();
     //Gui::clear();
 
     //Gui::forceRedraw();
+
+    position start = center(_start);
+    position end = center(_end);
 
     glLineWidth(2);
     //glColor3f(0.5, 0.5, 0.5);
@@ -61,8 +78,8 @@ position getCirclePosition(position center, int radius, float angle)
 
     position pos;
 
-    pos.x = (int) center.x + fRadius * cos(toRads(angle));
-    pos.y = (int) center.y + (fRadius * sin(toRads(angle)));
+    pos.x = center.x + fRadius * cos(toRads(angle));
+    pos.y = center.y + (fRadius * sin(toRads(angle)));
     pos.z = 0;
 
     return pos;

@@ -7,30 +7,26 @@
 
 #include "app_threads.h"
 
+#include <cmath>
+
 using namespace std;
 
-void motorControl_loop(safe_queue<string> &queueInput, safe_queue<string> &queueOutput)
+void motorControl_loop(safe_queue<armCommand> &queueInput, safe_queue<stepperCommand> &queueOutput)
 {
 	while(1)
 	{
-		string receivedData;
+		armCommand receivedData;
 		queueInput.receive(receivedData);
 		//while(!queueInput.receive(receivedData))
 		//{
 		//}
 
-		std::cout << "Thread: " << __FUNCTION__ << ", DATA: " << receivedData <<std::endl;
+		LOG("Thread: " << __FUNCTION__ << ", DATA: [" << receivedData.relativeAngle1 << "," << receivedData.relativeAngle2 << "]");
 
-		if (receivedData == cKillSignal)
-		{
-			queueOutput.send(receivedData);
-			break;
-		}
-
-		std::ostringstream os;
-		os << "stepper_update_loop(" << receivedData << ")";
-
-		queueOutput.send(os.str());
-
+		stepperCommand cmd;
+		cmd.stepper1 = receivedData.relativeAngle1 * 1000;
+		cmd.stepper2 = receivedData.relativeAngle2 * 1000;
+		cmd.stepper3 = 0;
+		queueOutput.send(cmd);
 	}
 }

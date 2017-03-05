@@ -8,31 +8,23 @@
 #include <cstdio>
 #include <stdio.h>
 
-#include "parser.h"
 #include "app_threads.h"
+#include "parser.h"
 
-std::ostream& operator<< (std::ostream& stream, position pos)
-{
-	stream << "[" << pos.x << "," << pos.y << "," << pos.z << "]";
-	return stream;
-}
-
-safe_queue<guiCommand> * guiQueue = NULL;
+safe_queue<moveCommand> * guiQueue = NULL;
 
 void moveTo(position start, position end, float movementSpeed, float extrude)
 {
 	if (extrude)
 	{
-		std::cout << "Print from";
+		LOG("Print from" << start << "to" << end << ", speed: " << movementSpeed);
 	}
 	else
 	{
-		std::cout << "Move from";
+		LOG("Move from" << start << "to" << end << ", speed: " << movementSpeed);
 	}
 
-	std::cout << start << "to" << end << ", speed: " << movementSpeed << std::endl;
-
-	guiCommand cmd;
+	moveCommand cmd;
 	cmd.pos1 = start;
 	cmd.pos2 = end;
 	cmd.type = (extrude) ? eLine : eMove;
@@ -44,7 +36,7 @@ void moveTo(position start, position end, float movementSpeed, float extrude)
 }
 
 
-void parser_loop(safe_queue<std::string> &queueInput, safe_queue<guiCommand> &queueOutput)
+void parser_loop(safe_queue<std::string> &queueInput, safe_queue<moveCommand> &queueOutput)
 {
 	guiQueue = &queueOutput;
 

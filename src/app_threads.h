@@ -13,16 +13,15 @@
 #include <vector>
 #include <thread>
 
-const std::string cKillSignal = "KONEC";
-
 #include "blocking_queue.h"
 
+#include "global.h"
 #include "gui_types.h"
 
+void parser_loop(safe_queue<std::string> &queueInput, safe_queue<moveCommand> &queueOutput);
 void reader_loop(safe_queue<std::string> &queueOutput);
-void parser_loop(safe_queue<std::string> &queueInput, safe_queue<guiCommand> &queueOutput);
-//void movementControl_loop(safe_queue<std::string> &queueInput, safe_queue<std::string> &queueOutput);
-//void motorControl_loop(safe_queue<std::string> &queueInput, safe_queue<std::string> &queueOutput);
-void GUI_loop(safe_queue<guiCommand> &queueInput);
+void movementControl_loop(safe_queue<moveCommand> &queueInput, safe_queue<armCommand> &queueOutput);
+void motorControl_loop(safe_queue<armCommand> &queueInput, safe_queue<stepperCommand> &queueOutput);
+void GUI_loop(safe_queue<armCommand> &queueInput);
 
 #endif /* APP_THREADS_H_ */

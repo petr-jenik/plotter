@@ -37,6 +37,14 @@ public:
 		val = std::move( m_queue.back());
 		m_queue.pop_back();
 	}
+
+	void erase(void)
+	{
+		std::unique_lock<std::mutex> hold(m_lock);
+		m_cv.wait( hold, [=] {return !m_queue.empty();});
+		m_queue.erase(m_queue.begin(), m_queue.end());
+	}
+
 };
 
 
