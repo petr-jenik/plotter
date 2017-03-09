@@ -20,9 +20,15 @@ std::vector<moveCommand> drawList;
 std::mutex drawList_lock;
 
 
+// TODO Barevne oddelit jestli se jedna o rameno AS1 nebo BS2
+
 // HW simulation
-StepperGui stepperGui1(pos_S1.x, pos_S1.y, armLength_AS1, 90);
-StepperGui stepperGui2(pos_S2.x, pos_S2.y, armLength_BS2, 90);
+
+position gui_S1 = {100, 0, 0};
+position gui_S2 = {100, 0, 0};
+
+StepperGui stepperGui1(gui_S1.x, gui_S1.y, armLength_AS1, 90);
+StepperGui stepperGui2(gui_S2.x, gui_S2.y, armLength_BS2, 90);
 
 StepperGui * steppers[] = {&stepperGui1, &stepperGui2};
 
@@ -34,8 +40,8 @@ bool _getEndpoint(position& C)
 
 	if (getInterception(A, armLength_AC, B, armLength_BC, C1, C2))
 	{
-		float distC1 = getDistance(C1, pos_S1);
-		float distC2 = getDistance(C2, pos_S2);
+		float distC1 = getDistance(C1, gui_S1);
+		float distC2 = getDistance(C2, gui_S2);
 
 		C = (distC1 < distC2)? C2 : C1;
 		return true;
@@ -100,7 +106,7 @@ void update(void)
     }
     drawSteppers();
 
-    // Remove this
+    // Remove this - X and Y axis
 	position p1 = {-100, 0, 0};
 	position p2 = {100, 0, 0};
 
@@ -108,7 +114,6 @@ void update(void)
 	position p4 = {0, 50, 0};
 
 	drawLine(p1, p2);
-
     drawLine(p3, p4);
     //
 }

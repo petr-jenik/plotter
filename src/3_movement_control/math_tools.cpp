@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include "global.h"
+#include "config.h"
 
 #include <iostream>
 
@@ -34,7 +35,8 @@ bool getInterception(position A, float r1, position B, float r2, position &inter
         return false;
     }
 
-    if (abs(d) < 5)
+
+    if (abs(d) < cMinimalDistanceToCenter)
     {
         //std::cout << "end points are too close" << std::endl;
         return false;

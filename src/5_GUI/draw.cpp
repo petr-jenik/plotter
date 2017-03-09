@@ -10,7 +10,7 @@
 #include "draw.h"
 #include "gui.h"
 
-float zoom = 1;
+float zoom = 5;
 
 position center(position pos)
 {

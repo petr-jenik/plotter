@@ -75,7 +75,7 @@ void _createLine(position startPos, position endPos, safe_queue<armCommand>& cmd
 
 	// TODO Velky problem - hodnotafloat  X a y prestreli o modulo(speed)
 
-	for (float i = 0; i < distance + speed; i = i + speed)
+	for (float i = 0; i < distance; i = i + speed)
 	{
 		position currentPos;
 		currentPos.x = startPos.x + dx*i;
@@ -88,17 +88,43 @@ void _createLine(position startPos, position endPos, safe_queue<armCommand>& cmd
 			cmdBuffer.send(cmd);
 		}
 
-		auto delay = std::chrono::milliseconds(10);
-		std::this_thread::sleep_for(delay);
+		//auto delay = std::chrono::milliseconds(10);
+		//std::this_thread::sleep_for(delay);
 	}
 }
+
+void demo(safe_queue<armCommand> &queueOutput)
+{
+	float speed = 1;
+	while(1)
+	{
+		position p1 = {-10, 0, 0};
+		position p2 = {-10, 100, 0};
+		position p3 = {10, 100, 0};
+		position p4 = {10, 50, 0};
+
+		//position p2 = {100, 0, 0};
+		//position p3 = {100, 100, 0};
+		//position p4 = {0, 100, 0};
+
+		//_createLine(p1, p2, queueOutput, speed);
+		//_createLine(p2, p1, queueOutput, speed);
+
+		_createLine(p1, p2, queueOutput, speed);
+		_createLine(p2, p3, queueOutput, speed);
+		_createLine(p3, p4, queueOutput, speed);
+		_createLine(p4, p1, queueOutput, speed);
+		std::cout << "---------" << std::endl;
+	}
+}
+
 
 void movementControl_loop(safe_queue<moveCommand> &queueInput, safe_queue<armCommand> &queueOutput)
 {
 	while(1)
 	{
 		moveCommand inputData;
-		//queueInput.receive(inputData);
+		queueInput.receive(inputData);
 
 		//drawLine(inputData.pos1, inputData.pos2);
 
@@ -123,28 +149,6 @@ void movementControl_loop(safe_queue<moveCommand> &queueInput, safe_queue<armCom
 		}
 
 		float speed = 1;
-
-		while(1)
-		{
-			position p1 = {-10, 0, 0};
-			position p2 = {-10, 100, 0};
-			position p3 = {10, 100, 0};
-			position p4 = {10, 50, 0};
-
-			//position p2 = {100, 0, 0};
-			//position p3 = {100, 100, 0};
-			//position p4 = {0, 100, 0};
-
-			//_createLine(p1, p2, queueOutput, speed);
-			//_createLine(p2, p1, queueOutput, speed);
-
-
-			_createLine(p1, p2, queueOutput, speed);
-			_createLine(p2, p3, queueOutput, speed);
-			_createLine(p3, p4, queueOutput, speed);
-			_createLine(p4, p1, queueOutput, speed);
-			std::cout << "---------" << std::endl;
-		}
 
 		_createLine(startPos, endPos, queueOutput, speed);
 

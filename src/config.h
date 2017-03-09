@@ -13,10 +13,12 @@
 int32_t angleToRelative(float angle);
 float relativeToAngle(int32_t relative);
 
-const int armLength_AC = 200;
-const int armLength_AS1 = 200;
-const int armLength_BC = 200;
-const int armLength_BS2 = 200;
+const float cMinimalDistanceToCenter = 1;
+
+const int armLength_AC =  100;
+const int armLength_AS1 = 100;
+const int armLength_BC =  100;
+const int armLength_BS2 = 100;
 
 /*
  *           C

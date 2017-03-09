@@ -45,10 +45,13 @@ const float maxRelativeAngle = 100000.0;
 
 int32_t angleToRelative(float angle)
 {
+	//angle += 180;
 	return (angle * maxRelativeAngle) / 180.0;
 }
 
 float relativeToAngle(int32_t relative)
 {
-	return (relative * 180.0) / maxRelativeAngle;
+	float angle = (relative * 180.0) / maxRelativeAngle;
+	//angle -= 90;
+	return angle;
 }

@@ -69,8 +69,8 @@ int main(int argc, char** argv)
 	safe_queue<armCommand> queue_movementControl_motorControl;
 	safe_queue<stepperCommand> queue_motorControl_GUI;
 
-	//std::thread thr_reader			(reader_loop,			std::ref(queue_reader_parser));
-	//std::thread thr_parser			(parser_loop, 			std::ref(queue_reader_parser),					std::ref(queue_parser_movementControl)			);
+	std::thread thr_reader			(reader_loop,			std::ref(queue_reader_parser));
+	std::thread thr_parser			(parser_loop, 			std::ref(queue_reader_parser),					std::ref(queue_parser_movementControl)			);
 	std::thread thr_movementControl	(movementControl_loop, 	std::ref(queue_parser_movementControl),			std::ref(queue_movementControl_motorControl)	);
 	//std::thread thr_motorControl	(motorControl_loop, 	std::ref(queue_movementControl_motorControl),	std::ref(queue_motorControl_GUI)				);
 	std::thread thr_GUI				(GUI_loop, 				std::ref(queue_movementControl_motorControl));
