@@ -9,6 +9,8 @@
 #define _MATH_TOOLS_H_
 
 float getDistance(position A, position B);
-bool getInterception(position A, float r1, position B, float r2, position &inter1, position &inter2);
+float getDistance3D(position A, position B);
+
+bool getIntersection(position A, float r1, position B, float r2, position &inter1, position &inter2);
 float getAngle(position A, position B);
 #endif /* _MATH_TOOLS_H_ */

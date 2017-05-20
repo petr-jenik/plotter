@@ -38,7 +38,7 @@ bool _getEndpoint(position& C)
 	position B = steppers[1]->getEndPoint();
 	position C1, C2;
 
-	if (getInterception(A, armLength_AC, B, armLength_BC, C1, C2))
+	if (getIntersection(A, armLength_AC, B, armLength_BC, C1, C2))
 	{
 		float distC1 = getDistance(C1, gui_S1);
 		float distC2 = getDistance(C2, gui_S2);
@@ -99,7 +99,7 @@ void update(void)
     	std::lock_guard<std::mutex> hold(drawList_lock);
 		for (auto command : drawList)
 		{
-			eColor color = (command.type == eLine)? eColor_blue : eColor_red;
+			eColor color = (command.extrude)? eColor_blue : eColor_red;
 			Gui::glSelectColor(color);
 			drawLine((command.pos1), (command.pos2));
 		}
@@ -122,10 +122,10 @@ void _receiveFromQueue(safe_queue<armCommand> &queueInput)
 {
 	while(1)
 	{
-		armCommand command;
-		queueInput.receive(command);
+		armCommand inputCmd;
+		queueInput.receive(inputCmd);
 
-		static float zPosition = command.zPosition;
+		static float positionZ = relativeToZAxe(inputCmd.relPosZ);
 
 		/*
 		if (zPosition != command.zPosition)
@@ -135,8 +135,8 @@ void _receiveFromQueue(safe_queue<armCommand> &queueInput)
 		}
 		*/
 
-		float angle1 = relativeToAngle(command.relativeAngle1);
-		float angle2 = relativeToAngle(command.relativeAngle2);
+		float angle1 = relativeToAngle(inputCmd.relativeAngle1);
+		float angle2 = relativeToAngle(inputCmd.relativeAngle2);
 
 		//LOG("GUI_loop: Angles: " << angle1 << "," << angle2);
 
@@ -145,7 +145,8 @@ void _receiveFromQueue(safe_queue<armCommand> &queueInput)
     	steppers[0]->update();
     	steppers[1]->update();
 
-    	zPosition = command.zPosition;
+
+    	positionZ = relativeToZAxe(inputCmd.relPosZ);
 
 		position C;//, C2;
 
@@ -153,17 +154,17 @@ void _receiveFromQueue(safe_queue<armCommand> &queueInput)
 		{
 			static position currentPos = C;
 
-			moveCommand cmd;
-			cmd.type = eLine;
-			cmd.pos1 = currentPos;
-			cmd.pos2 = C;
+			moveCommand outCmd;
+			outCmd.extrude = inputCmd.extrude;
+			outCmd.pos1 = currentPos;
+			outCmd.pos2 = C;
 
 			currentPos = C;
 
-			//LOG("Line:" << cmd);
+			//LOG("Line:" << outCmd);
 			{
 				std::lock_guard<std::mutex> hold(drawList_lock);
-				drawList.push_back(cmd);
+				drawList.push_back(outCmd);
 			}
 		}
 

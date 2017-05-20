@@ -34,7 +34,7 @@ std::ostream& operator << (std::ostream& stream, const moveCommand& cmd)
 
 std::ostream& operator << (std::ostream& stream, const armCommand& cmd)
 {
-	stream << "[" << cmd.relativeAngle1 << ", " << cmd.relativeAngle2 << ", " << cmd.zPosition << "]";
+	stream << "[" << cmd.relativeAngle1 << ", " << cmd.relativeAngle2 << ", " << cmd.relPosZ << ", " << cmd.extrude << "]";
 	return stream;
 }
 
@@ -54,4 +54,24 @@ float relativeToAngle(int32_t relative)
 	float angle = (relative * 180.0) / maxRelativeAngle;
 	//angle -= 90;
 	return angle;
+}
+
+
+float zAxeMin = 0;
+float zAxeMax = 1000;
+const float maxRelativeZ = 100000.0;
+
+/*
+ * Converts zPosition to relative position in range 0 - 100000;
+ */
+int32_t zAxeToRelative(float zPosition)
+{
+	int32_t relative = (maxRelativeZ * (zPosition - zAxeMin))/(zAxeMax - zAxeMin);
+	return relative;
+}
+
+float relativeToZAxe(int32_t relative)
+{
+	float zPosition = ((relative/maxRelativeZ) * (zAxeMax - zAxeMin)) + zAxeMin;
+	return zPosition;
 }

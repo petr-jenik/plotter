@@ -13,6 +13,9 @@
 int32_t angleToRelative(float angle);
 float relativeToAngle(int32_t relative);
 
+int32_t zAxeToRelative(float zPosition);
+float relativeToZAxe(int32_t relative);
+
 const float cMinimalDistanceToCenter = 1;
 
 const int armLength_AC =  100;

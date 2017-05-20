@@ -46,7 +46,9 @@ typedef enum
 
 typedef struct
 {
-	moveCommandType type;
+	bool extrude;
+	float movementSpeed;
+	//moveCommandType type;
 	position pos1;
 	position pos2;
 } moveCommand;
@@ -62,7 +64,8 @@ typedef struct
 {
 	int32_t relativeAngle1; // Position of arm in 100.000 %
 	int32_t relativeAngle2; // Position of arm in 100.000 %
-	float zPosition;
+	int32_t relPosZ;        // Relative position in Z axe
+	bool extrude;
 } armCommand;
 
 

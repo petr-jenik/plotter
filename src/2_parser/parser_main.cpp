@@ -15,9 +15,9 @@ safe_queue<moveCommand> * guiQueue = NULL;
 
 void moveTo(position start, position end, float movementSpeed, float extrude)
 {
-	if (extrude)
+	if (extrude > 0)
 	{
-		LOG("Print from" << start << "to" << end << ", speed: " << movementSpeed);
+		//LOG("Print from" << start << "to" << end << ", speed: " << movementSpeed);
 	}
 	else
 	{
@@ -27,7 +27,8 @@ void moveTo(position start, position end, float movementSpeed, float extrude)
 	moveCommand cmd;
 	cmd.pos1 = start;
 	cmd.pos2 = end;
-	cmd.type = (extrude) ? eLine : eMove;
+	cmd.extrude = (extrude > 0) ? true: false;
+	cmd.movementSpeed = movementSpeed;
 
 	if (guiQueue != NULL)
 	{

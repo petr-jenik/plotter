@@ -11,12 +11,43 @@
 
 #include <iostream>
 
+/*
+ * Return distance between point A and B (works only for 2D)
+ * @param[in] position A
+ * @param[in] position B
+ * @return float distance
+ */
 float getDistance(position A, position B)
 {
     float distance = pow((pow(A.x - B.x,2) + pow(A.y - B.y, 2)/* + pow(A.z - B.z, 2)*/), 0.5);
     return distance;
 }
 
+/*
+ * Return distance between point A and B (works even for 3D)
+ * @param[in] position A
+ * @param[in] position B
+ * @return float distance
+ */
+float getDistance3D(position A, position B)
+{
+    float distance = pow((pow(A.x - B.x,2) + pow(A.y - B.y, 2) + pow(A.z - B.z, 2)), 0.5);
+    return distance;
+}
+
+/*
+ * Get angle between two points
+ *
+ * A
+ * o  B
+ * |  o
+ * |a/
+ * |/
+ *
+ *@param[in] position A
+ *@param[in] position B
+ *@return float angle
+ */
 float getAngle(position A, position B)
 {
 	float dx = B.x - A.x;
@@ -26,7 +57,21 @@ float getAngle(position A, position B)
 	return ((angle * 360.0) / (2 * M_PI));
 }
 
-bool getInterception(position A, float r1, position B, float r2, position &inter1, position &inter2)
+
+/*
+ * Find intersection between 2 circles
+ * First circle - center A, radius r1
+ * Second circle - center B, radius r2
+ *
+ *@param[in] position A
+ *@param[in] r1 - arm length from position A
+ *@param[in] position B
+ *@param[in] r2 - arm length from position B
+ *@param[out] position inter1
+ *@param[out] positoon inter2
+ *@return True if intersection was found, else False
+ */
+bool getIntersection(position A, float r1, position B, float r2, position &inter1, position &inter2)
 {
     float d = getDistance(A,B);
     if (d > (r1 + r2))
