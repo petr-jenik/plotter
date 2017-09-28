@@ -70,6 +70,7 @@ bool _setArmsToPosition(position C, armCommand& outputCmd)
     	// Extruder status and relative position in Z axe will be filled in different place
     	outputCmd.relativeAngle1 = angleToRelative(angle1);
     	outputCmd.relativeAngle2 = angleToRelative(angle2);
+        outputCmd.relPosZ = zAxeToRelative(C.z);
 
     	return true;
     }
@@ -93,6 +94,8 @@ void _createLine(const moveCommand& cmd, safe_queue<armCommand>& cmdBuffer)
 	float speed = cmd.movementSpeed;
 	bool extrude = cmd.extrude;
 
+
+	// get distance between start and end points
 	float distance = getDistance3D(startPos, endPos);
 
 	if (distance == 0)
@@ -115,42 +118,56 @@ void _createLine(const moveCommand& cmd, safe_queue<armCommand>& cmdBuffer)
 		currentPos.y = startPos.y + dy*i;
 		currentPos.z = startPos.z + dz*i;
 
-		armCommand cmd;
+		armCommand armCmd;
 
-		if (_setArmsToPosition(currentPos, cmd))
+		if (_setArmsToPosition(currentPos, armCmd))
 		{
-			cmd.extrude = extrude;
-			cmd.relPosZ = zAxeToRelative(currentPos.z);
-			cmdBuffer.send(cmd);
+			armCmd.extrude = extrude;
+			cmdBuffer.send(armCmd);
 		}
 	}
 }
 
-void demo(safe_queue<armCommand> &queueOutput)
+const float ds = 50; // demo size
+
+position p1 = {0, 0, 0};
+position p2 = {0, ds, 0};
+position p3 = {ds, ds, 0};
+position p4 = {ds, 0, 0};
+
+position l1 = {-100, 0, 0};
+position l2 = {100,  0, 0};
+position l3 = {0, 100, 0};
+position l4 = {0, -100, 0};
+
+moveCommand demoCommands[] =
 {
-	float speed = 1;
-	while(1)
-	{
-		position p1 = {-10, 0, 0};
-		position p2 = {-10, 100, 0};
-		position p3 = {10, 100, 0};
-		position p4 = {10, 50, 0};
+	{true, 0.00001, l1, l2},
+	{true, 0.1, l2, l1},
+	//{true, 0.001, l3, l4},
+	//{true, 0.001, l4, l3}
+	//{true, 0.01, l1, l2},
+	//{true, 0.01, l2, l1}
+	/*{true, 0.01, p1, p2},
+	{true, 0.01, p2, p3}
+	{true, 0.01, p3, p4},
+	{true, 0.01, p4, p1},
+	{true, 0.01, p1, p3},
+	{true, 0.01, p3, p1},
+	{true, 0.01, p1, p2},
+	{false, 0.01, p2, p4},
+	{false, 0.01, p4, p2},
+	{true, 0.01, p2, p1}*/
+};
 
-		//position p2 = {100, 0, 0};
-		//position p3 = {100, 100, 0};
-		//position p4 = {0, 100, 0};
+const int32_t demoCmdsCount = (sizeof(demoCommands)/sizeof(demoCommands[0]));
 
-		//_createLine(p1, p2, queueOutput, speed);
-		//_createLine(p2, p1, queueOutput, speed);
+void demoReceive(moveCommand &cmd)
+{
+	static int32_t index = 0;
 
-		/*
-		_createLine(p1, p2, queueOutput, speed);
-		_createLine(p2, p3, queueOutput, speed);
-		_createLine(p3, p4, queueOutput, speed);
-		_createLine(p4, p1, queueOutput, speed);
-		*/
-		std::cout << "---------" << std::endl;
-	}
+	cmd = demoCommands[index];
+	index = (index + 1) % demoCmdsCount;
 }
 
 /*
@@ -164,7 +181,10 @@ void movementControl_loop(safe_queue<moveCommand> &queueInput, safe_queue<armCom
 	while(1)
 	{
 		moveCommand inputData;
+
+		// Movement test
 		queueInput.receive(inputData);
+		//demoReceive(inputData);
 
 		_createLine(inputData, queueOutput);
 

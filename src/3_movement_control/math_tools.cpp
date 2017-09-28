@@ -76,14 +76,14 @@ bool getIntersection(position A, float r1, position B, float r2, position &inter
     float d = getDistance(A,B);
     if (d > (r1 + r2))
     {
-        //std::cout << "end points are too far" << std::endl;
+        std::cout << "end points are too far" << std::endl;
         return false;
     }
 
 
     if (abs(d) < cMinimalDistanceToCenter)
     {
-        //std::cout << "end points are too close" << std::endl;
+        //std::cout << "end points are too close" << A << B << std::endl;
         return false;
     }
 

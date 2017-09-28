@@ -7,7 +7,7 @@
 //============================================================================
 
 #include <iostream>
-#include "log.h"
+//#include "log.h"
 #include <thread>
 //#include <mutex>
 //#include <condition_variable>

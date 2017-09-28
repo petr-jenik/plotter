@@ -37,18 +37,10 @@ typedef struct
 } position;
 
 
-typedef enum
-{
-	eLine,
-	eMove
-} moveCommandType;
-
-
 typedef struct
 {
 	bool extrude;
 	float movementSpeed;
-	//moveCommandType type;
 	position pos1;
 	position pos2;
 } moveCommand;

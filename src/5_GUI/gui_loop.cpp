@@ -48,7 +48,7 @@ bool _getEndpoint(position& C)
 	}
 	else
 	{
-		std::cout << A << B << C1 << C2;
+		//std::cout << A << B << C1 << C2;
 		return false;
 	}
 }
@@ -57,19 +57,19 @@ bool _getEndpoint(position& C)
 void drawSteppers()
 {
 	// Draw stepper
-	Gui::glSelectColor(eColor_red);
+	Gui::glSelectColor(eColor_green);
+	steppers[0]->draw();
 
-	for (int i = 0; i < sizeof(steppers)/sizeof(steppers[0]); i++)
-	{
-		StepperGui * stepper = steppers[i];
-		stepper->draw();
-	}
+	Gui::glSelectColor(eColor_blue);
+	steppers[1]->draw();
+
+	Gui::glSelectColor(eColor_black);
 
 	position C;//1, C2;
 	position A = steppers[0]->getEndPoint();
 	position B = steppers[1]->getEndPoint();
 
-	Gui::glSelectColor(eColor_red);
+	Gui::glSelectColor(eColor_black);
 
 	if(_getEndpoint(C))
 	{

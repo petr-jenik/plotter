@@ -41,7 +41,7 @@ std::ostream& operator << (std::ostream& stream, const armCommand& cmd)
 position pos_S1 = {0, -100, 0};
 position pos_S2 = {0, -100, 0};
 
-const float maxRelativeAngle = 100000.0;
+const float maxRelativeAngle = 10000000.0;
 
 int32_t angleToRelative(float angle)
 {
