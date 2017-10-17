@@ -24,8 +24,6 @@ position center(position pos)
     return result;
 }
 
-
-
 float toRads(float angle)
 {
     return (angle * 2 * M_PI)/360;
@@ -41,12 +39,7 @@ void drawLine(position _start, position _end)
     position start = center(_start);
     position end = center(_end);
 
-    glLineWidth(2);
-    //glColor3f(0.5, 0.5, 0.5);
-    glBegin(GL_LINES);
-    glVertex2f((float)start.x /  windowSize.x, 1 - ((float)start.y / windowSize.y));
-    glVertex2f((float)end.x / windowSize.x, 1 - ((float)end.y / windowSize.y));
-    glEnd();
+    Gui::drawLine(start, end);
 
     //Gui::forceRedraw();
 

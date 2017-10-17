@@ -80,6 +80,17 @@ bool _setArmsToPosition(position C, armCommand& outputCmd)
 
 #include "draw.h"
 
+void sendArmCommand(position pos, bool extrude)
+{
+	armCommand armCmd;
+	if (_setArmsToPosition(pos, armCmd))
+	{
+		armCmd.extrude = extrude;
+		gui_parseCommand(armCmd);
+		//cmdBuffer.send(armCmd);
+	}
+}
+
 
 /*
  * Move along a line according to movement command
@@ -87,7 +98,8 @@ bool _setArmsToPosition(position C, armCommand& outputCmd)
  *@param[in] moveCommand cmd - start position, end position, defined speed, extruder state
  *@param[in] cmdBuffer - buffer for new armCommands
  */
-void _createLine(const moveCommand& cmd, safe_queue<armCommand>& cmdBuffer)
+//void _createLine(const moveCommand& cmd, safe_queue<armCommand>& cmdBuffer)
+void movementControl_createLine(const moveCommand& cmd)
 {
 	position startPos = cmd.pos1;
 	position endPos = cmd.pos2;
@@ -110,22 +122,27 @@ void _createLine(const moveCommand& cmd, safe_queue<armCommand>& cmdBuffer)
 	// Run next loop at least once
 	//distance = max(distance, speed);
 
+	//TODO Fix this horrible solution - this should add at least 2 point from each row
+	float step = min(speed, distance / 2);
+
+	if (-0.001 < speed && speed < 0.0001)
+	{
+		speed = 1;
+	}
 	// A close approximation to a straight line between two points
-	for (float i = 0; i < distance; i = i + speed)
+
+	// TODO 13.10.2017 - This loop causes all the troubles!!!!!
+	/*for (float i = 0; i < distance; i = i + speed)
 	{
 		position currentPos;
 		currentPos.x = startPos.x + dx*i;
 		currentPos.y = startPos.y + dy*i;
 		currentPos.z = startPos.z + dz*i;
 
-		armCommand armCmd;
-
-		if (_setArmsToPosition(currentPos, armCmd))
-		{
-			armCmd.extrude = extrude;
-			cmdBuffer.send(armCmd);
-		}
 	}
+	*/
+	sendArmCommand(startPos, extrude);
+	sendArmCommand(endPos, extrude);
 }
 
 const float ds = 50; // demo size
@@ -186,7 +203,7 @@ void movementControl_loop(safe_queue<moveCommand> &queueInput, safe_queue<armCom
 		queueInput.receive(inputData);
 		//demoReceive(inputData);
 
-		_createLine(inputData, queueOutput);
+		movementControl_createLine(inputData);
 
 		//std::cout << "Thread: " << __FUNCTION__ << ", DATA: " << inputData << std::endl;
 	}

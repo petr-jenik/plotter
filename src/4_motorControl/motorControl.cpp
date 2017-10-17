@@ -27,6 +27,7 @@ void motorControl_loop(safe_queue<armCommand> &queueInput, safe_queue<stepperCom
 		cmd.stepper1 = receivedData.relativeAngle1 * 1000;
 		cmd.stepper2 = receivedData.relativeAngle2 * 1000;
 		cmd.stepper3 = 0;
+		cmd.extrude = receivedData.extrude;
 		queueOutput.send(cmd);
 	}
 }

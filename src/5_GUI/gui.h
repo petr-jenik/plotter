@@ -29,6 +29,7 @@ private:
 public:
     static position getWindowSize(void);
     static void setWindowSize(position size);
+    static void drawLine(position start, position end);
     static void clear(void);
     static void glSelectColor(eColor color);
     static void registerUpdateCallback( void (* callback)( void ));

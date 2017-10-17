@@ -50,6 +50,7 @@ typedef struct
 	int32_t stepper1;
 	int32_t stepper2;
 	int32_t stepper3;
+	bool extrude;
 } stepperCommand;
 
 typedef struct

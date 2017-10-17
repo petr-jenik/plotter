@@ -25,16 +25,17 @@ void reader_loop(safe_queue<std::string> &queueOutput)
 	std::ifstream fileStream(fileName.c_str());
 	if (fileStream.is_open())
 	{
-		std::cout << "Input file opened" << std::endl;
+		//std::cout << "Input file opened" << std::endl;
 		std::string line;
 		while (std::getline(fileStream, line))
 		{
 			//std::cout << "Thread: " << __FUNCTION__ << std::endl;
 			//std::cout << "Data:" << line << std::endl;
 			queueOutput.send(line);
-			auto delay = std::chrono::milliseconds(10);
-			std::this_thread::sleep_for(delay);
+			//auto delay = std::chrono::milliseconds(1);
+			//std::this_thread::sleep_for(delay);
 		}
+		LOG("Reading finished");
 		fileStream.close();
 	}
 	else

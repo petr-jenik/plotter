@@ -31,6 +31,15 @@ void Gui::setWindowSize(position size)
     Gui::windowSize = size;
 };
 
+void Gui::drawLine(position start, position end)
+{
+    glLineWidth(1);
+    //glColor3f(0.5, 0.5, 0.5);
+    glBegin(GL_LINES);
+    glVertex2f((float)start.x /  Gui::windowSize.x, 1 - ((float)start.y / Gui::windowSize.y));
+    glVertex2f((float)end.x / Gui::windowSize.x, 1 - ((float)end.y / Gui::windowSize.y));
+    glEnd();
+}
 
 void Gui::glSelectColor(eColor color)
 {

@@ -118,12 +118,14 @@ void update(void)
     //
 }
 
-void _receiveFromQueue(safe_queue<armCommand> &queueInput)
+//void _receiveFromQueue(safe_queue<armCommand> &queueInput)
+//{
+	//while(1)
+	//{
+void gui_parseCommand(armCommand inputCmd)
 {
-	while(1)
-	{
-		armCommand inputCmd;
-		queueInput.receive(inputCmd);
+		//armCommand inputCmd;
+		//queueInput.receive(inputCmd);
 
 		static float positionZ = relativeToZAxe(inputCmd.relPosZ);
 
@@ -161,6 +163,17 @@ void _receiveFromQueue(safe_queue<armCommand> &queueInput)
 
 			currentPos = C;
 
+			// Clear draw list for new layer
+			//TODO Remove this 13.10.2017
+			static float old_z = positionZ;
+			if (positionZ != old_z)
+			{
+				drawList.clear();
+			}
+			old_z = positionZ;
+
+
+			if (inputCmd.extrude == true)
 			//LOG("Line:" << outCmd);
 			{
 				std::lock_guard<std::mutex> hold(drawList_lock);
@@ -176,7 +189,7 @@ void _receiveFromQueue(safe_queue<armCommand> &queueInput)
 		cout << ", x2" << command.pos2.x;
 		cout << ", y2" << command.pos2.y << endl;
 		*/
-	}
+	//}
 }
 
 void GUI_loop(safe_queue<armCommand> &queueInput)
@@ -187,11 +200,11 @@ void GUI_loop(safe_queue<armCommand> &queueInput)
     Gui::registerUpdateCallback(update);
     Gui::registerMouseCallback(mouseHandler);
 
-    std::thread thr_receive(&_receiveFromQueue, std::ref(queueInput));
+    //std::thread thr_receive(&_receiveFromQueue, std::ref(queueInput));
 
 	Gui::guiMainLoop();
 
 	cout << "GUI closed" << endl;
 
-	thr_receive.join();
+	//thr_receive.join();
 }
