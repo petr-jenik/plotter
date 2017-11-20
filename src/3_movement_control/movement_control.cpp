@@ -12,7 +12,14 @@
 
 #include <iostream>
 
+#include "stepperControl.h"
+#include "stepperConfig.h"
+
 using namespace std;
+
+void movementControl_init()
+{
+}
 
 
 /* Creates control command for motor
@@ -25,7 +32,7 @@ using namespace std;
  * out - arm command for motor
  *
  */
-bool _setArmsToPosition(position C, armCommand& outputCmd)
+bool createArmCommand(position C, armCommand& outputCmd)
 {
 	/*
 	 *           C
@@ -66,10 +73,12 @@ bool _setArmsToPosition(position C, armCommand& outputCmd)
     	//std::cout << "ANGLE1: " << angle1 << std::endl;
     	//std::cout << "ANGLE2: " << angle2 << std::endl;
 
+    	std::cout << "Req Angle 1: " << angle1 << ", Req angle 2: " << angle2 << std::endl;
+
     	// Fill only arm positions
-    	// Extruder status and relative position in Z axe will be filled in different place
-    	outputCmd.relativeAngle1 = angleToRelative(angle1);
-    	outputCmd.relativeAngle2 = angleToRelative(angle2);
+    	// Extruder status will be filled in a different place
+    	outputCmd.angle1 = angle1;
+    	outputCmd.angle2 = angle2;
         outputCmd.relPosZ = zAxeToRelative(C.z);
 
     	return true;
@@ -80,17 +89,59 @@ bool _setArmsToPosition(position C, armCommand& outputCmd)
 
 #include "draw.h"
 
+void uglyHack()
+{
+	armCommand armCmd;
+	static float angle = 90;
+	static float step = 1;
+	if (angle > 180)
+	{
+		step = -1;
+	}
+
+	if (angle < 0)
+	{
+		step = +1;
+	}
+
+	LOG("Requested angle: " << angle);
+
+	angle += step;
+
+	armCmd.angle1 = angle;
+	armCmd.angle2 = 180-angle;
+	//armCmd.relativeAngle1 = angleToRelative(angle);
+	//armCmd.relativeAngle2 = angleToRelative(0);
+	armCmd.extrude = true;
+	stepper_parseCommand(armCmd);
+
+	return;
+}
+
+void debug_loop(void)
+{
+	while(1)
+	{
+		uglyHack();
+		auto delay = std::chrono::milliseconds(100);
+		std::this_thread::sleep_for(delay);
+	}
+}
+
 void sendArmCommand(position pos, bool extrude)
 {
 	armCommand armCmd;
-	if (_setArmsToPosition(pos, armCmd))
+
+	if (createArmCommand(pos, armCmd))
 	{
 		armCmd.extrude = extrude;
-		gui_parseCommand(armCmd);
+		stepper_parseCommand(armCmd);
 		//cmdBuffer.send(armCmd);
 	}
 }
 
+// TODO remove this
+void demoReceive(moveCommand &cmd);
 
 /*
  * Move along a line according to movement command
@@ -99,8 +150,17 @@ void sendArmCommand(position pos, bool extrude)
  *@param[in] cmdBuffer - buffer for new armCommands
  */
 //void _createLine(const moveCommand& cmd, safe_queue<armCommand>& cmdBuffer)
-void movementControl_createLine(const moveCommand& cmd)
+void movementControl_createLine(const moveCommand& _cmd)
 {
+	// TODO Remove this ugly hack
+	//uglyHack();
+	//return;
+
+	moveCommand cmd = _cmd;
+	demoReceive(cmd);
+	//TODO For debug purposes only
+	gui_add_line(cmd);
+
 	position startPos = cmd.pos1;
 	position endPos = cmd.pos2;
 	float speed = cmd.movementSpeed;
@@ -147,20 +207,27 @@ void movementControl_createLine(const moveCommand& cmd)
 
 const float ds = 50; // demo size
 
-position p1 = {0, 0, 0};
-position p2 = {0, ds, 0};
+position p1 = {-10, 1, 0};
+position p2 = {10, 1, 0};
 position p3 = {ds, ds, 0};
 position p4 = {ds, 0, 0};
 
-position l1 = {-100, 0, 0};
-position l2 = {100,  0, 0};
-position l3 = {0, 100, 0};
-position l4 = {0, -100, 0};
+position l1 = {-10, -10, 0};
+position l2 = {10, -10, 0};
+position l3 = {10, 10, 0};
+position l4 = {-10, 10, 0};
+
+position center1 = {0, 41, 0};
+position center2 = {0, 40, 0};
 
 moveCommand demoCommands[] =
 {
-	{true, 0.00001, l1, l2},
-	{true, 0.1, l2, l1},
+	{true, 1, p1, p2},
+	//{true, 1, center1, center1}
+	//{true, 0.00001, l1, l2},
+	//{true, 0.00001, l2, l3},
+	//{true, 0.00001, l3, l4},
+	//{true, 0.00001, l4, l1},
 	//{true, 0.001, l3, l4},
 	//{true, 0.001, l4, l3}
 	//{true, 0.01, l1, l2},
@@ -192,7 +259,7 @@ void demoReceive(moveCommand &cmd)
  *
  * Allows only movement along the straight lines
  */
-
+/*
 void movementControl_loop(safe_queue<moveCommand> &queueInput, safe_queue<armCommand> &queueOutput)
 {
 	while(1)
@@ -207,6 +274,6 @@ void movementControl_loop(safe_queue<moveCommand> &queueInput, safe_queue<armCom
 
 		//std::cout << "Thread: " << __FUNCTION__ << ", DATA: " << inputData << std::endl;
 	}
-}
+}*/
 
 

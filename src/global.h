@@ -55,11 +55,26 @@ typedef struct
 
 typedef struct
 {
-	int32_t relativeAngle1; // Position of arm in 100.000 %
-	int32_t relativeAngle2; // Position of arm in 100.000 %
+	//int32_t relativeAngle1; // Position of arm in 100.000 %
+	//int32_t relativeAngle2; // Position of arm in 100.000 %
 	int32_t relPosZ;        // Relative position in Z axe
+	float angle1;
+	float angle2;
 	bool extrude;
 } armCommand;
+
+
+template<typename T> T constrain(const T value, const T minValue, const T maxValue)
+{
+	T result = min(value, maxValue);
+	result = max(value, minValue);
+	return result;
+}
+
+template<typename T> T map(T x, T in_min, T in_max, T out_min, T out_max)
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
 
 
 std::ostream& operator<< (std::ostream& stream, position pos);

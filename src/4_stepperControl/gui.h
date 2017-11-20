@@ -19,6 +19,7 @@ using namespace std;
 
 //#include <unistd.h>
 
+#include "global.h"
 
 typedef enum
 {

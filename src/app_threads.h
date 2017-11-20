@@ -16,16 +16,25 @@
 #include "blocking_queue.h"
 
 #include "global.h"
-#include "gui_types.h"
+//#include "gui_types.h"
 
 void parser_loop(safe_queue<std::string> &queueInput);//, safe_queue<moveCommand> &queueOutput);
 void reader_loop(safe_queue<std::string> &queueOutput);
-void movementControl_loop(safe_queue<moveCommand> &queueInput, safe_queue<armCommand> &queueOutput);
-void motorControl_loop(safe_queue<armCommand> &queueInput, safe_queue<stepperCommand> &queueOutput);
-void GUI_loop(safe_queue<armCommand> &queueInput);
+void gui_loop();
+
+// TODO Move next declaration to separate file
+void gui_add_line(const moveCommand& cmd);
 
 //TODO Remove threads (13.10.2017)
 void gui_parseCommand(armCommand inputCmd);
+
+void reader_init(void);
+void parser_init(void);
+void stepperControl_init(void);
+void movementControl_init(void);
+
 void movementControl_createLine(const moveCommand& cmd);
+
+void debug_loop(void);
 
 #endif /* APP_THREADS_H_ */

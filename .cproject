@@ -30,8 +30,10 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser/sub/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_motorControl}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/5_GUI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/hwApi}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/hw_api_interface}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.16713125" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -44,8 +46,10 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser/sub/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_motorControl}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/5_GUI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/hwApi}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/hw_api_interface}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.740578595" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -68,15 +72,17 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser/sub/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_motorControl}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/5_GUI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/hwApi}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/hw_api_interface}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1005070632" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="2_parser/sub/src/gui|2_parser/sub/src/main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="4_stepperControl/gameOfLiveV3.cpp|4_motorControl|5_GUI|2_parser/sub/src/gui|2_parser/sub/src/main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -112,6 +118,10 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_motorControl}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser/sub/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/hwApi}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/hw_api_interface}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.135917969" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -126,6 +136,10 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_motorControl}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser/sub/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/hwApi}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/hw_api_interface}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.2130078451" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -145,13 +159,17 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_motorControl}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser/sub/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/hwApi}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/hw_api_interface}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1680689699" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="2_parser/sub/src/gui|2_parser/sub/src/main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="4_stepperControl/gameOfLiveV3.cpp|4_motorControl|5_GUI|2_parser/sub/src/gui|2_parser/sub/src/main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

@@ -13,4 +13,11 @@ float getDistance3D(position A, position B);
 
 bool getIntersection(position A, float r1, position B, float r2, position &inter1, position &inter2);
 float getAngle(position A, position B);
+
+int32_t angleToRelative(float angle);
+float relativeToAngle(int32_t relative);
+
+int32_t zAxeToRelative(float zPosition);
+float relativeToZAxe(int32_t relative);
+
 #endif /* _MATH_TOOLS_H_ */

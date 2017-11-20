@@ -10,11 +10,23 @@
 
 #include "global.h"
 
-int32_t angleToRelative(float angle);
-float relativeToAngle(int32_t relative);
+enum {eStepperMaxCount = 4};
 
-int32_t zAxeToRelative(float zPosition);
-float relativeToZAxe(int32_t relative);
+const int left_stepper_offset = -45;
+const int right_stepper_offset = +45;
+
+const int cStepSize = 1;
+
+const int maxSetpointValueInPercent = 100000; // 100.000% (thousandths of a percent)
+
+const position pos_S1 = {0, -100, 0};
+const position pos_S2 = {0, -100, 0};
+
+const float maxRelativeAngle = maxSetpointValueInPercent;
+
+const float zAxeMin = 0;
+const float zAxeMax = 1000;
+const float maxRelativeZ = 100000.0;
 
 const float cMinimalDistanceToCenter = 1;
 
@@ -37,7 +49,7 @@ const int armLength_BS2 = 100;
  *
  */
 
-extern position pos_S1;
-extern position pos_S2;
+//extern position pos_S1;
+//extern position pos_S2;
 
 #endif /* _CONFIG_H_ */

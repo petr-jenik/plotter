@@ -10,17 +10,5 @@
 
 #include "global.h"
 
-typedef enum
-{
-    eColor_blue,
-    eColor_red,
-    eColor_black,
-    eColor_green,
-
-	eColor_COUNT,
-
-	// Unused colors
-    eColor_white
-} eColor;
 
 #endif /* GUI_GUI_TYPES_H_ */

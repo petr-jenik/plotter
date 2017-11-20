@@ -15,6 +15,10 @@
 //using namespace std;
 
 
+void reader_init(void)
+{
+}
+
 void reader_loop(safe_queue<std::string> &queueOutput)
 {
 	std::string fileName = "sample.gcode";

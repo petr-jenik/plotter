@@ -11,6 +11,11 @@
 #include "app_threads.h"
 #include "parser.h"
 
+
+void parser_init(void)
+{
+}
+
 //safe_queue<moveCommand> * guiQueue = NULL;
 
 position topLeft;
@@ -51,10 +56,10 @@ void moveTo(position start, position end, float movementSpeed, float extrude)
 	}
 	else
 	{
-		LOG("Move from" << start << "to" << end << ", speed: " << movementSpeed << ", extrude:" << extrude);
+		//LOG("Move from" << start << "to" << end << ", speed: " << movementSpeed << ", extrude:" << extrude);
 	}
 
-	LOG("extrude: " << extrude);
+	//LOG("extrude: " << extrude);
 
 	moveCommand cmd;
 	cmd.pos1 = start;
