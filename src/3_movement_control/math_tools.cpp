@@ -36,58 +36,68 @@ float getDistance3D(position A, position B)
     return distance;
 }
 
-// line_between center of steppers and position {0, 0}
-position line_start = {(pos_S1.x + pos_S2.x)/2, (pos_S1.y + pos_S2.y)/2};
-position line_end = {0,0};
 
 float radsToDegs(float radians)
 {
-	return (radians * 180) / M_PI;
+	return ((radians * 180) / M_PI);
+	//TODO add modulo 360
 }
 
+
+float degsToRads(float degs)
+{
+	return (degs * M_PI) / 180;
+}
+
+
+position operator-(position &val1, position &val2)
+{
+	position retval = {val1.x - val2.x, val1.y - val2.y, val1.z - val2.z};
+	return retval;
+}
+
+
+position operator+(position val1, position &val2)
+{
+	position retval = {val1.x + val2.x, val1.y + val2.y, val1.z + val2.z};
+	return retval;
+}
+
+
+float toPositiveAngle(float angle)
+{
+	//return angle;
+	while(angle < 0)
+	{
+		angle += 360;
+	}
+
+	int count = angle / 360;
+	return angle - 360*count;
+}
+
+
 /*
- * Get angle between two points
- *
- * A
- * o  B
- * |  o
- * |a/
- * |/
- *
+ *    C
+ *   /
+ *  / angle
+ * A-----B
  *@param[in] position A
  *@param[in] position B
+ *@param[in] position C
  *@return float angle
  */
-float getAngle(position A, position B)
+float getAngle(position _A, position _B, position _C)
 {
-#warning "TODO Fix this broken function!!"
-	//TODO tato funkce vraci spatne vysledky - opravit!!! Pokud je cilovy bod {0,0,0} uhel by mel byt asi 45°.
+	// A - base start - rotation center
+	position A = _A - _A;
+	position B = _B - _A;
+	position C = _C - _A;
 
+	float angle1 = radsToDegs(atan2(C.y, C.x));
+	float angle2 = radsToDegs(atan2(B.y, B.x));
 
-	float a = getDistance({0,0}, A);
-	float b = getDistance({0,0}, B);
-	float c = getDistance(A, B);
-
-	float p = (a + b + c)/2;
-
-	float vb = (2/b)* pow((p*(p-a)*(p-b)*(p-c)), 0.5);
-	float angle = asin(vb/a);
-
-	return radsToDegs(angle);
-//	float slope1 = (line_start.y - line_end.y)/(line_start.x - line_end.x);
-//	float slope2 = (A.y - B.y)/(A.x - B.x);
-
-//	float angle = atan((slope1 - slope2) / (1+slope1*slope2));
-//	return angle;
-
-	//float angle1 = radsToDegs(atan2((line_start.x - line_end.x),(line_start.y - line_end.y)));
-	//sfloat angle2 = radsToDegs(atan2((A.x - B.x),(A.y - B.y)));
-	//return 180 - abs(angle2 - angle1);
-	//float dx = B.x - A.x;
-	//float dy = B.y - A.y;
-
-	//float angle = atan2(dx,dy);
-	//return ((angle * 360.0) / (2 * M_PI));
+	return toPositiveAngle(angle1 - angle2);
 }
 
 

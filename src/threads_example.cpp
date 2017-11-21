@@ -68,8 +68,10 @@ void systemInit()
 
 int main(int argc, char** argv)
 {
+#ifndef NO_GUI
 	/* Create GUI loop before an initialization of the rest of the system */
 	std::thread thr_GUI				(gui_loop);
+#endif // #ifdef NO_GUI
 
 	/* App init */
 	systemInit();
@@ -80,24 +82,31 @@ int main(int argc, char** argv)
 
 	std::vector<std::thread> threadPool;
 
-	safe_queue<string> queue_reader_parser;
 	//safe_queue<moveCommand> queue_parser_movementControl;
 	//safe_queue<armCommand> queue_movementControl_motorControl;
 	//safe_queue<stepperCommand> queue_motorControl_GUI;
 
-	std::thread thr_reader			(reader_loop,			std::ref(queue_reader_parser));
-	std::thread thr_parser			(parser_loop, 			std::ref(queue_reader_parser));//,					std::ref(queue_parser_movementControl)			);
 	//std::thread thr_movementControl	(movementControl_loop, 	std::ref(queue_parser_movementControl),			std::ref(queue_movementControl_motorControl)	);
 	//std::thread thr_motorControl	(motorControl_loop, 	std::ref(queue_movementControl_motorControl),	std::ref(queue_motorControl_GUI)				);
+#define DEBUG_LOOP
+#ifdef DEBUG_LOOP
+	std::thread thr_debug_loop			(debug_loop);
+	threadPool.push_back(move(thr_debug_loop));
+#else
+	safe_queue<string> queue_reader_parser;
 
-	//std::thread thr_debug_loop			(debug_loop);
+	std::thread thr_reader			(reader_loop,			std::ref(queue_reader_parser));
+	std::thread thr_parser			(parser_loop, 			std::ref(queue_reader_parser));//,					std::ref(queue_parser_movementControl)			);
 
 	threadPool.push_back(move(thr_reader));
 	threadPool.push_back(move(thr_parser));
+#endif // #ifdef DEBUG_LOOP
+
 	//threadPool.push_back(move(thr_movementControl));
 	//threadPool.push_back(move(thr_motorControl));
+#ifndef NO_GUI
 	threadPool.push_back(move(thr_GUI));
-
+#endif // NO_GUI
 	std::cout << "Main task..." << std::endl;
 
 	for (auto it = threadPool.begin(); it != threadPool.end(); it++)

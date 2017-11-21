@@ -15,6 +15,8 @@
 #include <sstream>
 #include <thread>
 
+#define NO_GUI
+
 #define LOG(message) {						\
 	std::ostringstream os;					\
 	os << std::this_thread::get_id() << " ";		\

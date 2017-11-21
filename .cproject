@@ -114,7 +114,6 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/1_reader}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/5_GUI}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_motorControl}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser/sub/src}&quot;"/>
@@ -123,6 +122,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/hw_api_interface}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/}&quot;"/>
 								</option>
+								<option id="gnu.cpp.compiler.option.dialect.std.1521363641" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.c++11" valueType="enumerated"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.135917969" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.release.2109617191" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.release">
@@ -132,9 +132,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/1_reader}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/5_GUI}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_motorControl}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser/sub/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/hwApi}&quot;"/>
@@ -145,6 +143,11 @@
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.release.1222439949" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.release"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.release.1152761761" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.release">
+								<option id="gnu.cpp.link.option.libs.1802059465" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" useByScannerDiscovery="false" valueType="libs">
+									<listOptionValue builtIn="false" value="GL"/>
+									<listOptionValue builtIn="false" value="glut"/>
+								</option>
+								<option id="gnu.cpp.link.option.flags.1234056239" superClass="gnu.cpp.link.option.flags" useByScannerDiscovery="false" value="-pthread" valueType="string"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1831122305" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -195,7 +198,14 @@
 		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/threads_example"/>
+		</configuration>
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/threads_example"/>
+		</configuration>
+	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>

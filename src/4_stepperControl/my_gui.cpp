@@ -173,9 +173,12 @@ void drawAll(void)
 		outCmd.pos1 = currentPos;
 		outCmd.pos2 = C;
 
+#ifndef NO_GUI
 		std::lock_guard<std::mutex> hold(drawList_lock);
 		drawList.push_back(outCmd);
-
+#else
+		std::cout << "Head position: " << C << std::endl;
+#endif //#ifndef NO_GUI
 		currentPos = C;
 
 		// Clear draw list for new layer

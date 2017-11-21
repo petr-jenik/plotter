@@ -64,8 +64,8 @@ bool createArmCommand(position C, armCommand& outputCmd)
         position A = (A1.x < A2.x) ? A2 : A1;
     	position B = (B1.x < B2.x) ? B1 : B2;
 
-    	float angle1 = getAngle(A, pos_S1);
-    	float angle2 = getAngle(B, pos_S2);
+    	float angle1 = getAngle(pos_S1, {pos_S1.x+100, pos_S1.y}, A);
+    	float angle2 = getAngle(pos_S2, {pos_S2.x+100, pos_S2.y}, B);
 
 		//LOG("movementControl_loop: Angles: " << angle1 << "," << angle2);
     	//LOG("ANGLE1: " << angle1);
@@ -89,45 +89,7 @@ bool createArmCommand(position C, armCommand& outputCmd)
 
 #include "draw.h"
 
-void uglyHack()
-{
-	armCommand armCmd;
-	static float angle = 90;
-	static float step = 1;
-	if (angle > 180)
-	{
-		step = -1;
-	}
-
-	if (angle < 0)
-	{
-		step = +1;
-	}
-
-	LOG("Requested angle: " << angle);
-
-	angle += step;
-
-	armCmd.angle1 = angle;
-	armCmd.angle2 = 180-angle;
-	//armCmd.relativeAngle1 = angleToRelative(angle);
-	//armCmd.relativeAngle2 = angleToRelative(0);
-	armCmd.extrude = true;
-	stepper_parseCommand(armCmd);
-
-	return;
-}
-
-void debug_loop(void)
-{
-	while(1)
-	{
-		uglyHack();
-		auto delay = std::chrono::milliseconds(100);
-		std::this_thread::sleep_for(delay);
-	}
-}
-
+// TODO add speed
 void sendArmCommand(position pos, bool extrude)
 {
 	armCommand armCmd;
@@ -277,3 +239,49 @@ void movementControl_loop(safe_queue<moveCommand> &queueInput, safe_queue<armCom
 }*/
 
 
+void uglyHack_setAngle()
+{
+	armCommand armCmd;
+	static float angle = 90;
+	static float step = 1;
+	if (angle > 180)
+	{
+		step = -1;
+	}
+
+	if (angle < 0)
+	{
+		step = +1;
+	}
+
+	LOG("Requested angle: " << angle);
+
+	angle += step;
+
+	armCmd.angle1 = angle;
+	armCmd.angle2 = 180-angle;
+	//armCmd.relativeAngle1 = angleToRelative(angle);
+	//armCmd.relativeAngle2 = angleToRelative(0);
+	armCmd.extrude = true;
+	stepper_parseCommand(armCmd);
+
+	return;
+}
+
+void uglyHack_setPosition(void)
+{
+	moveCommand cmd;
+	demoReceive(cmd);
+	sendArmCommand(cmd.pos1, cmd.extrude);
+	sendArmCommand(cmd.pos2, cmd.extrude);
+}
+
+void debug_loop(void)
+{
+	while(1)
+	{
+		uglyHack_setPosition();
+		auto delay = std::chrono::milliseconds(100);
+		std::this_thread::sleep_for(delay);
+	}
+}
