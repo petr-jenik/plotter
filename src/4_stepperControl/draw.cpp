@@ -11,7 +11,7 @@
 
 #include "global.h"
 
-float zoom = 1;
+float zoom = 10;
 
 position center(position pos)
 {

@@ -12,6 +12,8 @@
 
 enum {eStepperMaxCount = 4};
 
+const int SPEED_MAGICAL_CONSTANT = 10;
+
 const int left_stepper_offset = -45;
 const int right_stepper_offset = +45;
 

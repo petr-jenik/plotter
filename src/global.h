@@ -15,7 +15,8 @@
 #include <sstream>
 #include <thread>
 
-#define NO_GUI
+//#define NO_GUI
+//#define DEBUG_LOOP
 
 #define LOG(message) {						\
 	std::ostringstream os;					\

@@ -112,16 +112,14 @@ void demoReceive(moveCommand &cmd);
  *@param[in] cmdBuffer - buffer for new armCommands
  */
 //void _createLine(const moveCommand& cmd, safe_queue<armCommand>& cmdBuffer)
-void movementControl_createLine(const moveCommand& _cmd)
+void movementControl_createLine(const moveCommand& cmd)
 {
 	// TODO Remove this ugly hack
 	//uglyHack();
 	//return;
 
-	moveCommand cmd = _cmd;
-	demoReceive(cmd);
 	//TODO For debug purposes only
-	gui_add_line(cmd);
+	//gui_add_line(cmd);
 
 	position startPos = cmd.pos1;
 	position endPos = cmd.pos2;
@@ -144,26 +142,19 @@ void movementControl_createLine(const moveCommand& _cmd)
 	// Run next loop at least once
 	//distance = max(distance, speed);
 
-	//TODO Fix this horrible solution - this should add at least 2 point from each row
-	float step = min(speed, distance / 2);
-
-	if (-0.001 < speed && speed < 0.0001)
-	{
-		speed = 1;
-	}
 	// A close approximation to a straight line between two points
-
 	// TODO 13.10.2017 - This loop causes all the troubles!!!!!
-	/*for (float i = 0; i < distance; i = i + speed)
+	std:cout << "speed: " << speed;
+	for (float i = 0; i < distance; i += distance/((int)(SPEED_MAGICAL_CONSTANT*distance)))
 	{
 		position currentPos;
 		currentPos.x = startPos.x + dx*i;
 		currentPos.y = startPos.y + dy*i;
 		currentPos.z = startPos.z + dz*i;
-
+		sendArmCommand(currentPos, extrude);
 	}
-	*/
-	sendArmCommand(startPos, extrude);
+
+	//sendArmCommand(startPos, extrude);
 	sendArmCommand(endPos, extrude);
 }
 

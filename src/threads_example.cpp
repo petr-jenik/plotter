@@ -88,7 +88,7 @@ int main(int argc, char** argv)
 
 	//std::thread thr_movementControl	(movementControl_loop, 	std::ref(queue_parser_movementControl),			std::ref(queue_movementControl_motorControl)	);
 	//std::thread thr_motorControl	(motorControl_loop, 	std::ref(queue_movementControl_motorControl),	std::ref(queue_motorControl_GUI)				);
-#define DEBUG_LOOP
+
 #ifdef DEBUG_LOOP
 	std::thread thr_debug_loop			(debug_loop);
 	threadPool.push_back(move(thr_debug_loop));
