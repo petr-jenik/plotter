@@ -93,7 +93,7 @@ void parser_loop(safe_queue<std::string> &queueInput)//, safe_queue<moveCommand>
 		queueInput.receive(receivedData);
 
 		parser.newData(receivedData);
-		//LOG("GCODE: " << receivedData);
+		LOG("GCODE: " << receivedData);
 		parser.update();
 
 		//std::cout << "Thread: " << __FUNCTION__ << ", DATA: " << receivedData <<std::endl;
