@@ -1,0 +1,21 @@
+
+file select
+file info
+
+GCODE:
+	file name
+	number of lines
+	current line
+
+
+printer configuration:
+	zoom - cislo, ktere udava zoom v parseru
+	center - pozice, ktera udava offset v parseru
+	mozna jeste dalsi konfigurace, jako delka ramen, poloha obou stredu otaceni, mechanicke prevody, presnost (pocet )
+
+printer commands:
+	start print
+	pause print
+	stop print
+	resume print from last line
+
