@@ -35,7 +35,7 @@
 
     <p>
         <div>current line</div>
-        <input type="number" id="current_line">
+        <div id="current_line"></div>
     </p>
 
     <p>
@@ -65,27 +65,71 @@
     var gcode_available = false;
     var gcode_lines = [];
 
-    var print_current_line = 0;
-    var print_number_of_lines = 0;
+    var current_line = 0;
+    var number_of_lines = 0;
 
 
-    var validResponseReseived = false
+    //var validResponseReseived = false
+
+    var printEnabled = false;
+
+    function parseResponse(message)
+    {
+        if ((message == RESULT_OK) && (printEnabled == true))
+        {
+            writeToScreen("Response OK");
+            if (current_line < number_of_lines)
+            {
+                sendCommand(COMMAND_GCODE + gcode_lines[current_line]);
+                current_line++;
+                updateCurrentState();
+            }
+            else
+            {
+                alert("Print finished");
+                printEnabled = false;
+                current_line = 0;
+                //updateCurrentState();
+            }
+            //validResponseReseived = true;
+        }
+        else if ((message == RESULT_NOT_OK) && (printEnabled == true))
+        {
+            writeToScreen("Response NOT OK");
+            //validResponseReseived = false;
+        }
+        else
+        {
+            writeToScreen("Print enabled:" + printEnabled);
+            writeToScreen("Received invalid response: " + message); 
+        }   
+    }
 
     function startPrint()
     {
         if (gcode_available)
         {
-            for (var i = 0; i < gcode_lines.length; i++)
-            {
-                sendCommand(COMMAND_GCODE + gcode_lines[i]);
-                //while(validResponseReseived == false){}
-                //console.log("LINE " + i + ":" + gcode_lines[i]);
-            }
+            printEnabled = true;
+            current_line = 0;
+            sendCommand(COMMAND_GCODE + gcode_lines[current_line]);
+            current_line++;
+            //for (var i = 0; i < gcode_lines.length; i++)
+            //{
+            //    sendCommand(COMMAND_GCODE + gcode_lines[i]);
+            //    //while(validResponseReseived == false){}
+            //    //console.log("LINE " + i + ":" + gcode_lines[i]);
+            //}
         }
         else
         {
             alert("GCODE not available");
         }
+    }
+
+    function updateCurrentState()
+    {
+        document.getElementById('number_of_lines').innerHTML = number_of_lines;
+        document.getElementById('current_line').innerHTML = current_line;
     }
 
     function handleFileSelect(evt) 
@@ -113,8 +157,8 @@
                 gcode_lines = lines;
                 gcode_available = true;
 
-                print_current_line = 0;
-                print_number_of_lines = lines.length; 
+                current_line = 0;
+                number_of_lines = lines.length; 
 
                 file_name = file.name;
                 //var out = [];
@@ -129,8 +173,8 @@
                 //     ' of ', file.size, ' byte file'].join('');
                 
                 document.getElementById('file_name').innerHTML = '<div>' + escape(file.name) + '</div>';
-                document.getElementById('number_of_lines').innerHTML = print_number_of_lines;
-                document.getElementById('current_line').innerHTML = print_current_line;
+                
+                updateCurrentState();
                 alert("a");
             }
         };
@@ -218,23 +262,6 @@
         doSend(command);
     }
 
-    function parseResponse(message)
-    {
-        if (message == RESULT_OK)
-        {
-            writeToScreen("Response OK");
-            validResponseReseived = true;
-        }
-        else if (message == RESULT_NOT_OK)
-        {
-            writeToScreen("Response NOT OK");
-            validResponseReseived = false;
-        }
-        else
-        {
-            writeToScreen("Received invalid response: " + message); 
-        }   
-    }
 
     window.addEventListener("load", init, false);
     //window.addEventListener("load", doConnect, false);
