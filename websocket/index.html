@@ -2,20 +2,248 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>gcode viewer - online gcode viewer and analyzer in your browser!</title>
-    <meta name="description" content="Visual GCode viewer and analyzer in your browser. No need to upload you GCode anywhere"	>
+    <meta name="description" content="Visual GCode viewer and analyzer in your browser. No need to upload you GCode anywhere"   >
 </head>
 <body>
-	<input type="file" id="file" name="files">
-	<div>file name</div>
-	<div id="file_name">
-	<div>number of lines</div>
-	<div id="number_of_lines">
-	<div>current line</div>
-	<input type="number" id="current_line">
 
+
+<form name="myform">
+    <p>
+        <textarea name="url" cols="50"></textarea>
+    </p>
+    <p>
+        <input type="button" name=clearButton value="Clear" onClick="clearText();">
+        <input type="button" name=disconnectButton value="Disconnect" onClick="doDisconnect();">
+        <input type="button" name=connectButton value="Connect" onClick="doConnect();">
+    </p>
+    <p>
+        <input type="file" id="files" name="files">
+    </p>
+    <p>
+        <div>File name:</div>    
+        <div id="file_name"></div>
+    </p>
+    <p>
+        <div>Info:</div>
+        <div id="info"></div>
+    </p>
+    
+    <p>
+        <div>number of lines</div>
+        <div id="number_of_lines"></div>
+    </p>
+
+    <p>
+        <div>current line</div>
+        <input type="number" id="current_line">
+    </p>
+
+    <p>
+        <input type="button" name=printButton value="PRINT" onClick="startPrint();">
+        <input type="button" name=calibrateButton value="Calibrate" onClick="sendCommand(COMMAND_CALIBRATE);">
+        <input type="button" name=goToLeftButton value="Go to left" onClick="sendCommand(COMMAND_GO_TO_LEFT);">
+        <input type="button" name=goToRightButton value="Go to right" onClick="sendCommand(COMMAND_GO_TO_RIGHT);">
+        <input type="button" name=connectButton value="Set configuration" onClick="sendCommand(COMMAND_SETTING);">
+    </p>
+
+    <p>
+        <textarea name="outputtext" rows="20" cols="50"></textarea>
+    </p>
+</form>
 </body>
 <script>
-	//document.getElementById('number_of_lines').innerHTML = "43";
-	document.getElementById('current_line').innerHTML = 42;
-</script>	
+
+    var COMMAND_CALIBRATE = "COMMAND_CALIBRATE:";
+    var COMMAND_GO_TO_LEFT = "COMMAND_GO_TO_LEFT:";
+    var COMMAND_GO_TO_RIGHT = "COMMAND_GO_TO_RIGHT:";
+    var COMMAND_SETTING = "COMMAND_SETTING:";
+    var COMMAND_GCODE = "GCODE:";
+
+    var RESULT_OK = "RESULT_OK";
+    var RESULT_NOT_OK = "RESULT_NOT_OK";
+
+    var gcode_available = false;
+    var gcode_lines = [];
+
+    var print_current_line = 0;
+    var print_number_of_lines = 0;
+
+
+    var validResponseReseived = false
+
+    function startPrint()
+    {
+        if (gcode_available)
+        {
+            for (var i = 0; i < gcode_lines.length; i++)
+            {
+                sendCommand(COMMAND_GCODE + gcode_lines[i]);
+                //while(validResponseReseived == false){}
+                //console.log("LINE " + i + ":" + gcode_lines[i]);
+            }
+        }
+        else
+        {
+            alert("GCODE not available");
+        }
+    }
+
+    function handleFileSelect(evt) 
+    {
+        var files = evt.target.files; // FileList object
+        // files is a FileList of File objects. List some properties.
+        var output = [];
+        var file = files[0];
+
+        //output.push('<li><strong>', escape(file.name), '</strong> (', file.type || 'n/a', ') - ',
+        //file.size, ' bytes, last modified: ',
+        //file.lastModifiedDate ? file.lastModifiedDate.toLocaleDateString() : 'n/a',
+        //'</li>');
+
+        var start = 0;
+        var stop = file.size - 1;
+        var reader = new FileReader();
+        var file_name;
+        // If we use onloadend, we need to check the readyState.
+        reader.onloadend = function(evt)
+        {
+            if (evt.target.readyState == FileReader.DONE)
+            { // DONE == 2
+                var lines = evt.target.result.split("\n");
+                gcode_lines = lines;
+                gcode_available = true;
+
+                print_current_line = 0;
+                print_number_of_lines = lines.length; 
+
+                file_name = file.name;
+                //var out = [];
+                //var i = 0;
+                //for (var i = 0; i < lines.length; i++)
+                //{
+                //    out += '<p><b>' + i + ':</b> ' + lines[i] + '</p> ';
+                //}
+                //document.getElementById('file_content_out').innerHTML = lines;//evt.target.result;
+                //document.getElementById('byte_range').textContent = 
+                //       ['Read bytes: ', start + 1, ' - ', stop + 1,
+                //     ' of ', file.size, ' byte file'].join('');
+                
+                document.getElementById('file_name').innerHTML = '<div>' + escape(file.name) + '</div>';
+                document.getElementById('number_of_lines').innerHTML = print_number_of_lines;
+                document.getElementById('current_line').innerHTML = print_current_line;
+                alert("a");
+            }
+        };
+
+        alert("b");
+        var blob = file.slice(start, stop + 1);
+        reader.readAsBinaryString(blob);
+        //document.getElementById('info').innerHTML = output.join('');
+    }
+
+    function init()
+    {
+        document.myform.url.value = "ws://localhost:8000/"
+        document.myform.disconnectButton.disabled = true;
+    }
+
+    function doConnect()
+    {
+        websocket = new WebSocket(document.myform.url.value);
+        websocket.onopen = function(evt) { onOpen(evt) };
+        websocket.onclose = function(evt) { onClose(evt) };
+        websocket.onmessage = function(evt) { onMessage(evt) };
+        websocket.onerror = function(evt) { onError(evt) };
+    }
+
+    function onOpen(evt)
+    {
+        writeToScreen("connected\n");
+        document.myform.connectButton.disabled = true;
+        document.myform.disconnectButton.disabled = false;
+    }
+
+
+    function onClose(evt)
+    {
+        writeToScreen("disconnected\n");
+        document.myform.connectButton.disabled = false;
+        document.myform.disconnectButton.disabled = true;
+    }
+
+    function onMessage(evt)
+    {
+        writeToScreen("response: " + evt.data + '\n');
+        parseResponse(evt.data);
+    }
+
+    function onError(evt)
+    {
+        writeToScreen('error: ' + evt.data + '\n');
+        websocket.close();
+        document.myform.connectButton.disabled = false;
+        document.myform.disconnectButton.disabled = true;
+    }
+
+    function doSend(message)
+    {
+        writeToScreen("sent: " + message + '\n'); 
+        websocket.send(message);
+    }
+
+    function doDisconnect()
+    {
+        websocket.close();
+    }
+
+    function clearText()
+    {
+        document.myform.outputtext.value = "";
+    }
+
+    function writeToScreen(message)
+    {
+        document.myform.outputtext.value += message
+        document.myform.outputtext.scrollTop = document.myform.outputtext.scrollHeight;
+    }
+
+    function showMessage()
+    {
+        alert(document.myform.outputtext.value);
+    }
+
+    function sendCommand(command)
+    {
+        validResponseReseived = false;
+        doSend(command);
+    }
+
+    function parseResponse(message)
+    {
+        if (message == RESULT_OK)
+        {
+            writeToScreen("Response OK");
+            validResponseReseived = true;
+        }
+        else if (message == RESULT_NOT_OK)
+        {
+            writeToScreen("Response NOT OK");
+            validResponseReseived = false;
+        }
+        else
+        {
+            writeToScreen("Received invalid response: " + message); 
+        }   
+    }
+
+    window.addEventListener("load", init, false);
+    //window.addEventListener("load", doConnect, false);
+
+    var files_object = document.getElementById('files')
+    console.log(files_object)
+    files_object.addEventListener('change', handleFileSelect, false);
+    document.getElementById('current_line').innerHTML = 42;
+
+
+</script>   
 </html>

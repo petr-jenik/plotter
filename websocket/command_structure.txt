@@ -1,0 +1,24 @@
+
+enum
+{
+	gcode = 1;
+	calibrate = 2,
+	go to left = 3,
+	go to right = 4,
+	setting = 5,
+} commandTypes;
+
+
+const uint32_t MAX_MESSAGE_DATA_SIZE = 1024;
+
+#pragma("pack")
+
+struct
+{
+	uint8_t commandType;
+	uint8_t data[MAX_MESSAGE_DATA_SIZE]
+	CRC32 crc;	
+}
+
+
+#pragma("pop")
