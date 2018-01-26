@@ -9,6 +9,17 @@ import ssl
 from SimpleWebSocketServer import WebSocket, SimpleWebSocketServer, SimpleSSLWebSocketServer
 from optparse import OptionParser
 
+import socket
+
+#create an INET, STREAMing socket
+s = socket.socket(
+socket.AF_INET, socket.SOCK_STREAM)
+#now connect to the web server on port 80
+# - the normal http port
+s.connect(("localhost", 3000))
+
+
+
 class SimpleEcho(WebSocket):
 
    def handleMessage(self):
@@ -36,11 +47,15 @@ clients = []
 class SimpleChat(WebSocket):
 
 	def processData(self, message):
-		print("received data:" + str(message))
+		#print("received data:" + str(message))
 
 		for cmd in commands:
 			if message.startswith(cmd):
 				print("Valid command received");
+				if message.startswith(COMMAND_GCODE):
+						gcode_line = message[len(COMMAND_GCODE):-1];
+						print(gcode_line)
+						s.send(gcode_line)
 				self.sendMessage(RESULT_OK);
 				return;
 		self.sendMessage(RESULT_NOT_OK);
