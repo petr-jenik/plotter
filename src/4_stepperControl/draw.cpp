@@ -11,16 +11,45 @@
 
 #include "global.h"
 
-float zoom = 10;
+float zoom = 20;
+
+position gOffsetPoint = {0, 0};
+
+
+void increaseZoom()
+{
+	zoom *= 1.5;
+}
+
+
+void decreaseZoom()
+{
+	if (zoom > 1.5)
+	{
+		zoom /= 1.5;
+	}
+}
+
+
+void setCenterPoint(position newCenterPoint)
+{
+
+    position windowSize = Gui::getWindowSize();
+
+	position point;
+	point.x = ((newCenterPoint.x - (windowSize.x/2)) / zoom) + gOffsetPoint.x;
+	point.y = ((newCenterPoint.y - (windowSize.y/2)) / zoom) + gOffsetPoint.y;
+	cout << point << endl;
+	gOffsetPoint = point;
+}
 
 position center(position pos)
 {
     position windowSize = Gui::getWindowSize();
 
     position result;
-
-    result.x = (windowSize.x / 2) + zoom * pos.x;
-    result.y = (windowSize.y / 2) + zoom * pos.y;
+    result.x = (windowSize.x / 2) + zoom * (pos.x - gOffsetPoint.x);
+    result.y = (windowSize.y / 2) + zoom * (pos.y - gOffsetPoint.y);
     result.z = zoom * pos.z;
     return result;
 }
@@ -32,7 +61,7 @@ float toRads(float angle)
 
 void drawLine(position _start, position _end)
 {
-    position windowSize = Gui::getWindowSize();
+    //position windowSize = Gui::getWindowSize();
     //Gui::clear();
 
     //Gui::forceRedraw();

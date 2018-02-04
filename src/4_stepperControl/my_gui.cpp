@@ -119,6 +119,11 @@ void mouseHandler(int button, int state, int x, int y)
     cout << "State: " << state << endl;
     cout << "x: " << x << endl;
     cout << "y: " << y << endl;
+    if((button == 0) && (state == 1))
+    {
+        position clickPosition = {x, y};
+        setCenterPoint(clickPosition);
+	}
 }
 
 void gui_add_line(const moveCommand& cmd)
@@ -374,7 +379,28 @@ void update(void)
 
 	drawLine(p1, p2);
     drawLine(p3, p4);
-    //
+
+
+    Gui::flush();
+}
+
+void keyboardHandler(unsigned char x, int y, int z)
+{
+	switch (x)
+	{
+	case '+':
+		increaseZoom();
+		break;
+
+	case '-':
+		decreaseZoom();
+		break;
+
+	default:
+		break;
+
+	}
+	cout << "x: " << x << ", y: " << y << ", z: "<< z<< endl;
 }
 
 
@@ -385,6 +411,8 @@ void gui_loop(void)
 	Gui::guiInit(0, NULL);
     Gui::registerUpdateCallback(update);
     Gui::registerMouseCallback(mouseHandler);
+    Gui::registerKeyboardCallback(keyboardHandler);
+
 
     //std::thread thr_receive(&_receiveFromQueue, std::ref(queueInput));
 

@@ -79,6 +79,11 @@ void Gui::registerMouseCallback( void (*callback)(int button, int state, int x, 
     glutMouseFunc(callback);
 }
 
+void Gui::registerKeyboardCallback( void (* callback)( unsigned char, int, int ))
+{
+	glutKeyboardFunc(callback);
+}
+
 static int windowId = -1;
 
 void Gui::guiInit(int argc, char** argv)
@@ -99,6 +104,11 @@ void Gui::guiInit(int argc, char** argv)
     //glOrtho(0.0, 00, 0.0, 0.0, 0, 1.0);
     glOrtho(0.0, 1.0, 0.0, 1.0, -1.0, 1.0);
 
+}
+
+void Gui::flush(void)
+{
+    glFlush ();
 }
 
 void Gui::forceRedraw(void)

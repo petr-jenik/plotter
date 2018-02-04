@@ -14,6 +14,10 @@
 
 #include "global.h"
 
+
+void increaseZoom();
+void decreaseZoom();
+void setCenterPoint(position newCenterPoint);
 void drawLine(position start, position end);
 void drawLine(int x1, int y1, int x2, int y2);
 position getCirclePosition(position center, int radius, float angle);
