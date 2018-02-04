@@ -18,8 +18,12 @@
 #include "global.h"
 //#include "gui_types.h"
 
-void parser_loop(safe_queue<std::string> &queueInput);//, safe_queue<moveCommand> &queueOutput);
-void reader_loop(safe_queue<std::string> &queueOutput);
+//void parser_loop(safe_queue<std::string> &queueInput);//, safe_queue<moveCommand> &queueOutput);
+//void reader_loop(safe_queue<std::string> &queueOutput);
+
+void parser_update(std::string receivedData);
+void reader_readAndProcessFile(std::string fileName);
+
 void gui_loop();
 
 // TODO Move next declaration to separate file

@@ -173,12 +173,13 @@ void PlotterArm::OnUpdate(StepperSetting * pSetting)
     	float requiredAngle = constrain(pSetting->setpointAngle - this->armAngleOffset, this->minAngle, this->maxAngle);
         this->setpointStepperValue = (int)map(requiredAngle, this->minAngle, this->maxAngle, (float)0, (float)this->maxStepperValue);
 
+        /*
         std::cout << __FUNCTION__ << std::endl;
         std::cout << "pSetting->setpointAngle:  " <<  pSetting->setpointAngle << "°" << std::endl;
         std::cout << "requiredAngle:  " <<  requiredAngle << "°" << std::endl;
         std::cout << "max step count: " <<  this->maxStepperValue << "steps" <<std::endl;
         std::cout << "setpointValue: " <<  this->setpointStepperValue << "steps" << std::endl;
-
+        */
         assert(this->setpointStepperValue >= 0);
         assert(this->setpointStepperValue <= maxSetpointValueInPercent);
 

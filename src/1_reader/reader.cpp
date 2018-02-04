@@ -19,25 +19,17 @@ void reader_init(void)
 {
 }
 
-void reader_loop(safe_queue<std::string> &queueOutput)
+void reader_readAndProcessFile(std::string fileName)
 {
-	std::string fileName = "sample.gcode";
-
 	DBG("Read GCODE data from file " << fileName << std::endl); // prints !!!Hello World!!!
 
-	//std::ifstream infile("thefile.txt");
 	std::ifstream fileStream(fileName.c_str());
 	if (fileStream.is_open())
 	{
-		//std::cout << "Input file opened" << std::endl;
 		std::string line;
 		while (std::getline(fileStream, line))
 		{
-			//std::cout << "Thread: " << __FUNCTION__ << std::endl;
-			//std::cout << "Data:" << line << std::endl;
-			queueOutput.send(line);
-			//auto delay = std::chrono::milliseconds(1);
-			//std::this_thread::sleep_for(delay);
+			parser_update(line);
 		}
 		LOG("Reading finished");
 		fileStream.close();

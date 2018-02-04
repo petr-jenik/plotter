@@ -23,24 +23,6 @@
 
 using namespace std;
 
-class thread_guard
-{
-   std::thread& m_thread;
-   thread_guard( const thread_guard& );
-   thread_guard& operator=
-      ( const thread_guard& );
-public:
-   thread_guard( std::thread& t )
-      : m_thread(t)
-   {   }
-   ~thread_guard()
-   {
-      if( m_thread.joinable() )
-         m_thread.join();
-   }
-};
-
-
 void systemInit()
 {
 	reader_init();
@@ -49,11 +31,6 @@ void systemInit()
 	stepperControl_init();
 }
 
-// std::thread t (&non_member_function);
-// thread_guard(t)
-// do_seomething_and_throw()
-// Pri destrukci thread_guardu se na thread zavola join, tim se ukonci
-// Pote prestane existovat objekt t (bez thread_guardu by objekt t prestal existovat, ale thread by bezel dal)
 
 /*
  * List of tasks:
@@ -77,33 +54,20 @@ int main(int argc, char** argv)
 	systemInit();
 
 	unsigned int pocetProcesoru = std::thread::hardware_concurrency();
-
 	std::cout << "Pocet procesoru: " << pocetProcesoru << std::endl;
-
 	std::vector<std::thread> threadPool;
-
-	//safe_queue<moveCommand> queue_parser_movementControl;
-	//safe_queue<armCommand> queue_movementControl_motorControl;
-	//safe_queue<stepperCommand> queue_motorControl_GUI;
-
-	//std::thread thr_movementControl	(movementControl_loop, 	std::ref(queue_parser_movementControl),			std::ref(queue_movementControl_motorControl)	);
-	//std::thread thr_motorControl	(motorControl_loop, 	std::ref(queue_movementControl_motorControl),	std::ref(queue_motorControl_GUI)				);
 
 #ifdef DEBUG_LOOP
 	std::thread thr_debug_loop			(debug_loop);
 	threadPool.push_back(move(thr_debug_loop));
 #else
-	safe_queue<string> queue_reader_parser;
 
-	std::thread thr_reader			(reader_loop,			std::ref(queue_reader_parser));
-	std::thread thr_parser			(parser_loop, 			std::ref(queue_reader_parser));//,					std::ref(queue_parser_movementControl)			);
+	std::string fileName = "sample.gcode";
 
-	threadPool.push_back(move(thr_reader));
-	threadPool.push_back(move(thr_parser));
+	std::thread thr_mainProcess			(reader_readAndProcessFile,			std::ref(fileName));
+	threadPool.push_back(move(thr_mainProcess));
 #endif // #ifdef DEBUG_LOOP
 
-	//threadPool.push_back(move(thr_movementControl));
-	//threadPool.push_back(move(thr_motorControl));
 #ifndef NO_GUI
 	threadPool.push_back(move(thr_GUI));
 #endif // NO_GUI
@@ -115,13 +79,6 @@ int main(int argc, char** argv)
 	}
 
 	std::cout << "PROGRAM END" << std::endl;
-
-	/*
-	for( std::thread& t : threadPool )
-	{
-		t.join();
-	}
-	*/
 
 	return 0;
 }

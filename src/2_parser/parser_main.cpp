@@ -12,8 +12,15 @@
 #include "parser.h"
 
 
+path_parser gParser(1);
+
+
+// Forward declarartion
+void moveTo(position start, position end, float movementSpeed, float extrude);
+
 void parser_init(void)
 {
+	gParser.registerMoveToCallback(moveTo);
 }
 
 //safe_queue<moveCommand> * guiQueue = NULL;
@@ -82,8 +89,6 @@ void parser_loop(safe_queue<std::string> &queueInput)//, safe_queue<moveCommand>
 
 	//path_parser parser(10 , 4, -6);
 	//path_parser parser(1 , 10, 10);
-	path_parser parser(1);
-	parser.registerMoveToCallback(moveTo);
 
 	//parser.registerMoveToCallback(boundingBox);
 
@@ -92,9 +97,9 @@ void parser_loop(safe_queue<std::string> &queueInput)//, safe_queue<moveCommand>
 		std::string receivedData;
 		queueInput.receive(receivedData);
 
-		parser.newData(receivedData);
+		gParser.newData(receivedData);
 		LOG("GCODE: " << receivedData);
-		parser.update();
+		gParser.update();
 
 		//std::cout << "Thread: " << __FUNCTION__ << ", DATA: " << receivedData <<std::endl;
 
@@ -106,4 +111,11 @@ void parser_loop(safe_queue<std::string> &queueInput)//, safe_queue<moveCommand>
 	}
 }
 
+
+void parser_update(std::string receivedData)
+{
+		gParser.newData(receivedData);
+		LOG("GCODE: " << receivedData);
+		gParser.update();
+}
 

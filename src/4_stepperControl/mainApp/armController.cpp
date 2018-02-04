@@ -52,15 +52,15 @@ void StepperController::reg(void * object, eObjectType type)
 
 void ArmController::OnUpdateAll(armCommand command)
 {
-	std::cout << std::endl;
-	std::cout << __FUNCTION__ << std::endl;
-	std::cout << command;
+	//std::cout << std::endl;
+	//std::cout << __FUNCTION__ << std::endl;
+	//std::cout << command;
 	// Test block
-	{
-    	 float angle1 = command.angle1;
-    	 float angle2 = command.angle2;
-    	 std::cout << "Angle 1: " << angle1 << ", angle 2: " << angle2 << std::endl;
-	}
+	//{
+   // 	 float angle1 = command.angle1;
+   // 	 float angle2 = command.angle2;
+    	 //std::cout << "Angle 1: " << angle1 << ", angle 2: " << angle2 << std::endl;
+	//}
 
 
 	StepperSetting leftArm =  {command.angle1, true};

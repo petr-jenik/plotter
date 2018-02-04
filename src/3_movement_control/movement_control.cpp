@@ -73,7 +73,7 @@ bool createArmCommand(position C, armCommand& outputCmd)
     	//std::cout << "ANGLE1: " << angle1 << std::endl;
     	//std::cout << "ANGLE2: " << angle2 << std::endl;
 
-    	std::cout << "Req Angle 1: " << angle1 << ", Req angle 2: " << angle2 << std::endl;
+    	//std::cout << "Req Angle 1: " << angle1 << ", Req angle 2: " << angle2 << std::endl;
 
     	// Fill only arm positions
     	// Extruder status will be filled in a different place
@@ -144,7 +144,7 @@ void movementControl_createLine(const moveCommand& cmd)
 
 	// A close approximation to a straight line between two points
 	// TODO 13.10.2017 - This loop causes all the troubles!!!!!
-	std:cout << "speed: " << speed;
+	//std:cout << "speed: " << speed;
 	for (float i = 0; i < distance; i += distance/((int)(SPEED_MAGICAL_CONSTANT*distance)))
 	{
 		position currentPos;
