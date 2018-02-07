@@ -77,7 +77,7 @@
     {
         if ((message == RESULT_OK) && (printEnabled == true))
         {
-            writeToScreen("Response OK");
+            //writeToScreen("Response OK");
             if (current_line < number_of_lines)
             {
                 sendCommand(COMMAND_GCODE + gcode_lines[current_line]);
@@ -95,7 +95,7 @@
         }
         else if ((message == RESULT_NOT_OK) && (printEnabled == true))
         {
-            writeToScreen("Response NOT OK");
+            //writeToScreen("Response NOT OK");
             //validResponseReseived = false;
         }
         else

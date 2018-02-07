@@ -81,11 +81,67 @@ void processLine(char * buffer, uint32_t bufferSize)
 {
 	std::string line;
 	line.assign(buffer, bufferSize);
-	//parser_update(line);
+	parser_update(line);
 
 	LOG("Line number: " << lineNumber++ << ", data: " << line);
 }
 
+
+bool readLineFromQueue(Queue &queue, char *pBuffer , uint32_t & sizeOfBuffer)
+{
+	char line[MAX_LINE_LENGTH] = {0};
+	bool endOfLineFound = false;
+	int bufferSize = std::min((size_t)sizeOfBuffer, sizeof(line));
+	int minDataSize = std::min(queue.getNumberOfItems(), (size_t)bufferSize);
+	int idx = 0;
+
+	bool retval = false;
+
+	// Process the whole queue
+	while((idx < minDataSize) &&
+		  (endOfLineFound == false) &&
+		  (queue.getNumberOfItems() != 0))
+	{
+		queue.pop(line[idx]);
+
+		if ('\n' == line[idx])
+		{
+			endOfLineFound = true;
+		}
+
+		idx++;
+	}
+
+	if (endOfLineFound)
+	{
+		sizeOfBuffer = idx;
+		memcpy(pBuffer, line, (size_t)idx);
+		retval = true;
+	}
+	else
+	{
+		LOG("End of line was not found");
+
+		size_t numberOfItems = queue.getNumberOfItems();
+
+		for (int i = 0; i < idx; i++)
+		{
+			queue.push(line[i]);
+		}
+
+		for (int i = 0; i < numberOfItems; i++)
+		{
+			char byte;
+			queue.pop(byte);
+			queue.push(byte);
+		}
+
+		retval = false;
+		sizeOfBuffer = 0;
+	}
+
+	return retval;
+}
 
 void serveClient()
 {
@@ -116,38 +172,13 @@ void serveClient()
 			queue.push(buffer[i]);
 		}
 
-		char oneLine[MAX_LINE_LENGTH] = {0};
-
-		// Process the whole queue
-		while(queue.getNumberOfItems() != 0)
+		memset(buffer, 0, sizeof(buffer));
+		uint32_t dataSize = sizeof(buffer);
+		while(readLineFromQueue(queue, buffer, dataSize))
 		{
-			memset(oneLine, 0, sizeof(oneLine));
-			int minDataSize = std::min(queue.getNumberOfItems(), sizeof(oneLine));
-			LOG("minDataSize to process: " << minDataSize);
-
-			char recvByte = 0;
-			int i = 0;
-			for (i = 0; i < minDataSize; i++)
-			{
-				queue.pop(recvByte);
-				oneLine[i] = recvByte;
-
-				if ('\n' == recvByte)
-				{
-					processLine(oneLine, i);
-					// Break for cycle
-					break;
-				}
-			}
-
-			LOG("End of line was not found");
-
-			while(i--)
-			{
-				queue.push(oneLine[i]);
-			}
-			// Break upper while cycle
-			break;
+			processLine(buffer, maxDataSize);
+			memset(buffer, 0, sizeof(buffer));
+			dataSize = sizeof(buffer);
 		}
 
 		LOG("numberOfPushes: " << queue.numberOfPushes << std::endl);

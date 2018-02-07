@@ -19,7 +19,6 @@ socket.AF_INET, socket.SOCK_STREAM)
 s.connect(("localhost", 3000))
 
 
-
 class SimpleEcho(WebSocket):
 
    def handleMessage(self):
@@ -47,13 +46,14 @@ clients = []
 class SimpleChat(WebSocket):
 
 	def processData(self, message):
-		#print("received data:" + str(message))
+		print("received data:" + str(message))
 
 		for cmd in commands:
 			if message.startswith(cmd):
 				print("Valid command received");
+
 				if message.startswith(COMMAND_GCODE):
-						gcode_line = message[len(COMMAND_GCODE):-1];
+						#gcode_line = message[len(COMMAND_GCODE):-1].strip() + "\n"
 						print(gcode_line)
 						s.send(gcode_line)
 				self.sendMessage(RESULT_OK);
@@ -67,9 +67,9 @@ class SimpleChat(WebSocket):
 
 	def handleMessage(self):
 		print("Number of clients: {}".format(len(clients)))
-		print(self.data)
+		#print(self.data)
 		x = self.data
-		print("x", x)
+		#print("x", x)
 		self.processData(x)
 		self.data = ""
 
