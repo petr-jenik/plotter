@@ -89,6 +89,7 @@ bool Communication::recvData(uint8_t *data, int *pDataLength)
 
     if (n <= 0)
     {
+    	*pDataLength = 0;
         error("ERROR reading from socket");
         return false;
     }

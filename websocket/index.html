@@ -217,7 +217,7 @@
 
     function onMessage(evt)
     {
-        writeToScreen("response: " + evt.data + '\n');
+        //writeToScreen("response: " + evt.data + '\n');
         parseResponse(evt.data);
     }
 
@@ -231,7 +231,7 @@
 
     function doSend(message)
     {
-        writeToScreen("sent: " + message + '\n'); 
+        //writeToScreen("sent: " + message + '\n'); 
         websocket.send(message);
     }
 

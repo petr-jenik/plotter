@@ -82,7 +82,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="1_reader/network_reader.cpp|1_reader/communication.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|5_GUI|2_parser/sub/src/gui|2_parser/sub/src/main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="1_reader/reader.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|5_GUI|2_parser/sub/src/gui|2_parser/sub/src/main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -172,7 +172,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="1_reader/network_reader.cpp|1_reader/communication.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|5_GUI|2_parser/sub/src/gui|2_parser/sub/src/main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="1_reader/reader.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|5_GUI|2_parser/sub/src/gui|2_parser/sub/src/main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

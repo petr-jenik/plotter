@@ -59,9 +59,8 @@ public:
        endPoint.y = 0;
        endPoint.z = 0;
 
-       stepsPerOneTurn = 1000;
-       gearRatio = 20;
-
+       stepsPerOneTurn = 50;
+       gearRatio = 16;
        directionLeft = true;
 
        this->update();

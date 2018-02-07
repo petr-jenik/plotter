@@ -1,7 +1,14 @@
 import socket
 import time
 
-f = open("cat.gcode", 'r')
+import sys
+
+if (len(sys.argv) > 1):
+	filename = sys.argv[1]	
+else:
+	filename = "cat.gcode"
+
+f = open(filename, 'r')
 
 raw_data = f.read()
 f.close()
@@ -13,11 +20,20 @@ s = socket.socket(
 # - the normal http port
 s.connect(("localhost", 3000))
 
-i = 0;
+i = 0
+numberOfSentBytes = 0
+
 for line in raw_data.split("\n"):
-	print("Line number: {}, data: {}".format(i, line));
-	s.send(line);
-	time.sleep(0.01);
+
+	data = line + '\n'
+	print("Line number: {}, data: {}".format(i, data))
+	numberOfSentBytes += len(data)
+	s.send(data);
+	#response = s.recv(100)
+	#print("Response {}".format(response))
+	#time.sleep(0.05);
 	i += 1
+
 s.close()
+print("numberOfSentBytes: {}".format(numberOfSentBytes))
 	#sock.send(line, 5000);

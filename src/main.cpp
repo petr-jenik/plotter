@@ -45,6 +45,7 @@ void systemInit()
 
 int main(int argc, char** argv)
 {
+//#define NO_GUI
 #ifndef NO_GUI
 	/* Create GUI loop before an initialization of the rest of the system */
 	std::thread thr_GUI				(gui_loop);
