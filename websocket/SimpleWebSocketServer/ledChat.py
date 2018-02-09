@@ -53,7 +53,7 @@ class SimpleChat(WebSocket):
 				print("Valid command received");
 
 				if message.startswith(COMMAND_GCODE):
-						#gcode_line = message[len(COMMAND_GCODE):-1].strip() + "\n"
+						gcode_line = message[len(COMMAND_GCODE):-1].strip() + "\n"
 						print(gcode_line)
 						s.send(gcode_line)
 				self.sendMessage(RESULT_OK);
