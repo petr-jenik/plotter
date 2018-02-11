@@ -27,7 +27,7 @@ void reader_readAndProcessFile(std::string fileName);
 void gui_loop();
 
 // TODO Move next declaration to separate file
-void gui_add_line(const moveCommand& cmd);
+void gui_add_line(const guiCommand& cmd);
 
 //TODO Remove threads (13.10.2017)
 void gui_parseCommand(armCommand inputCmd);

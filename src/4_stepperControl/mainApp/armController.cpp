@@ -65,7 +65,7 @@ void ArmController::OnUpdateAll(armCommand command)
 
 	StepperSetting leftArm =  {command.angle1, true};
 	StepperSetting rightArm = {command.angle2, true};
-	ServoSetting servoSetting = {command.relPosZ, command.extrude };
+	ServoSetting servoSetting = {command.relPosZ, (bool)command.extrudeLength };
 
 	armLeft.OnUpdate(&leftArm);
 	armRight.OnUpdate(&rightArm);

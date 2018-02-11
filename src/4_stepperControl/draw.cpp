@@ -10,6 +10,7 @@
 #include "gui.h"
 
 #include "global.h"
+#include "math_tools.h"
 
 float zoom = 20;
 
@@ -54,10 +55,6 @@ position center(position pos)
     return result;
 }
 
-float toRads(float angle)
-{
-    return (angle * 2 * M_PI)/360;
-}
 
 void drawLine(position _start, position _end)
 {
@@ -95,18 +92,6 @@ void drawLine(int x1, int y1, int x2, int y2)
     drawLine(start, end);
 }
 
-position getCirclePosition(position center, int radius, float angle)
-{
-    float fRadius = (float) radius;
-
-    position pos;
-
-    pos.x = center.x + fRadius * cos(toRads(angle));
-    pos.y = center.y + (fRadius * sin(toRads(angle)));
-    pos.z = 0;
-
-    return pos;
-}
 
 void drawCircle(position center, int radius, int numberOfSteps /* = 20*/)
 {

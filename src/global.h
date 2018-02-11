@@ -41,18 +41,26 @@ typedef struct
 
 typedef struct
 {
-	bool extrude;
+	float extrudeLength;
 	float movementSpeed;
-	position pos1;
-	position pos2;
+	position finalPosition;
 } moveCommand;
+
+typedef struct
+{
+	float extrudeLength;
+	float movementSpeed;
+	position startPosition;
+	position endPosition;
+} guiCommand;
+
 
 typedef struct
 {
 	int32_t stepper1;
 	int32_t stepper2;
 	int32_t stepper3;
-	bool extrude;
+	bool extrudeLength;
 } stepperCommand;
 
 typedef struct
@@ -62,7 +70,7 @@ typedef struct
 	int32_t relPosZ;        // Relative position in Z axe
 	float angle1;
 	float angle2;
-	bool extrude;
+	float extrudeLength;
 } armCommand;
 
 

@@ -27,15 +27,16 @@ std::ostream& operator << (std::ostream& stream, const stepperCommand& cmd)
 
 std::ostream& operator << (std::ostream& stream, const moveCommand& cmd)
 {
-	stream << "From " << cmd.pos1;
-	stream << " to " << cmd.pos2;
+	stream << "Go to: " << cmd.finalPosition;
+	stream << ", extrude: " << cmd.extrudeLength;
+	stream << ", movementSpeed: " << cmd.movementSpeed;
 	return stream;
 }
 
 
 std::ostream& operator << (std::ostream& stream, const armCommand& cmd)
 {
-	stream << "[" << cmd.angle1 << ", " << cmd.angle2 << ", " << cmd.relPosZ << ", " << cmd.extrude << "]";
+	stream << "[" << cmd.angle1 << ", " << cmd.angle2 << ", " << cmd.relPosZ << ", " << cmd.extrudeLength << "]";
 	return stream;
 }
 

@@ -17,8 +17,12 @@
 
 using namespace std;
 
+
+position gCurrentPosition = {0,0,0};
+
 void movementControl_init()
 {
+
 }
 
 
@@ -90,13 +94,13 @@ bool createArmCommand(position C, armCommand& outputCmd)
 #include "draw.h"
 
 // TODO add speed
-void sendArmCommand(position pos, bool extrude)
+void sendArmCommand(position newPosition,float extrudeLength)
 {
 	armCommand armCmd;
 
-	if (createArmCommand(pos, armCmd))
+	if (createArmCommand(newPosition, armCmd))
 	{
-		armCmd.extrude = extrude;
+		armCmd.extrudeLength = extrudeLength;
 		stepper_parseCommand(armCmd);
 		//cmdBuffer.send(armCmd);
 	}
@@ -112,32 +116,29 @@ void demoReceive(moveCommand &cmd);
  *@param[in] cmdBuffer - buffer for new armCommands
  */
 //void _createLine(const moveCommand& cmd, safe_queue<armCommand>& cmdBuffer)
-void movementControl_createLine(const moveCommand& cmd)
+
+void movementControl_createLine(position finalPosition,
+									float extrudeLength,
+									float movementSpeed)
 {
-	// TODO Remove this ugly hack
-	//uglyHack();
-	//return;
+	position startPos = gCurrentPosition;
 
-	//TODO For debug purposes only
-	//gui_add_line(cmd);
-
-	position startPos = cmd.pos1;
-	position endPos = cmd.pos2;
-	float speed = cmd.movementSpeed;
-	bool extrude = cmd.extrude;
+	// TODO remove this - only for me to be able to see a difference between requested and actual position
+	guiCommand cmd = {extrudeLength, movementSpeed, startPos, finalPosition};
+	gui_add_line(cmd);
 
 
 	// get distance between start and end points
-	float distance = getDistance3D(startPos, endPos);
+	float distance = getDistance3D(startPos, finalPosition);
 
 	if (distance == 0)
 	{
 		return;
 	}
 
-	float dx = (endPos.x - startPos.x) / distance;
-	float dy = (endPos.y - startPos.y) / distance;
-	float dz = (endPos.z - startPos.z) / distance;
+	float dx = (finalPosition.x - startPos.x) / (SPEED_MAGICAL_CONSTANT * distance);
+	float dy = (finalPosition.y - startPos.y) / (SPEED_MAGICAL_CONSTANT * distance);
+	float dz = (finalPosition.z - startPos.z) / (SPEED_MAGICAL_CONSTANT * distance);
 
 	// Run next loop at least once
 	//distance = max(distance, speed);
@@ -145,48 +146,44 @@ void movementControl_createLine(const moveCommand& cmd)
 	// A close approximation to a straight line between two points
 	// TODO 13.10.2017 - This loop causes all the troubles!!!!!
 	//std:cout << "speed: " << speed;
-	for (float i = 0; i < distance; i += distance/((int)(SPEED_MAGICAL_CONSTANT*distance)))
+
+	int numberOfSteps = (int)(SPEED_MAGICAL_CONSTANT*distance)+1;
+
+	for (float i = 0; i < numberOfSteps; i++)
 	{
+		//i += distance/((int)(SPEED_MAGICAL_CONSTANT*distance)
 		position currentPos;
 		currentPos.x = startPos.x + dx*i;
 		currentPos.y = startPos.y + dy*i;
 		currentPos.z = startPos.z + dz*i;
-		sendArmCommand(currentPos, extrude);
+		sendArmCommand(currentPos, extrudeLength / numberOfSteps);
+		gCurrentPosition = currentPos;
 	}
 
 	//sendArmCommand(startPos, extrude);
-	sendArmCommand(endPos, extrude);
+	//sendArmCommand(finalPosition, extrudeLength);
+	//gCurrentPosition = finalPosition;
 }
 
-const float ds = 50; // demo size
+void movementControl_createLine(const moveCommand& cmd)
+{
+	movementControl_createLine(cmd.finalPosition, cmd.extrudeLength, cmd.movementSpeed);
+}
 
-position p1 = {-10, 1, 0};
-position p2 = {10, 1, 0};
-position p3 = {ds, ds, 0};
-position p4 = {ds, 0, 0};
 
-position l1 = {-10, -10, 0};
-position l2 = {10, -10, 0};
-position l3 = {10, 10, 0};
-position l4 = {-10, 10, 0};
 
-position center1 = {0, 41, 0};
-position center2 = {0, 40, 0};
+position p1 = {-100, 0, 0};
+position p2 = {100, 0, 0};
+position p3 = {10, 10, 0};
+position p4 = {-10, 10, 0};
 
 moveCommand demoCommands[] =
 {
-	{true, 1, p1, p2},
-	//{true, 1, center1, center1}
-	//{true, 0.00001, l1, l2},
-	//{true, 0.00001, l2, l3},
-	//{true, 0.00001, l3, l4},
-	//{true, 0.00001, l4, l1},
-	//{true, 0.001, l3, l4},
-	//{true, 0.001, l4, l3}
-	//{true, 0.01, l1, l2},
-	//{true, 0.01, l2, l1}
-	/*{true, 0.01, p1, p2},
-	{true, 0.01, p2, p3}
+	{0, 1, p1},
+	{1, 0.01, p2},
+	{1, 0.01, p1},
+	//{true, 0.01, p2, p3},
+	/*
 	{true, 0.01, p3, p4},
 	{true, 0.01, p4, p1},
 	{true, 0.01, p1, p3},
@@ -194,40 +191,78 @@ moveCommand demoCommands[] =
 	{true, 0.01, p1, p2},
 	{false, 0.01, p2, p4},
 	{false, 0.01, p4, p2},
-	{true, 0.01, p2, p1}*/
+	{true, 0.01, p2, p1}
+	*/
 };
 
 const int32_t demoCmdsCount = (sizeof(demoCommands)/sizeof(demoCommands[0]));
+
+moveCommand getSqueatePoints(int idx, float size, position center)
+{
+	idx = (idx < 0)? 0 : idx;
+	idx = (idx > 4)? 4 : idx;
+
+	float speed = 1;
+	float extrudeLength = size;
+
+	moveCommand squareCommands[] =
+	{
+		{0 /*extrudeLength*/, speed, {center.x - size/2, center.y - size/2}},
+		{extrudeLength, speed, {center.x + size/2, center.y - size/2}},
+		{extrudeLength, speed, {center.x + size/2, center.y + size/2}},
+		{extrudeLength, speed, {center.x - size/2, center.y + size/2}},
+		{extrudeLength, speed, {center.x - size/2, center.y - size/2}}
+	};
+
+	return squareCommands[idx];
+}
+
+
+void printRectangle(float size, position center)
+{
+
+	for (int idx = 0; idx < 5; idx++)
+	{
+		moveCommand cmd = getSqueatePoints(idx, size, center);
+		movementControl_createLine(cmd);
+	}
+}
+
+
+void printCircle(float radius, position center)
+{
+	int numberOfSteps = 36;
+	for (int i = 0; i < numberOfSteps + 1; i++)
+	{
+		float angle = (float)(360 * i) / (float)(numberOfSteps);
+		position pos = getCirclePosition(center, radius, angle);
+
+		moveCommand cmd = {(i == 0)?0.0:1.0 /*extrudeLength*/, 1 /*speed*/, pos};
+		movementControl_createLine(cmd);
+	}
+}
+
 
 void demoReceive(moveCommand &cmd)
 {
 	static int32_t index = 0;
 
-	cmd = demoCommands[index];
-	index = (index + 1) % demoCmdsCount;
-}
+	static int32_t Y = 0;
 
-/*
- * This task(loop) controls movement of arms
- *
- * Allows only movement along the straight lines
- */
-/*
-void movementControl_loop(safe_queue<moveCommand> &queueInput, safe_queue<armCommand> &queueOutput)
-{
-	while(1)
+	moveCommand array[2] = { {1,0.01, {-100,Y, 0}}, {1, 0.01, {100, Y, 0}}};
+
+	cmd = array[index];
+
+	index++;
+	if (index > 1)
 	{
-		moveCommand inputData;
-
-		// Movement test
-		queueInput.receive(inputData);
-		//demoReceive(inputData);
-
-		movementControl_createLine(inputData);
-
-		//std::cout << "Thread: " << __FUNCTION__ << ", DATA: " << inputData << std::endl;
+		index= 0;
+		Y--;
 	}
-}*/
+	//index = (index + 1) % demoCmdsCount;
+	//cmd = demoCommands[index];
+	//index = (index + 1) % demoCmdsCount;
+}
 
 
 void uglyHack_setAngle()
@@ -253,7 +288,7 @@ void uglyHack_setAngle()
 	armCmd.angle2 = 180-angle;
 	//armCmd.relativeAngle1 = angleToRelative(angle);
 	//armCmd.relativeAngle2 = angleToRelative(0);
-	armCmd.extrude = true;
+	armCmd.extrudeLength = 1;
 	stepper_parseCommand(armCmd);
 
 	return;
@@ -263,16 +298,36 @@ void uglyHack_setPosition(void)
 {
 	moveCommand cmd;
 	demoReceive(cmd);
-	sendArmCommand(cmd.pos1, cmd.extrude);
-	sendArmCommand(cmd.pos2, cmd.extrude);
+	movementControl_createLine(cmd);
+}
+
+void showDemo()
+{
+
+printRectangle(10, {0, 0, 0});
+
+
+/*
+for (int i = 0; i < 100; i++)
+{
+	printRectangle(2*i, {0,0,0});
+	printCircle(i, { 0, 0, 0});
+}
+*/
+/*
+	printCircle(10, {-100, 100, 0});
+	printCircle(10, {-100, -100, 0});
+	printCircle(10, {100, -100, 0});
+	*/
 }
 
 void debug_loop(void)
 {
 	while(1)
 	{
-		uglyHack_setPosition();
-		auto delay = std::chrono::milliseconds(100);
+		auto delay = std::chrono::milliseconds(1000);
 		std::this_thread::sleep_for(delay);
+		//uglyHack_setPosition();
+		showDemo();
 	}
 }

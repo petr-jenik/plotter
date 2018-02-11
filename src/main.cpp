@@ -58,6 +58,8 @@ int main(int argc, char** argv)
 	std::cout << "Pocet procesoru: " << pocetProcesoru << std::endl;
 	std::vector<std::thread> threadPool;
 
+#define DEBUG_LOOP
+
 #ifdef DEBUG_LOOP
 	std::thread thr_debug_loop			(debug_loop);
 	threadPool.push_back(move(thr_debug_loop));

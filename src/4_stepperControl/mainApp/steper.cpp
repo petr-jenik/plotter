@@ -181,7 +181,7 @@ void PlotterArm::OnUpdate(StepperSetting * pSetting)
         std::cout << "setpointValue: " <<  this->setpointStepperValue << "steps" << std::endl;
         */
         assert(this->setpointStepperValue >= 0);
-        assert(this->setpointStepperValue <= maxSetpointValueInPercent);
+        assert(this->setpointStepperValue <= this->maxStepperValue);
 
         // Enable or disable stepper controller - enable only once
         if (this->enableFlag != pSetting->enable)

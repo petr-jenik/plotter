@@ -16,7 +16,7 @@ path_parser gParser(1);
 
 
 // Forward declarartion
-void moveTo(position start, position end, float movementSpeed, float extrude);
+void moveTo(position end, float movementSpeed, float extrude);
 
 void parser_init(void)
 {
@@ -55,23 +55,11 @@ void boundingBox(position start, position end, float movementSpeed, float extrud
 }
 
 
-void moveTo(position start, position end, float movementSpeed, float extrude)
+void moveTo(position finalPosition, float movementSpeed, float extrudeLength)
 {
-	if (extrude > 0)
-	{
-		//LOG("Print from" << start << "to" << end << ", speed: " << movementSpeed);
-	}
-	else
-	{
-		//LOG("Move from" << start << "to" << end << ", speed: " << movementSpeed << ", extrude:" << extrude);
-	}
-
-	//LOG("extrude: " << extrude);
-
 	moveCommand cmd;
-	cmd.pos1 = start;
-	cmd.pos2 = end;
-	cmd.extrude = (extrude > 0) ? true: false;
+	cmd.finalPosition = finalPosition;
+	cmd.extrudeLength = extrudeLength;
 	cmd.movementSpeed = movementSpeed;
 
 	movementControl_createLine(cmd);

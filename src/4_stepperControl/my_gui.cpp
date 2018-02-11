@@ -48,8 +48,8 @@ void servoSetPosition(bool turnOn, uint32_t channel)
 	gExtrude = turnOn;
 }
 
-std::vector<moveCommand> drawList;
-std::vector<moveCommand> drawListRequired;
+std::vector<guiCommand> drawList;
+std::vector<guiCommand> drawListRequired;
 
 std::mutex drawList_lock;
 std::mutex drawListRequired_lock;
@@ -111,6 +111,10 @@ void drawSteppers()
 		drawLine(B, C);
 		//drawLine(B,C2);
 	}
+	else
+	{
+		LOG("Invalid endpoint: " << C);
+	}
 }
 
 void mouseHandler(int button, int state, int x, int y)
@@ -126,7 +130,7 @@ void mouseHandler(int button, int state, int x, int y)
 	}
 }
 
-void gui_add_line(const moveCommand& cmd)
+void gui_add_line(const guiCommand& cmd)
 {
 	std::lock_guard<std::mutex> hold(drawListRequired_lock);
 	drawListRequired.push_back(cmd);
@@ -156,27 +160,12 @@ void drawAll(void)
 
     	position C = (dist1 > dist2) ? C1 : C2;
 
-        //Gui::glSelectColor(eColor_red);
-        //drawLine(stepperGui1.getEndPoint(), C1);
-        //drawLine(stepperGui2.getEndPoint(), C1);
-        //Gui::glSelectColor(eColor_blue);
-        ///drawLine(stepperGui1.getEndPoint(), C2);
-        //drawLine(stepperGui2.getEndPoint(), C2);
-
-       // Gui::glSelectColor(eColor_blue);
-        //drawCircle(stepperGui1.getEndPoint(), 5);
-
-        //Gui::glSelectColor(eColor_green);
-        //drawCircle(stepperGui2.getEndPoint(), 5);
-
-        //Gui::glSelectColor(eColor_black);
-
         static position currentPos = C;
 
-		moveCommand outCmd;
-		outCmd.extrude = gExtrude;
-		outCmd.pos1 = currentPos;
-		outCmd.pos2 = C;
+		guiCommand outCmd;
+		outCmd.extrudeLength = gExtrude;
+		outCmd.startPosition = currentPos;
+		outCmd.endPosition = C;
 
 #ifndef NO_GUI
 		std::lock_guard<std::mutex> hold(drawList_lock);
@@ -355,17 +344,17 @@ void update(void)
     	std::lock_guard<std::mutex> hold(drawList_lock);
 		for (auto command : drawList)
 		{
-			eColor color = (command.extrude)? eColor_blue : eColor_red;
+			eColor color = (command.extrudeLength > 0)? eColor_blue : eColor_red;
 			Gui::glSelectColor(color);
-			drawLine((command.pos1), (command.pos2));
+			drawLine((command.startPosition), (command.endPosition));
 		}
 
     	std::lock_guard<std::mutex> hold2(drawListRequired_lock);
 		for (auto command : drawListRequired)
 		{
-			eColor color = (command.extrude)? eColor_green : eColor_black;
+			eColor color = (command.extrudeLength)? eColor_green : eColor_black;
 			Gui::glSelectColor(color);
-			drawLine((command.pos1), (command.pos2));
+			drawLine((command.startPosition), (command.endPosition));
 		}
     }
     drawSteppers();

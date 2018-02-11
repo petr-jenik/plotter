@@ -39,7 +39,7 @@ float getDistance3D(position A, position B)
 
 float radsToDegs(float radians)
 {
-	return ((radians * 180) / M_PI);
+    return ((radians * 180) / M_PI);
 	//TODO add modulo 360
 }
 
@@ -179,6 +179,7 @@ float relativeToZAxe(int32_t relative)
 	return zPosition;
 }
 
+/*
 
 int32_t angleToRelative(float angle)
 {
@@ -192,5 +193,17 @@ float relativeToAngle(int32_t relative)
 	float angle = (relative * 180.0) / maxRelativeAngle;
 	//angle -= 90;
 	return angle;
+}
+*/
+
+position getCirclePosition(position center, float radius, float angle)
+{
+    position pos;
+
+    pos.x = center.x + radius * cos(degsToRads(angle));
+    pos.y = center.y + (radius * sin(degsToRads(angle)));
+    pos.z = 0;
+
+    return pos;
 }
 
