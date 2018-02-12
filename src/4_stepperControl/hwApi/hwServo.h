@@ -10,8 +10,8 @@
 
 #define microsecToTimerPulse(X) ((X * 840)/1000)
 
-#define MIN_ANGLE             0
-#define MAX_ANGLE             180 //us
+#define MIN_SERVO_ANGLE             0
+#define MAX_SERVO_ANGLE             180 //us
 
 #define SERVO_PIN                 GPIO_PIN_7
 #define SERVO_PORT                GPIOB

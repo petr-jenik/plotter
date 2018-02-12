@@ -58,7 +58,7 @@ typedef enum
 
 typedef struct
 {
-    int devId;
+    int devId; // ID of an owner of an instance of the Gpio object
     ePinType pin;
 
 } GpioDesc_t;

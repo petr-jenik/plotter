@@ -18,7 +18,6 @@
 using namespace std;
 
 PlotterArm::PlotterArm(sStepperPins pinsDescription, const ArmConfig _armConfig, sSwichPins switchPins)
-//PlotterArm::PlotterArm(sStepperPins pinsDescription, sSwichPins switchPins, float _arm_offset)
 :directionPin(pinsDescription.directionPinDesc),
 stepPin(pinsDescription.stepPinDesc),
 resetPin(pinsDescription.resetPinDesc),
@@ -41,12 +40,6 @@ armAngleOffset(_armConfig.angleOffset)
     this->directionLeft = false;
     this->makeStep = false;
     this->enableFlag = false;
-    //this->pDatabase = _pDatabase;
-    //if(this->database != NULL)
-    //{
-        //this->Id = pDatabase->allocate();
-        //controller.reg(this, eObjectType_stepper);
-    //}
 
     // Initialize all GPIOs
     this->enablePin.powerUp();
@@ -69,19 +62,6 @@ armAngleOffset(_armConfig.angleOffset)
     }
 }
 
-/*
-Stepper::Stepper(IEventHandler &handler, sStepperPins gpios)
-:directionPin(gpios.directionPinDesc),
-stepPin(gpios.stepPinDesc),
-resetPin(gpios.resetPinDesc),
-sleepPin(gpios.sleepPinDesc),
-enablePin(gpios.enablePinDesc),
-switchPin1(undefPin),
-switchPin2(undefPin)
-{
-    this->_init(handler);
-}
-*/
 
 bool PlotterArm::Calibrate(void)
 {
@@ -137,39 +117,11 @@ bool PlotterArm::Calibrate(void)
     return (eState_Done == this->calibrationState);
 }
 
-/*
-void Stepper::OnUpdate(void)
-{
-    StepperSetting * pSetting = pDatabase->getData(this->Id);
-
-    if (pSetting != NULL)
-    {
-        this->setpointValueInPercent = pSetting->value;
-
-        this->setpointValue = this->setpointValueInPercent * this->maxValue / maxSetpointValueInPercent;
-
-        // Enable or disable stepper controller - enable only once
-        if (this->enableFlag != pSetting->enable)
-        {
-            if (true == pSetting->enable)
-            {
-                this->_enable();
-            }
-            else
-            {
-                this->_disable();
-            }
-            this->enableFlag = pSetting->enable;
-        }
-    }
-}
-*/
 
 void PlotterArm::OnUpdate(StepperSetting * pSetting)
 {
     if (pSetting != NULL)
     {
-        //pSetting->value; //setpointValueInPercent
     	float requiredAngle = constrain(pSetting->setpointAngle - this->armAngleOffset, this->minAngle, this->maxAngle);
         this->setpointStepperValue = (int)map(requiredAngle, this->minAngle, this->maxAngle, (float)0, (float)this->maxStepperValue);
 

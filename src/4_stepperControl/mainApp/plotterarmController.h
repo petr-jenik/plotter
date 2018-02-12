@@ -27,7 +27,6 @@ class ArmController
 {
 private:
 	bool bCalibrationFinished;
-    //IDatabase<StepperSetting> & database;
 
     PlotterArm & armLeft;
     PlotterArm & armRight;
@@ -43,11 +42,8 @@ private:
     int GetMaxStepperError(void);
 public:
     ArmController(PlotterArm & _arm_left, PlotterArm & _arm_right, Servo & _servo);
-    //void reg(void * object, eObjectType type);
     void OnUpdateAll(armCommand command);
     void OnMove(void);
-//    void * getDatabase(void);
-    //void calibrate(void);
     void calibrate(bool startNewCalibration);
     bool calibrationFinished();
 };

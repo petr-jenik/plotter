@@ -11,57 +11,22 @@
 
 #include "math_tools.h"
 
-//StepperController::StepperController(IDatabase<sStepperSetting> &database)
-ArmController::ArmController(PlotterArm & _arm_left, PlotterArm & _arm_right, Servo & _servo)
-//ArmController::ArmController(PlotterArm & _stepper_left, PlotterArm & _stepper_right, Servo & _servo)
-:armLeft(_arm_left),
-armRight(_arm_right),
+ArmController::ArmController(PlotterArm & _armLeft, PlotterArm & _armRight, Servo & _servo)
+:armLeft(_armLeft),
+armRight(_armRight),
 servo(_servo),
 armObjectArray({&armLeft, &armRight}),
 servoObjectArray({&servo}),
 bCalibrationFinished(false)
 {
-	//this->stepperObjectArray = {stepper_left, stepper_right};
-	//this->servoObjectArray = {servo};
-
     this->armObjectCount = 2;
     this->servoObjectCount = 1;
 }
 
-/*
-//void StepperController::reg(void *object)
-void StepperController::reg(void * object, eObjectType type)
-{
-    switch(type)
-    {
-    case eObjectType_stepper:
-        this->stepperObjectArray[this->stepperObjectCount] = (Stepper*)object;
-        this->stepperObjectCount++;
-        break;
-
-    case eObjectType_servo:
-        this->servoObjectArray[this->servoObjectCount] = (Servo*)object;
-        this->servoObjectCount++;
-        break;
-
-    default:
-        break;
-    }
-}
-*/
 
 void ArmController::OnUpdateAll(armCommand command)
 {
-	//std::cout << std::endl;
-	//std::cout << __FUNCTION__ << std::endl;
-	//std::cout << command;
-	// Test block
-	//{
-   // 	 float angle1 = command.angle1;
-   // 	 float angle2 = command.angle2;
-    	 //std::cout << "Angle 1: " << angle1 << ", angle 2: " << angle2 << std::endl;
-	//}
-
+	// TODO Unify usage of steppers - use each of them or use an array
 
 	StepperSetting leftArm =  {command.angle1, true};
 	StepperSetting rightArm = {command.angle2, true};
@@ -70,17 +35,6 @@ void ArmController::OnUpdateAll(armCommand command)
 	armLeft.OnUpdate(&leftArm);
 	armRight.OnUpdate(&rightArm);
 	servo.OnUpdate(&servoSetting);
-/*
-    for(int i = 0; i < this->stepperObjectCount; i++)
-    {
-        this->stepperObjectArray[i]->OnUpdate();
-    }
-
-    for(int i = 0; i < this->servoObjectCount; i++)
-    {
-        this->servoObjectArray[i]->OnUpdate();
-    }
-    */
 }
 
 int ArmController::GetMaxStepperError(void)

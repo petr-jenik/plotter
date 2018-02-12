@@ -49,11 +49,11 @@ public:
        rotationCenter.x = x;
        rotationCenter.y = y;
 
-       minAngle = 0;
-       maxAngle = 180;
+       minAngle = MIN_ANGLE;
+       maxAngle = MAX_ANGLE;
 
        stepCount = 0;
-       angle = 30;
+       angle = 0;
 
        endPoint.x = 0;
        endPoint.y = 0;
@@ -91,18 +91,6 @@ public:
         return this->endPoint;
     }
 
-    void _increase(void)
-    {
-        this->stepCount += 1;
-        this->update();
-    }
-
-    void _decrease(void)
-    {
-        this->stepCount -= 1;
-        this->update();
-    }
-
     void setDirection(bool directionLeft)
     {
         this->directionLeft = directionLeft;
@@ -118,12 +106,12 @@ public:
         if (getDirection() == true)
         {
             //Decrease position
-            this->stepCount -= cStepSize;
+            this->stepCount -= STEP_SIZE;
         }
         else
         {
             //Increase position
-            this->stepCount += cStepSize;
+            this->stepCount += STEP_SIZE;
         }
         this->update();
 

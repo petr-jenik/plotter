@@ -14,10 +14,14 @@ enum {eStepperMaxCount = 4};
 
 const int SPEED_MAGICAL_CONSTANT = 10;
 
-const int left_stepper_offset = -45;
-const int right_stepper_offset = +45;
+const int MIN_ANGLE = 0;
+const int MAX_ANGLE = 180;
 
-const int cStepSize = 1;
+
+const int LEFT_ARM_OFFSET = -45;
+const int RIGHT_ARM_OFFSET = +45;
+
+const int STEP_SIZE = 1;
 
 const position pos_S1 = {0, -100, 0};
 const position pos_S2 = {0, -100, 0};

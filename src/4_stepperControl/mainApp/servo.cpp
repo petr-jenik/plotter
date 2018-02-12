@@ -23,12 +23,6 @@ Servo::Servo(int channel)
     this->angle = 0;
     this->channel = (uint32_t)channel;
     this->enableFlag = false;
-    //this->database = (IDatabase<sStepperSetting> * ) controller.getDatabase();
-    //if(this->database != NULL)
-    //{
-        //this->Id = database->allocate();
-        //controller.reg(this, eObjectType_servo);
-    //}
 }
 
 
@@ -40,7 +34,7 @@ void Servo::OnUpdate(ServoSetting * pSetting)
    {
        // Enable or disable servo channel
        this->enableFlag = pSetting->enable;
-       this->angle = pSetting->value * (MAX_ANGLE - MIN_ANGLE) / maxSetpointValueInPercent;
+       //this->angle = pSetting->value * (MAX_SERVO_ANGLE - MIN_SERVO_ANGLE) / maxSetpointValueInPercent;
    }
 }
 
