@@ -25,10 +25,11 @@ using namespace std;
 
 void systemInit()
 {
-	reader_init();
-	parser_init();
-	movementControl_init();
+	// Order of initialisation is important!
 	stepperControl_init();
+	movementControl_init();
+	parser_init();
+	reader_init();
 }
 
 

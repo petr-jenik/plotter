@@ -15,6 +15,8 @@
 
 #include "IDatabase.h"
 
+#include "math_tools.h"
+
 using namespace std;
 
 PlotterArm::PlotterArm(sStepperPins pinsDescription, const ArmConfig _armConfig, sSwichPins switchPins)
@@ -122,8 +124,22 @@ void PlotterArm::OnUpdate(StepperSetting * pSetting)
 {
     if (pSetting != NULL)
     {
-    	float requiredAngle = constrain(pSetting->setpointAngle - this->armAngleOffset, this->minAngle, this->maxAngle);
-        this->setpointStepperValue = (int)map(requiredAngle, this->minAngle, this->maxAngle, (float)0, (float)this->maxStepperValue);
+    	float requiredAngle1 = toPositiveAngle(pSetting->setpointAngle - this->armAngleOffset);
+    	float requiredAngle = constrain(requiredAngle1, this->minAngle, this->maxAngle);
+    	if (requiredAngle1 != requiredAngle)
+    	{
+    		int tmp = 42;
+    	}
+    	//if (requiredAngle - (pSetting->setpointAngle - this->armAngleOffset))
+    	//{
+    		//LOG(requiredAngle - (pSetting->setpointAngle - this->armAngleOffset));
+			//LOG("required angle:" << requiredAngle << ", setting:" << pSetting->setpointAngle - this->armAngleOffset << ", range: " << this->minAngle << ", " << this->maxAngle);
+    		//while(1)
+    		//{
+    		//}
+    	//}
+		float tmp = map(requiredAngle, this->minAngle, this->maxAngle, (float)0, (float)this->maxStepperValue);
+		this->setpointStepperValue = (int)(tmp);
 
         /*
         std::cout << __FUNCTION__ << std::endl;

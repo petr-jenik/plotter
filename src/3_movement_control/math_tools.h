@@ -22,5 +22,6 @@ float relativeToZAxe(int32_t relative);
 
 position getCirclePosition(position center, float radius, float angle);
 
+float toPositiveAngle(float angle);
 
 #endif /* _MATH_TOOLS_H_ */

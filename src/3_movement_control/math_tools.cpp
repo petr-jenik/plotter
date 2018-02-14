@@ -114,29 +114,36 @@ float getAngle(position _A, position _B, position _C)
  *@param[out] positoon inter2
  *@return True if intersection was found, else False
  */
-bool getIntersection(position A, float r1, position B, float r2, position &inter1, position &inter2)
+bool getIntersection(position A,
+                       float r1,
+					   position B,
+					   float r2,
+					   position &inter1,
+					   position &inter2)
 {
     float d = getDistance(A,B);
     if (d > (r1 + r2))
     {
         std::cout << "end points are too far" << std::endl;
+        while(1)
         return false;
     }
-
 
     if (abs(d) < cMinimalDistanceToCenter)
     {
-        //std::cout << "end points are too close" << A << B << std::endl;
+        std::cout << "end points are too close" << A << B << std::endl;
+        while(1)
         return false;
     }
 
-    float  m = (float) ((d +1) / 2.0) + ((pow(r1, 2) - pow(r2, 2)) / ( 2.0 * d ));
+    float  m = (d /2.0) + ((pow(r1, 2) - pow(r2, 2)) / ( 2.0 * d ));
     float v = pow(abs(pow(r1, 2) - pow(m, 2)), 0.5);
 
-    float f_x = (float) A.x + (float)(((float)(B.x - A.x)*m)/d);// + (float)(v/d));
-    float f_y = (float) A.y + (float)(((float)(B.y - A.y)*m)/d);
+    float f_x = A.x + (((B.x - A.x)*m)/d);
+    float f_y = A.y + (((B.y - A.y)*m)/d);
     //+ (float)(v/d));
 
+    /*
     float f_x_1 = f_x;
     float f_y_1 = f_y;
     float f_x_2 = f_x;
@@ -147,13 +154,13 @@ bool getIntersection(position A, float r1, position B, float r2, position &inter
 
     f_x_2 -= (v/d) * (float)(A.y - B.y);
     f_y_2 += (v/d) * (float)(A.x - B.x);
+*/
 
+    inter1.x = f_x + ((v/d) * (A.y - B.y));
+    inter1.y = f_y - ((v/d) * (A.x - B.x));
 
-    inter1.x = f_x_1;
-    inter1.y = f_y_1;
-
-    inter2.x = f_x_2;
-    inter2.y = f_y_2;
+    inter2.x = f_x - ((v/d) * (A.y - B.y));
+    inter2.y = f_y + ((v/d) * (A.x - B.x));
 
     // TODO Fix this
     inter1.z = 0;

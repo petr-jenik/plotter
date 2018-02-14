@@ -42,13 +42,13 @@ public:
     const float minAngle;
     const float maxAngle;
 
-    bool directionLeft; // Movement direction
+    bool directionLeft;        // Movement direction
     //uint32_t setpointValueInPercent; // Desired position in percents - (thousandths of a percent)
     int setpointStepperValue;  // Desired position (steps)
     int actualStepperValue;    // Actual position (steps)
     int maxStepperValue;       // Max value (steps)
-    bool makeStep;      // Get set in updateRegulation - if low, there is no need for moving, if high - move
-    bool enableFlag;    // Enable or disable flag - updates from database
+    bool makeStep;             // Get set in updateRegulation - if low, there is no need for moving, if high - move
+    bool enableFlag;           // Enable or disable flag - updates from database
 
     // HW GPIOs
     Gpio directionPin;

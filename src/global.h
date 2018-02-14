@@ -31,11 +31,20 @@
 	std::cout << os.str();                  \
 	}
 
-typedef struct
+typedef struct position
 {
     float x;
     float y;
     float z;
+    position operator+(const struct position &right)
+    {
+    	return {this->x + right.x, this->y + right.y, this->z + right.z};
+    }
+
+    position operator-(const struct position &right)
+    {
+    	return {this->x - right.x, this->y - right.y, this->z - right.z};
+    }
 } position;
 
 
@@ -77,17 +86,20 @@ typedef struct
 template<typename T> T constrain(const T value, const T minValue, const T maxValue)
 {
 	T result = min(value, maxValue);
-	result = max(value, minValue);
+	result = max(result, minValue);
 	return result;
 }
 
 template<typename T> T map(T x, T in_min, T in_max, T out_min, T out_max)
 {
+ //TODO poradne deleni + polovina jmenovatele
+
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
+//position position::operator+(position lhs, const position &rhs)
 
-std::ostream& operator<< (std::ostream& stream, position pos);
+std::ostream& operator << (std::ostream& stream, position pos);
 std::ostream& operator << (std::ostream& stream, const stepperCommand& cmd);
 std::ostream& operator << (std::ostream& stream, const moveCommand& cmd);
 std::ostream& operator << (std::ostream& stream, const armCommand& cmd);

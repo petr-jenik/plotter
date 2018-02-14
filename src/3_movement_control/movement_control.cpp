@@ -20,12 +20,6 @@ using namespace std;
 
 position gCurrentPosition = {0,0,0};
 
-void movementControl_init()
-{
-
-}
-
-
 /* Creates control command for motor
  *
  * Finds required intersections and sets arms to required positions C
@@ -116,7 +110,7 @@ void demoReceive(moveCommand &cmd);
  *@param[in] cmdBuffer - buffer for new armCommands
  */
 //void _createLine(const moveCommand& cmd, safe_queue<armCommand>& cmdBuffer)
-
+/*
 void movementControl_createLine(position finalPosition,
 									float extrudeLength,
 									float movementSpeed)
@@ -124,8 +118,8 @@ void movementControl_createLine(position finalPosition,
 	position startPos = gCurrentPosition;
 
 	// TODO remove this - only for me to be able to see a difference between requested and actual position
-	guiCommand cmd = {extrudeLength, movementSpeed, startPos, finalPosition};
-	gui_add_line(cmd);
+	//guiCommand cmd = {extrudeLength, movementSpeed, startPos, finalPosition};
+	//gui_add_line(cmd);
 
 
 	// get distance between start and end points
@@ -157,13 +151,71 @@ void movementControl_createLine(position finalPosition,
 		currentPos.y = startPos.y + dy*i;
 		currentPos.z = startPos.z + dz*i;
 		sendArmCommand(currentPos, extrudeLength / numberOfSteps);
+
+		// TODO remove this - only for me to be able to see a difference between requested and actual position
+		guiCommand cmd = {extrudeLength / numberOfSteps, movementSpeed, gCurrentPosition, currentPos};
+		gui_add_line(cmd, eColor_green);
+
 		gCurrentPosition = currentPos;
 	}
 
-	//sendArmCommand(startPos, extrude);
-	//sendArmCommand(finalPosition, extrudeLength);
-	//gCurrentPosition = finalPosition;
+	LOG("diff: " << gCurrentPosition - finalPosition);
 }
+*/
+void movementControl_createLine(position finalPosition,
+									float extrudeLength,
+									float movementSpeed)
+{
+	position startPos = gCurrentPosition;
+
+	guiCommand cmd = {extrudeLength, movementSpeed, startPos, finalPosition};
+	gui_add_line(cmd, eColor_black);
+
+	// get distance between start and end points
+	float distance = getDistance3D(startPos, finalPosition);
+
+	if (distance == 0)
+	{
+		LOG("distance = 0");
+		return;
+	}
+
+	#define deltaX (finalPosition.x - startPos.x)
+	#define deltaY	(finalPosition.y - startPos.y)
+	#define deltaZ	(finalPosition.z - startPos.z)
+
+	// A close approximation to a straight line between two points
+	// TODO 13.10.2017 - This loop causes all the troubles!!!!!
+
+	int numberOfSteps = (int)(SPEED_MAGICAL_CONSTANT*distance);
+
+	// Do next loop at least once.
+	if (0 == numberOfSteps)
+	{
+		numberOfSteps = 1;
+	}
+
+	LOG("numberOfSteps: " << numberOfSteps);
+
+	for (float i = 0; i < numberOfSteps+1; i++)
+	{
+		position currentPos;
+		currentPos.x = startPos.x + (deltaX * i)/numberOfSteps;
+		currentPos.y = startPos.y + (deltaY * i)/numberOfSteps;
+		currentPos.z = startPos.z + (deltaZ * i)/numberOfSteps;
+
+		sendArmCommand(currentPos, extrudeLength / numberOfSteps);
+
+		// TODO remove this - only for me to be able to see a difference between requested and actual position
+		guiCommand cmd = {extrudeLength / numberOfSteps, movementSpeed, gCurrentPosition, currentPos};
+		gui_add_line(cmd, eColor_green);
+
+		gCurrentPosition = currentPos;
+	}
+
+	LOG("diff: " << gCurrentPosition - finalPosition);
+}
+
 
 void movementControl_createLine(const moveCommand& cmd)
 {
@@ -217,6 +269,14 @@ moveCommand getSqueatePoints(int idx, float size, position center)
 	return squareCommands[idx];
 }
 
+
+void printLine(position startPos, position endPos)
+{
+	moveCommand cmd = {0, 1 , startPos};
+	movementControl_createLine(cmd);
+    cmd = {1, 1 , endPos};
+	movementControl_createLine(cmd);
+}
 
 void printRectangle(float size, position center)
 {
@@ -304,16 +364,15 @@ void uglyHack_setPosition(void)
 void showDemo()
 {
 
-printRectangle(10, {0, 0, 0});
+//printRectangle(10, {0, 0, 0});
 
-
-/*
-for (int i = 0; i < 100; i++)
+for (int i = -50; i < 100; i += 2)
 {
-	printRectangle(2*i, {0,0,0});
-	printCircle(i, { 0, 0, 0});
+	//printRectangle(2*i, {0,0,0});
+	printLine({-150, i, 0}, {150, i, 0});
+	//printCircle(i, { 0, 0, 0});
 }
-*/
+
 /*
 	printCircle(10, {-100, 100, 0});
 	printCircle(10, {-100, -100, 0});
@@ -330,4 +389,11 @@ void debug_loop(void)
 		//uglyHack_setPosition();
 		showDemo();
 	}
+}
+
+
+void movementControl_init()
+{
+	// Go to position {0, 0, 0}
+	sendArmCommand({0, 0, 0}, 0);
 }

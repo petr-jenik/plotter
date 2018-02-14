@@ -16,7 +16,7 @@
 #include "blocking_queue.h"
 
 #include "global.h"
-//#include "gui_types.h"
+#include "gui.h"
 
 //void parser_loop(safe_queue<std::string> &queueInput);//, safe_queue<moveCommand> &queueOutput);
 //void reader_loop(safe_queue<std::string> &queueOutput);
@@ -27,7 +27,9 @@ void reader_readAndProcessFile(std::string fileName);
 void gui_loop();
 
 // TODO Move next declaration to separate file
-void gui_add_line(const guiCommand& cmd);
+
+void gui_add_line(const guiCommand& cmd, eColor color);
+//void gui_add_line(const guiCommand& cmd);
 
 //TODO Remove threads (13.10.2017)
 void gui_parseCommand(armCommand inputCmd);

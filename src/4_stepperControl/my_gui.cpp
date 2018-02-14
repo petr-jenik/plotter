@@ -48,8 +48,14 @@ void servoSetPosition(bool turnOn, uint32_t channel)
 	gExtrude = turnOn;
 }
 
+struct guiCommandColor
+{
+	guiCommand cmd;
+	eColor color;
+};
+
 std::vector<guiCommand> drawList;
-std::vector<guiCommand> drawListRequired;
+std::vector<struct guiCommandColor> drawListRequired;
 
 std::mutex drawList_lock;
 std::mutex drawListRequired_lock;
@@ -129,10 +135,10 @@ void mouseHandler(int button, int state, int x, int y)
 	}
 }
 
-void gui_add_line(const guiCommand& cmd)
+void gui_add_line(const guiCommand& cmd, eColor color)
 {
 	std::lock_guard<std::mutex> hold(drawListRequired_lock);
-	drawListRequired.push_back(cmd);
+	drawListRequired.push_back({cmd, color});
 }
 
 
@@ -349,11 +355,11 @@ void update(void)
 		}
 
     	std::lock_guard<std::mutex> hold2(drawListRequired_lock);
-		for (auto command : drawListRequired)
+		for (auto item : drawListRequired)
 		{
-			eColor color = (command.extrudeLength)? eColor_green : eColor_black;
+			eColor color = (item.cmd.extrudeLength)? item.color : eColor_black;
 			Gui::glSelectColor(color);
-			drawLine((command.startPosition), (command.endPosition));
+			drawLine((item.cmd.startPosition), (item.cmd.endPosition));
 		}
     }
     drawSteppers();
