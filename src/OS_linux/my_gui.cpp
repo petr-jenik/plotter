@@ -130,7 +130,7 @@ void mouseHandler(int button, int state, int x, int y)
     cout << "y: " << y << endl;
     if((button == 0) && (state == 1))
     {
-        position clickPosition = {x, y};
+        position clickPosition = {x, y, 0};
         setCenterPoint(clickPosition);
 	}
 }

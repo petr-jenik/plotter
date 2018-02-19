@@ -59,7 +59,7 @@ public:
        endPoint.y = 0;
        endPoint.z = 0;
 
-       stepsPerOneTurn = 100;
+       stepsPerOneTurn = 500;
        gearRatio = 50;
        directionLeft = true;
 

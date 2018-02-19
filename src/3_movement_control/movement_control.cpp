@@ -100,76 +100,15 @@ void sendArmCommand(position newPosition,float extrudeLength)
 	}
 }
 
-// TODO remove this
-void demoReceive(moveCommand &cmd);
 
-/*
- * Move along a line according to movement command
- *
- *@param[in] moveCommand cmd - start position, end position, defined speed, extruder state
- *@param[in] cmdBuffer - buffer for new armCommands
- */
-//void _createLine(const moveCommand& cmd, safe_queue<armCommand>& cmdBuffer)
-/*
 void movementControl_createLine(position finalPosition,
 									float extrudeLength,
 									float movementSpeed)
 {
 	position startPos = gCurrentPosition;
 
-	// TODO remove this - only for me to be able to see a difference between requested and actual position
 	//guiCommand cmd = {extrudeLength, movementSpeed, startPos, finalPosition};
-	//gui_add_line(cmd);
-
-
-	// get distance between start and end points
-	float distance = getDistance3D(startPos, finalPosition);
-
-	if (distance == 0)
-	{
-		return;
-	}
-
-	float dx = (finalPosition.x - startPos.x) / (SPEED_MAGICAL_CONSTANT * distance);
-	float dy = (finalPosition.y - startPos.y) / (SPEED_MAGICAL_CONSTANT * distance);
-	float dz = (finalPosition.z - startPos.z) / (SPEED_MAGICAL_CONSTANT * distance);
-
-	// Run next loop at least once
-	//distance = max(distance, speed);
-
-	// A close approximation to a straight line between two points
-	// TODO 13.10.2017 - This loop causes all the troubles!!!!!
-	//std:cout << "speed: " << speed;
-
-	int numberOfSteps = (int)(SPEED_MAGICAL_CONSTANT*distance)+1;
-
-	for (float i = 0; i < numberOfSteps; i++)
-	{
-		//i += distance/((int)(SPEED_MAGICAL_CONSTANT*distance)
-		position currentPos;
-		currentPos.x = startPos.x + dx*i;
-		currentPos.y = startPos.y + dy*i;
-		currentPos.z = startPos.z + dz*i;
-		sendArmCommand(currentPos, extrudeLength / numberOfSteps);
-
-		// TODO remove this - only for me to be able to see a difference between requested and actual position
-		guiCommand cmd = {extrudeLength / numberOfSteps, movementSpeed, gCurrentPosition, currentPos};
-		gui_add_line(cmd, eColor_green);
-
-		gCurrentPosition = currentPos;
-	}
-
-	LOG("diff: " << gCurrentPosition - finalPosition);
-}
-*/
-void movementControl_createLine(position finalPosition,
-									float extrudeLength,
-									float movementSpeed)
-{
-	position startPos = gCurrentPosition;
-
-	guiCommand cmd = {extrudeLength, movementSpeed, startPos, finalPosition};
-	gui_add_line(cmd, eColor_black);
+	//gui_add_line(cmd, eColor_black);
 
 	// get distance between start and end points
 	float distance = getDistance3D(startPos, finalPosition);
@@ -207,8 +146,8 @@ void movementControl_createLine(position finalPosition,
 		sendArmCommand(currentPos, extrudeLength / numberOfSteps);
 
 		// TODO remove this - only for me to be able to see a difference between requested and actual position
-		guiCommand cmd = {extrudeLength / numberOfSteps, movementSpeed, gCurrentPosition, currentPos};
-		gui_add_line(cmd, eColor_green);
+		//guiCommand cmd = {extrudeLength / numberOfSteps, movementSpeed, gCurrentPosition, currentPos};
+		//gui_add_line(cmd, eColor_green);
 
 		gCurrentPosition = currentPos;
 	}
@@ -366,10 +305,10 @@ void showDemo()
 
 //printRectangle(10, {0, 0, 0});
 
-for (int i = -50; i < 100; i += 2)
+for (int i = 0; i < 10; i += 2)
 {
-	//printRectangle(2*i, {0,0,0});
-	printLine({-150, i, 0}, {150, i, 0});
+	printRectangle(2*i, {0,0,0});
+	//printLine({-150, i, 0}, {150, i, 0});
 	//printCircle(i, { 0, 0, 0});
 }
 
@@ -382,13 +321,10 @@ for (int i = -50; i < 100; i += 2)
 
 void debug_loop(void)
 {
-	while(1)
-	{
-		auto delay = std::chrono::milliseconds(1000);
-		std::this_thread::sleep_for(delay);
-		//uglyHack_setPosition();
-		showDemo();
-	}
+	//auto delay = std::chrono::milliseconds(1000);
+	//std::this_thread::sleep_for(delay);
+	//uglyHack_setPosition();
+	showDemo();
 }
 
 

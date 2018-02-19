@@ -7,18 +7,8 @@
 //============================================================================
 
 #include <iostream>
-//#include "log.h"
 #include <thread>
-//#include <mutex>
-//#include <condition_variable>
-//#include <future>
-//#include <chrono>
-//#include <atomic>
 #include <vector>
-//#include <deque>
-
-//#include "blocking_queue.h"
-
 #include "app_threads.h"
 
 using namespace std;
@@ -46,41 +36,28 @@ void systemInit()
 
 int main(int argc, char** argv)
 {
-//#define NO_GUI
-#ifndef NO_GUI
+	unsigned int pocetProcesoru = std::thread::hardware_concurrency();
+	std::cout << "Pocet procesoru: " << pocetProcesoru << std::endl;
+
 	/* Create GUI loop before an initialization of the rest of the system */
-	std::thread thr_GUI				(gui_loop);
-#endif // #ifdef NO_GUI
+	//std::thread thread_GUI(gui_loop);
 
 	/* App init */
 	systemInit();
 
-	unsigned int pocetProcesoru = std::thread::hardware_concurrency();
-	std::cout << "Pocet procesoru: " << pocetProcesoru << std::endl;
-	std::vector<std::thread> threadPool;
-
 #define DEBUG_LOOP
 
+	/* Start main app */
 #ifdef DEBUG_LOOP
-	std::thread thr_debug_loop			(debug_loop);
-	threadPool.push_back(move(thr_debug_loop));
+	debug_loop();
 #else
-
 	std::string fileName = "sample.gcode";
-
-	std::thread thr_mainProcess			(reader_readAndProcessFile,			std::ref(fileName));
-	threadPool.push_back(move(thr_mainProcess));
+	reader_readAndProcessFile(fileName);
 #endif // #ifdef DEBUG_LOOP
 
-#ifndef NO_GUI
-	threadPool.push_back(move(thr_GUI));
-#endif // NO_GUI
-	std::cout << "Main task..." << std::endl;
+	exit(0);
 
-	for (auto it = threadPool.begin(); it != threadPool.end(); it++)
-	{
-		(*it).join();
-	}
+	//thread_GUI.join();
 
 	std::cout << "PROGRAM END" << std::endl;
 
