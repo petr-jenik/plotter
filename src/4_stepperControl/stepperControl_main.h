@@ -10,8 +10,6 @@
 
 #include "global.h"
 
-int mainApp(void);
-
 void stepper_init();
 void stepper_parseCommand(armCommand newCommand);
 
