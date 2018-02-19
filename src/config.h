@@ -12,7 +12,7 @@
 
 enum {eStepperMaxCount = 4};
 
-const int SPEED_MAGICAL_CONSTANT = 10;
+const int SPEED_MAGICAL_CONSTANT = 50;
 
 const int MIN_ANGLE = 0;
 const int MAX_ANGLE = 180;

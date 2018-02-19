@@ -11,8 +11,6 @@
 #include <iostream>
 #include <stdint.h>
 #include <cmath>
-//#include "database.h"
-//#include "myGlobal.h"
 
 #include "app_threads.h"
 

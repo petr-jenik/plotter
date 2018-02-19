@@ -12,8 +12,9 @@
  *      Author: apollo
  */
 
-#include <plotterarm.h>
-#include <plotterarmController.h>
+#include <armController.h>
+#include <plotterArm.h>
+#include <stepperControl_main.h>
 #include <iostream>
 
 #include "app_threads.h"
@@ -25,10 +26,7 @@
 #include "stepperSim.h"
 #include "math_tools.h"
 #include "global.h"
-#include "stepperControl.h"
 #include "math_tools.h"
-#include "myGlobal.h"
-#include "database.h"
 #include "hwStepperPins.h"
 #include "hwServo.h"
 #include "servo.h"

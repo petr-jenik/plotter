@@ -5,6 +5,7 @@
  *      Author: apollo
  */
 
+#include <stepperControl_main.h>
 #include "app_threads.h"
 #include "math_tools.h"
 
@@ -12,7 +13,6 @@
 
 #include <iostream>
 
-#include "stepperControl.h"
 #include "stepperConfig.h"
 
 using namespace std;
@@ -305,7 +305,7 @@ void showDemo()
 
 //printRectangle(10, {0, 0, 0});
 
-for (int i = 0; i < 10; i += 2)
+for (int i = 0; i < 100; i += 5)
 {
 	printRectangle(2*i, {0,0,0});
 	//printLine({-150, i, 0}, {150, i, 0});

@@ -5,13 +5,13 @@
  *      Author: apollo
  */
 
-#include <plotterarmController.h>
+#include "armController.h"
 #include "myGlobal.h"
 
-#include "database.h"
 #include "hwStepperPins.h"
 #include "servo.h"
 #include "Timer.h"
+#include "config.h"
 
 #include "global.h"
 

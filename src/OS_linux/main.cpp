@@ -40,7 +40,7 @@ int main(int argc, char** argv)
 	std::cout << "Pocet procesoru: " << pocetProcesoru << std::endl;
 
 	/* Create GUI loop before an initialization of the rest of the system */
-	//std::thread thread_GUI(gui_loop);
+	std::thread thread_GUI(gui_loop);
 
 	/* App init */
 	systemInit();
@@ -55,9 +55,7 @@ int main(int argc, char** argv)
 	reader_readAndProcessFile(fileName);
 #endif // #ifdef DEBUG_LOOP
 
-	exit(0);
-
-	//thread_GUI.join();
+	thread_GUI.join();
 
 	std::cout << "PROGRAM END" << std::endl;
 

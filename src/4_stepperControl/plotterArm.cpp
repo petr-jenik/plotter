@@ -5,15 +5,13 @@
  *      Author: apollo
  */
 
-#include <plotterarm.h>
+#include "plotterArm.h"
 #include "hwStepperPins.h"
 #include "Timer.h"
 #include "calibration.h"
 
 #include "stepperConfig.h"
 #include "config.h"
-
-#include "IDatabase.h"
 
 #include "math_tools.h"
 

@@ -15,8 +15,6 @@
 
 #include "calibration.h"
 
-//#include "IDatabase.h"
-
 //HW dependent includes
 #include "hwGpio.h"
 
@@ -26,9 +24,6 @@ class PlotterArm
 {
 //private:
 public:
-    //IDatabase<StepperSetting> * pDatabase;
-    //int Id;
-
 	const int stepSize = 1;
 
     //Stepper setting
@@ -48,7 +43,7 @@ public:
     int actualStepperValue;    // Actual position (steps)
     int maxStepperValue;       // Max value (steps)
     bool makeStep;             // Get set in updateRegulation - if low, there is no need for moving, if high - move
-    bool enableFlag;           // Enable or disable flag - updates from database
+    bool enableFlag;           // Enable or disable flag
 
     // HW GPIOs
     Gpio directionPin;

@@ -8,8 +8,7 @@
 #ifndef STEPPERCONTROLLER_H_
 #define STEPPERCONTROLLER_H_
 
-//#include "IDatabase.h"
-#include <plotterarm.h>
+#include <plotterArm.h>
 #include "stepperConfig.h"
 #include "servo.h"
 #include "global.h"

@@ -9,7 +9,6 @@
 #define SERVO_H_
 
 #include "myGlobal.h"
-#include "IDatabase.h"
 #include "stepperConfig.h"
 
 using namespace std;
@@ -18,8 +17,8 @@ class Servo
 {
 private:
     // Flags
-    uint32_t angle;                       // Desired angle
-    bool enableFlag;                 // Enable or disable flag - updates from database
+    uint32_t angle;                 // Desired angle
+    bool enableFlag;                // Enable or disable flag
 
     // Servo channel
     uint32_t channel;

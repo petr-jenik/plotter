@@ -28,8 +28,6 @@ Servo::Servo(int channel)
 
 void Servo::OnUpdate(ServoSetting * pSetting)
 {
-  //StepperSetting * setting = database->getData(this->Id);/
-
    if (pSetting != NULL)
    {
        // Enable or disable servo channel

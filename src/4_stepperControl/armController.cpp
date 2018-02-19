@@ -5,7 +5,7 @@
  *      Author: apollo
  */
 
-#include <plotterarmController.h>
+#include <armController.h>
 #include "Timer.h"
 #include "global.h"
 
@@ -83,12 +83,6 @@ void ArmController::OnMove(void)
         Timer::sleep(10); //Sleep in ms
     }
 }
-
-/*
-void * StepperController::getDatabase(void)
-{
-    return (void*)&this->database;
-}*/
 
 bool ArmController::calibrationFinished()
 {
