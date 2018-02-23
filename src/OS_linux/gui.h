@@ -52,6 +52,9 @@ public:
     static void flush(void);
     static void forceRedraw(void);
     static void guiMainLoop(void);
-};
 
+    static void drawLinesStart();
+    static void drawLines(position pos);
+    static void drawLinesEnd();
+};
 #endif /* GUI_H_ */

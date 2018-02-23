@@ -163,12 +163,20 @@ void drawAll(void)
 
     	position C = (dist1 > dist2) ? C1 : C2;
 
-        static position currentPos = C;
+    	static position tmpC = C;
+    	static position currentPos = C;
+
+    	float k = 1;
+
+    	tmpC.x = k * C.x + (1 - k) * tmpC.x;
+    	tmpC.y = k * C.y + (1 - k) * tmpC.y;
+    	tmpC.z = k * C.z + (1 - k) * tmpC.z;
+
 
 		guiCommand outCmd;
 		outCmd.extrudeLength = gExtrude;
 		outCmd.startPosition = currentPos;
-		outCmd.endPosition = C;
+		outCmd.endPosition = tmpC;
 
 #ifndef NO_GUI
 		std::lock_guard<std::mutex> hold(drawList_lock);
@@ -176,7 +184,7 @@ void drawAll(void)
 #else
 		std::cout << "Head position: " << C << std::endl;
 #endif //#ifndef NO_GUI
-		currentPos = C;
+		currentPos = tmpC;
 
 		// Clear draw list for new layer
 		//TODO Remove this 13.10.2017
@@ -344,21 +352,32 @@ void update(void)
 
     if (1)
     {
+    	Gui::drawLinesStart();
     	std::lock_guard<std::mutex> hold(drawList_lock);
 		for (auto command : drawList)
 		{
 			eColor color = (command.extrudeLength > 0)? eColor_blue : eColor_red;
-			Gui::glSelectColor(color);
-			drawLine((command.startPosition), (command.endPosition));
-		}
+			//Gui::glSelectColor(color);
+			Gui::glSelectColor(eColor_green);
+			Gui::drawLines(center(command.startPosition));
+			Gui::glSelectColor(eColor_red);
+			Gui::drawLines(center(command.endPosition));
+			//drawLine((command.startPosition), (command.endPosition));
 
+		}
+    	Gui::drawLinesEnd();
+
+    	Gui::drawLinesStart();
     	std::lock_guard<std::mutex> hold2(drawListRequired_lock);
 		for (auto item : drawListRequired)
 		{
 			eColor color = (item.cmd.extrudeLength)? item.color : eColor_black;
 			Gui::glSelectColor(color);
-			drawLine((item.cmd.startPosition), (item.cmd.endPosition));
+			//Gui::drawLines(center(command.startPosition));
+			Gui::drawLines(center(item.cmd.endPosition));
+			//drawLine((item.cmd.startPosition), (item.cmd.endPosition));
 		}
+    	Gui::drawLinesEnd();
     }
     drawSteppers();
 

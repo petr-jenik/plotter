@@ -43,6 +43,26 @@ void Gui::drawLine(position start, position end)
     glEnd();
 }
 
+
+void Gui::drawLinesStart()
+{
+    glLineWidth(1);
+    glBegin(GL_LINES);
+}
+
+void Gui::drawLinesEnd()
+{
+    glEnd();
+}
+
+
+void Gui::drawLines(position pos)
+{
+    glVertex2f(pos.x /  Gui::windowSize.x, 1 - (pos.y / Gui::windowSize.y));
+}
+
+
+
 void Gui::glSelectColor(eColor color)
 {
     switch(color)

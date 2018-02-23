@@ -23,4 +23,6 @@ void drawLine(int x1, int y1, int x2, int y2);
 //position getCirclePosition(position center, int radius, float angle);
 void drawCircle(position center, int radius, int numberOfSteps = 20);
 
+position center(position pos);
+
 #endif // DRAW_H_
