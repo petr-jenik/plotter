@@ -13,7 +13,7 @@
 
 #include <algorithm>
 
-#include "app_threads.h"
+#include "reader_main.h"
 #include "communication.h"
 #include "queue.h"
 
@@ -25,55 +25,6 @@ void reader_init(void)
 }
 
 #define MAX_LINE_LENGTH 512
-/*
-void reader_readAndProcessFile(std::string fileName)
-{
-	DBG("Start server and listen for data" << std::endl);
-
-	//std::cout << "Input file opened" << std::endl;
-
-	while(comm.listen())
-	{
-		char tmpBuffer[MAX_LINE_LENGTH] = {0};
-		int lineNumber = 0;
-
-
-		int maxDataSize = std::min(getFreeSpaceSize(), sizeof(tmpBuffer));
-
-		// New client connected
-		while(comm.recvData((uint8_t*)tmpBuffer, &maxDataSize))
-		{
-			for (int i = 0; i < maxDataSize; i++)
-			{
-				push(tmpBuffer[i]);
-			}
-			memset(tmpBuffer, 0, sizeof(tmpBuffer));
-
-			char oneLine[MAX_LINE_LENGTH] = {0};
-			char byte;
-			uint32_t idx = 0;
-
-			while((idx < MAX_LINE_LENGTH) &&
-					pop(oneLine[idx++]) &&
-					oneLine[idx] != '\n'){};
-
-			std::string line;
-			line.assign(oneLine, idx);
-			parser_update(line);
-
-			LOG("Line number: " << lineNumber++ << ", data: " << line);
-
-			maxDataSize = std::min(getFreeSpaceSize(), sizeof(tmpBuffer));
-		}
-	}
-	std::cout << "END OF COMMUNICATION" << std::endl;
-}
-*/
-
-void _delay(volatile uint32_t cycles)
-{
-	while(cycles--){};
-}
 
 uint32_t lineNumber = 0;
 
@@ -181,10 +132,8 @@ void serveClient()
 			dataSize = sizeof(buffer);
 		}
 
-		LOG("numberOfPushes: " << queue.numberOfPushes << std::endl);
-		LOG("numberOfPops: " << queue.numberOfPops << std::endl);
-
-		_delay(1<< 16);
+		LOG("numberOfPushes: " << queue.numberOfPushes);
+		LOG("numberOfPops: " << queue.numberOfPops);
 
 		//parser_update(line);
 

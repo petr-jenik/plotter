@@ -44,14 +44,6 @@ struct transitionItem
     struct transitionResponse outputFor1;
 };
 
-/*
-class CalibrationFSM
-{
-public:
-    static eState transitionFunction(eState state, eStepperPosition position, eStepperCmd * output);
-};
-
-*/
-
 eState transitionFunction(eState state, eStepperPosition position, eStepperCmd * output);
+
 #endif /* APP_CALIBRATION_H_ */

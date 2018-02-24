@@ -5,31 +5,28 @@
  *      Author: apollo
  */
 
-#include "plotterArm.h"
-#include "hwStepperPins.h"
-#include "Timer.h"
-#include "calibration.h"
-
-#include "stepperConfig.h"
-#include "config.h"
-
 #include "math_tools.h"
 
-using namespace std;
+//#include "stepperConfig.h"
+#include "config.h"
+#include "calibration.h"
+#include "Timer.h"
 
-PlotterArm::PlotterArm(sStepperPins pinsDescription, const ArmConfig _armConfig, sSwichPins switchPins)
-:directionPin(pinsDescription.directionPinDesc),
-stepPin(pinsDescription.stepPinDesc),
-resetPin(pinsDescription.resetPinDesc),
-sleepPin(pinsDescription.sleepPinDesc),
-enablePin(pinsDescription.enablePinDesc),
-switchPin1(switchPins.limitSwitch1),
-switchPin2(switchPins.limitSwitch2),
-maxAngle(_armConfig.angleMax),
-minAngle(_armConfig.angleMin),
-armAngleOffset(_armConfig.angleOffset)
+#include "hwStepperPins.h"
+#include "plotterArm.h"
+
+PlotterArm::PlotterArm(sStepperPins stepperPinsDescription, const ArmConfig _armConfig, sSwichPins switchPinsDescription)
+:directionPin(stepperPinsDescription.directionPinDesc),
+  stepPin(stepperPinsDescription.stepPinDesc),
+  resetPin(stepperPinsDescription.resetPinDesc),
+  sleepPin(stepperPinsDescription.sleepPinDesc),
+  enablePin(stepperPinsDescription.enablePinDesc),
+  switchPin1(switchPinsDescription.limitSwitch1),
+  switchPin2(switchPinsDescription.limitSwitch2),
+  maxAngle(_armConfig.angleMax),
+  minAngle(_armConfig.angleMin),
+  armAngleOffset(_armConfig.angleOffset)
 {
-
     this->actualStepperValue = 0;
     this->maxStepperValue = 0;
     this->setpointStepperValue = 0;
@@ -76,9 +73,8 @@ bool PlotterArm::Calibrate(void)
     this->calibrationState = transitionFunction(this->calibrationState,
                                                 this->_getPosition(),
                                                 &command);
-#ifdef SERIAL_DEBUG
-    serialPrintf("Stepper %d, calibration state: %d\n", Id, calibrationState);
-#endif //SERIAL_DEBUG
+
+    LOG("Calibration state:" <<  calibrationState);
 
     switch(calibrationState)
     {
@@ -262,9 +258,8 @@ void PlotterArm::_sleep(bool state)
 eStepperPosition PlotterArm::_getPosition(void)
 {
     eStepperPosition position = eStepperPosition_Undef;
-#ifdef SERIAL_DEBUG
-    serialPrintf("Stepper %d, SW1: %d\tSW2: %d\n", switchPin1.isOn(), switchPin2.isOn());
-#endif //SERIAL_DEBUG
+
+    LOG("SW1: " << switchPin1.isOn() << ", SW2:" << switchPin2.isOn());
 
     bool status = switchPin1.isOn();
     status |= switchPin2.isOn();

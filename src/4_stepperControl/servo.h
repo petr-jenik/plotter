@@ -8,10 +8,8 @@
 #ifndef SERVO_H_
 #define SERVO_H_
 
-#include "myGlobal.h"
+#include "global.h"
 #include "stepperConfig.h"
-
-using namespace std;
 
 class Servo
 {

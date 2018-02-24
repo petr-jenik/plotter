@@ -5,27 +5,24 @@
  *      Author: apollo
  */
 
+#include "global.h"
+
 #include "armController.h"
-#include "myGlobal.h"
 
 #include "hwStepperPins.h"
 #include "servo.h"
 #include "Timer.h"
 #include "config.h"
 
-#include "global.h"
-
-#include "app_threads.h"
-
-using namespace std;
+#include "stepperControl_main.h"
 
 //Communication communication;
 
 const ArmConfig armConfigLeft = {MIN_ANGLE, MAX_ANGLE, LEFT_ARM_OFFSET};
 const ArmConfig armConfigRight = {MIN_ANGLE, MAX_ANGLE, RIGHT_ARM_OFFSET};
 
-PlotterArm stepperLeft(getStepperPins(0), armConfigLeft, getSwitchPins(0));
-PlotterArm stepperRight(getStepperPins(1), armConfigRight, getSwitchPins(1));
+PlotterArm stepperLeft(getStepperPins(0), armConfigLeft, getLimitSwitchPins(0));
+PlotterArm stepperRight(getStepperPins(1), armConfigRight, getLimitSwitchPins(1));
 Servo servo(1);
 
 ArmController stepperController(stepperLeft, stepperRight, servo);
@@ -71,7 +68,7 @@ bool getNewPosition(armCommand newCommand, position &newPosition)
 	}
 }
 
-void stepper_parseCommand(armCommand newCommand)
+void stepperControl_parseCommand(armCommand newCommand)
 {
 	// TODO remove this - only for me to be able to see a difference between requested and actual position
 
@@ -80,13 +77,8 @@ void stepper_parseCommand(armCommand newCommand)
 
 	if(getNewPosition(newCommand, newPosition))
 	{
-		guiCommand cmd = {newCommand.extrudeLength,
-						  1/*movementSpeed*/,
-						  currentPosition,
-				          newPosition};
-
+		LOG("New position according to stepperControl" << currentPosition);
 		currentPosition = newPosition;
-		gui_add_line(cmd, eColor_red);
 	}
 
     stepperController.OnUpdateAll(newCommand);

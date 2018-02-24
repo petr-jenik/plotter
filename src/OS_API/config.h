@@ -10,8 +10,6 @@
 
 #include "global.h"
 
-enum {eStepperMaxCount = 4};
-
 const int SPEED_MAGICAL_CONSTANT = 50;
 
 const int MIN_ANGLE = 0;

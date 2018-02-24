@@ -10,22 +10,6 @@
 
 #include "hwGpio.h"
 
-extern GpioDesc_t undefPin;
-
-/*
-typedef enum
-{
-    eStepperPin_Direction = 0,
-    eStepperPin_Step,
-    eStepperPin_nReset,
-    eStepperPin_nSleep,
-    eStepperPin_nEnable,
-
-    eStepperPin_count
-} sStepperPin;
-*/
-
-
 typedef struct
 {
     GpioDesc_t directionPinDesc;
@@ -43,6 +27,6 @@ typedef struct
 
 sStepperPins getStepperPins(int idx);
 
-sSwichPins getSwitchPins(int idx);
+sSwichPins getLimitSwitchPins(int idx);
 
 #endif /* HWAPI_HWSTEPPERPINS_H_ */

@@ -1,7 +1,7 @@
 #ifndef HW_SERVO_H_
 #define HW_SERVO_H_
 
-#include <stdint.h>
+#include "global.h"
 
 #define MIN_PULSE_WIDTH              1000 //us
 #define MAX_PULSE_WIDTH              2000 //us
@@ -18,5 +18,5 @@
 
 void servoInit();
 void servoSetPosition(int angle, uint32_t channel);
-void servoSetPosition(bool turnOn, uint32_t channel);
+
 #endif // HW_SERVO_H_

@@ -1,39 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include "diag/Trace.h"
 
 #include "Timer.h"
-
 #include "hwGpio.h"
-
-#include "mainApp.h"
-
 #include "hwStepperPins.h"
 
-// ----------------------------------------------------------------------------
-//
-// Standalone STM32F4 led blink sample (trace via NONE).
-//
-// In debug configurations, demonstrate how to print a greeting message
-// on the trace device. In release configurations the message is
-// simply discarded.
-//
-// Then demonstrates how to blink a led with 1 Hz, using a
-// continuous loop and SysTick delays.
-//
-// Trace support is enabled by adding the TRACE macro definition.
-// By default the trace messages are forwarded to the NONE output,
-// but can be rerouted to any device or completely suppressed, by
-// changing the definitions required in system/src/diag/trace_impl.c
-// (currently OS_USE_TRACE_ITM, OS_USE_TRACE_SEMIHOSTING_DEBUG/_STDOUT).
-//
-
-// Definitions visible only within this translation unit.
-
-// ----- LED definitions ------------------------------------------------------
-
-#warning "Assume a STM32F4-Discovery board, PC12-PC15, active high."
-
+#include "app_threads.h"
 
 #define BLINK_PORT_NUMBER         (3)
 #define BLINK_PIN_NUMBER_GREEN    (12)
@@ -57,20 +29,11 @@ Gpio blinkLeds[] =
         {ledsDesc[2]},
         {ledsDesc[3]},
 };
+using namespace std;
 
-// ----- main() ---------------------------------------------------------------
-
-
-//Gpio swInput1(getSwitchPins(0).limitSwitch1);
-//Gpio swInput2(getSwitchPins(0).limitSwitch2);
-
-int main()
+void systemInit()
 {
-    //swInput1.powerUp();
-    //swInput2.powerUp();
-    // At this stage the system clock should have already been configured
-    // at high speed.
-    //trace_printf("System clock: %u Hz\n", SystemCoreClock);
+	LOG("System clock: %u Hz\n" <<  SystemCoreClock);
 
     Timer timer;
     timer.start ();
@@ -81,104 +44,39 @@ int main()
         blinkLeds[i].powerUp ();
     }
 
-    int i = 0;
-    while(1)
-    {
-        /*
-        if (true == swInput1.isOn())
-        {
-            blinkLeds[0].turnOn();
-        }
-        else
-        {
-            blinkLeds[0].turnOff();
-        }
+	// Order of initialisation is important!
+	stepperControl_init();
+	movementControl_init();
+	parser_init();
+	reader_init();
+}
 
-        if (true == swInput2.isOn())
-        {
-            blinkLeds[1].turnOn();
-        }
-        else
-        {
-            blinkLeds[1].turnOff();
-        }
-*/
-        blinkLeds[i].toggle();
-        i = (i + 1)%4;
-        mainApp();
-    }
 
 /*
-uint32_t seconds = 0;
+ * List of tasks:
+ *
+ * 	1. reader - reads line of data from serial (or from file) - add data to parser
+ * 	2. parser - parses data - create commands from them (move, line, etc)
+ *  3. movement_control - reads commands and compute movements
+ *  4. motor_control - controls steppers according to commands (get them to required position)
+ *  5. (optional) GUI (plot actual state)
+ *
+ */
 
-for (size_t i = 0; i < (sizeof(blinkLeds) / sizeof(blinkLeds[0])); ++i)
+int main(int argc, char** argv)
 {
-blinkLeds[i].turnOn ();
+	/* App init */
+	systemInit();
+
+//#define DEBUG_LOOP
+
+	/* Start main app */
+#ifdef DEBUG_LOOP
+	debug_loop();
+#else
+	reader_readAndProcessFile(fileName);
+#endif // #ifdef DEBUG_LOOP
+
+	LOG("PROGRAM END");
+	return 0;
 }
-
-// First second is long.
-timer.sleep (Timer::FREQUENCY_HZ);
-
-for (size_t i = 0; i < (sizeof(blinkLeds) / sizeof(blinkLeds[0])); ++i)
-{
-blinkLeds[i].turnOff ();
-}
-
-timer.sleep (BLINK_OFF_TICKS);
-
-++seconds;
-//trace_printf ("Second %u\n", seconds);
-
-if ((sizeof(blinkLeds) / sizeof(blinkLeds[0])) > 1)
-{
-// Blink individual LEDs.
-for (size_t i = 0; i < (sizeof(blinkLeds) / sizeof(blinkLeds[0])); ++i)
-{
-blinkLeds[i].turnOn ();
-timer.sleep (BLINK_ON_TICKS);
-
-blinkLeds[i].turnOff ();
-timer.sleep (BLINK_OFF_TICKS);
-
-++seconds;
-//trace_printf ("Second %u\n", seconds);
-}
-
-// Blink binary.
-while (1)
-{
-for (size_t l = 0; l < (sizeof(blinkLeds) / sizeof(blinkLeds[0]));
-++l)
-{
-blinkLeds[l].toggle ();
-if (blinkLeds[l].isOn ())
-{
-break;
-}
-}
-timer.sleep (Timer::FREQUENCY_HZ);
-
-++seconds;
-//trace_printf ("Second %u\n", seconds);
-}
-// Infinite loop, never return.
-}
-else
-{
-while (1)
-{
-blinkLeds[0].turnOn ();
-timer.sleep (BLINK_ON_TICKS);
-
-blinkLeds[0].turnOff ();
-timer.sleep (BLINK_OFF_TICKS);
-
-++seconds;
-//trace_printf ("Second %u\n", seconds);
-}
-// Infinite loop, never return.
-}
-*/
-}
-
-// ----------------------------------------------------------------------------

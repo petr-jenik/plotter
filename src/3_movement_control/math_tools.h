@@ -8,6 +8,8 @@
 #ifndef _MATH_TOOLS_H_
 #define _MATH_TOOLS_H_
 
+#include "global.h"
+
 float getDistance(position A, position B);
 float getDistance3D(position A, position B);
 

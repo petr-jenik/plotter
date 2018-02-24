@@ -5,10 +5,8 @@
  *      Author: apollo
  */
 
-#include <cstdio>
-#include <stdio.h>
-
-#include "app_threads.h"
+#include "parser_main.h"
+#include "movementControl_main.h"
 #include "parser.h"
 
 
@@ -63,40 +61,6 @@ void moveTo(position finalPosition, float movementSpeed, float extrudeLength)
 	cmd.movementSpeed = movementSpeed;
 
 	movementControl_createLine(cmd);
-
-	//if (guiQueue != NULL)
-	//{
-	//	guiQueue->send(cmd);
-	//}
-}
-
-
-void parser_loop(safe_queue<std::string> &queueInput)//, safe_queue<moveCommand> &queueOutput)
-{
-	//guiQueue = &queueOutput;
-
-	//path_parser parser(10 , 4, -6);
-	//path_parser parser(1 , 10, 10);
-
-	//parser.registerMoveToCallback(boundingBox);
-
-	while(1)
-	{
-		std::string receivedData;
-		queueInput.receive(receivedData);
-
-		gParser.newData(receivedData);
-		LOG("GCODE: " << receivedData);
-		gParser.update();
-
-		//std::cout << "Thread: " << __FUNCTION__ << ", DATA: " << receivedData <<std::endl;
-
-		//if (receivedData == cKillSignal)
-		//{
-			//queueOutput.send(receivedData);
-		//	break;
-		//}
-	}
 }
 
 

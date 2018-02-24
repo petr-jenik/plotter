@@ -10,8 +10,8 @@
 
 #include "global.h"
 
-void stepper_init();
-void stepper_parseCommand(armCommand newCommand);
+void stepperControl_init();
+void stepperControl_parseCommand(armCommand newCommand);
 
 bool isSystemReady(void);
 

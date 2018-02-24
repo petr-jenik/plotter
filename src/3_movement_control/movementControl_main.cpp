@@ -5,18 +5,14 @@
  *      Author: apollo
  */
 
-#include <stepperControl_main.h>
-#include "app_threads.h"
 #include "math_tools.h"
-
 #include "config.h"
-
-#include <iostream>
-
 #include "stepperConfig.h"
 
-using namespace std;
+#include "stepperControl_main.h"
+#include "movementControl_main.h"
 
+using namespace std;
 
 position gCurrentPosition = {0,0,0};
 
@@ -62,8 +58,8 @@ bool createArmCommand(position C, armCommand& outputCmd)
         position A = (A1.x < A2.x) ? A2 : A1;
     	position B = (B1.x < B2.x) ? B1 : B2;
 
-    	float angle1 = getAngle(pos_S1, {pos_S1.x+100, pos_S1.y}, A);
-    	float angle2 = getAngle(pos_S2, {pos_S2.x+100, pos_S2.y}, B);
+    	float angle1 = getAngle(pos_S1, {pos_S1.x+100, pos_S1.y, pos_S1.z}, A);
+    	float angle2 = getAngle(pos_S2, {pos_S2.x+100, pos_S2.y, pos_S2.z}, B);
 
 		//LOG("movementControl_loop: Angles: " << angle1 << "," << angle2);
     	//LOG("ANGLE1: " << angle1);
@@ -85,8 +81,6 @@ bool createArmCommand(position C, armCommand& outputCmd)
     return false;
 }
 
-#include "draw.h"
-
 // TODO add speed
 void sendArmCommand(position newPosition,float extrudeLength)
 {
@@ -95,7 +89,7 @@ void sendArmCommand(position newPosition,float extrudeLength)
 	if (createArmCommand(newPosition, armCmd))
 	{
 		armCmd.extrudeLength = extrudeLength;
-		stepper_parseCommand(armCmd);
+		stepperControl_parseCommand(armCmd);
 		//cmdBuffer.send(armCmd);
 	}
 }
@@ -106,9 +100,6 @@ void movementControl_createLine(position finalPosition,
 									float movementSpeed)
 {
 	position startPos = gCurrentPosition;
-
-	//guiCommand cmd = {extrudeLength, movementSpeed, startPos, finalPosition};
-	//gui_add_line(cmd, eColor_black);
 
 	// get distance between start and end points
 	float distance = getDistance3D(startPos, finalPosition);
@@ -144,11 +135,6 @@ void movementControl_createLine(position finalPosition,
 		currentPos.z = startPos.z + (deltaZ * i)/numberOfSteps;
 
 		sendArmCommand(currentPos, extrudeLength / numberOfSteps);
-
-		// TODO remove this - only for me to be able to see a difference between requested and actual position
-		//guiCommand cmd = {extrudeLength / numberOfSteps, movementSpeed, gCurrentPosition, currentPos};
-		//gui_add_line(cmd, eColor_green);
-
 		gCurrentPosition = currentPos;
 	}
 
@@ -162,32 +148,6 @@ void movementControl_createLine(const moveCommand& cmd)
 }
 
 
-
-position p1 = {-100, 0, 0};
-position p2 = {100, 0, 0};
-position p3 = {10, 10, 0};
-position p4 = {-10, 10, 0};
-
-moveCommand demoCommands[] =
-{
-	{0, 1, p1},
-	{1, 0.01, p2},
-	{1, 0.01, p1},
-	//{true, 0.01, p2, p3},
-	/*
-	{true, 0.01, p3, p4},
-	{true, 0.01, p4, p1},
-	{true, 0.01, p1, p3},
-	{true, 0.01, p3, p1},
-	{true, 0.01, p1, p2},
-	{false, 0.01, p2, p4},
-	{false, 0.01, p4, p2},
-	{true, 0.01, p2, p1}
-	*/
-};
-
-const int32_t demoCmdsCount = (sizeof(demoCommands)/sizeof(demoCommands[0]));
-
 moveCommand getSqueatePoints(int idx, float size, position center)
 {
 	idx = (idx < 0)? 0 : idx;
@@ -198,11 +158,12 @@ moveCommand getSqueatePoints(int idx, float size, position center)
 
 	moveCommand squareCommands[] =
 	{
-		{0 /*extrudeLength*/, speed, {center.x - size/2, center.y - size/2}},
-		{extrudeLength, speed, {center.x + size/2, center.y - size/2}},
-		{extrudeLength, speed, {center.x + size/2, center.y + size/2}},
-		{extrudeLength, speed, {center.x - size/2, center.y + size/2}},
-		{extrudeLength, speed, {center.x - size/2, center.y - size/2}}
+		// First moveCommand simulates "move to" command
+		{0            , speed, {center.x - size/2, center.y - size/2, center.z}},
+		{extrudeLength, speed, {center.x + size/2, center.y - size/2, center.z}},
+		{extrudeLength, speed, {center.x + size/2, center.y + size/2, center.z}},
+		{extrudeLength, speed, {center.x - size/2, center.y + size/2, center.z}},
+		{extrudeLength, speed, {center.x - size/2, center.y - size/2, center.z}}
 	};
 
 	return squareCommands[idx];
@@ -242,65 +203,8 @@ void printCircle(float radius, position center)
 }
 
 
-void demoReceive(moveCommand &cmd)
-{
-	static int32_t index = 0;
 
-	static int32_t Y = 0;
-
-	moveCommand array[2] = { {1,0.01, {-100,Y, 0}}, {1, 0.01, {100, Y, 0}}};
-
-	cmd = array[index];
-
-	index++;
-	if (index > 1)
-	{
-		index= 0;
-		Y--;
-	}
-	//index = (index + 1) % demoCmdsCount;
-	//cmd = demoCommands[index];
-	//index = (index + 1) % demoCmdsCount;
-}
-
-
-void uglyHack_setAngle()
-{
-	armCommand armCmd;
-	static float angle = 90;
-	static float step = 1;
-	if (angle > 180)
-	{
-		step = -1;
-	}
-
-	if (angle < 0)
-	{
-		step = +1;
-	}
-
-	LOG("Requested angle: " << angle);
-
-	angle += step;
-
-	armCmd.angle1 = angle;
-	armCmd.angle2 = 180-angle;
-	//armCmd.relativeAngle1 = angleToRelative(angle);
-	//armCmd.relativeAngle2 = angleToRelative(0);
-	armCmd.extrudeLength = 1;
-	stepper_parseCommand(armCmd);
-
-	return;
-}
-
-void uglyHack_setPosition(void)
-{
-	moveCommand cmd;
-	demoReceive(cmd);
-	movementControl_createLine(cmd);
-}
-
-void showDemo()
+static void showDemo()
 {
 
 //printRectangle(10, {0, 0, 0});
@@ -319,14 +223,10 @@ for (int i = 0; i < 100; i += 5)
 	*/
 }
 
-void debug_loop(void)
+void movementControl_showDemo(void)
 {
-	//auto delay = std::chrono::milliseconds(1000);
-	//std::this_thread::sleep_for(delay);
-	//uglyHack_setPosition();
 	showDemo();
 }
-
 
 void movementControl_init()
 {

@@ -9,27 +9,22 @@
 #define PRINTER_GLOBAL_H_
 
 #include <stdint.h>
-#include <iostream>
 
-#include <iostream>
-#include <sstream>
-#include <thread>
+#include "log.h"
 
-//#define NO_GUI
-//#define DEBUG_LOOP
+#define assert(x) if(!(x))	                                            \
+	              {                                                     \
+						while(1)                                        \
+						{                                               \
+						}                                               \
+                   }
 
-#define LOG(message) {						\
-	std::ostringstream os;					\
-	os << message << std::endl;				\
-	std::cout << os.str();					\
- }
+#define MIN(x,y) ((x) < (y)) ? (x) : (y)
+#define MAX(x,y) ((x) > (y)) ? (x) : (y)
 
-#define DBG(message) {                      \
-	std::ostringstream os;                  \
-	os << std::this_thread::get_id() << " ";\
-	os << message << std::endl;	            \
-	std::cout << os.str();                  \
-	}
+#define ARRAY_SIZE(x) (sizeof((x))/sizeof((x)[0]))
+
+#define TO_UPPER(x) (((x) >= 'a') && ((x) <= 'z')) ? ((x) + 'A' - 'a') : (x)
 
 typedef struct position
 {
@@ -63,19 +58,8 @@ typedef struct
 	position endPosition;
 } guiCommand;
 
-
 typedef struct
 {
-	int32_t stepper1;
-	int32_t stepper2;
-	int32_t stepper3;
-	bool extrudeLength;
-} stepperCommand;
-
-typedef struct
-{
-	//int32_t relativeAngle1; // Position of arm in 100.000 %
-	//int32_t relativeAngle2; // Position of arm in 100.000 %
 	int32_t relPosZ;        // Relative position in Z axe
 	float angle1;
 	float angle2;
@@ -85,8 +69,8 @@ typedef struct
 
 template<typename T> T constrain(const T value, const T minValue, const T maxValue)
 {
-	T result = min(value, maxValue);
-	result = max(result, minValue);
+	T result = MIN(value, maxValue);
+	result = MAX(result, minValue);
 	return result;
 }
 
@@ -99,8 +83,7 @@ template<typename T> T map(T x, T in_min, T in_max, T out_min, T out_max)
 
 //position position::operator+(position lhs, const position &rhs)
 
-std::ostream& operator << (std::ostream& stream, position pos);
-std::ostream& operator << (std::ostream& stream, const stepperCommand& cmd);
-std::ostream& operator << (std::ostream& stream, const moveCommand& cmd);
-std::ostream& operator << (std::ostream& stream, const armCommand& cmd);
+//std::ostream& operator << (std::ostream& stream, position pos);
+//std::ostream& operator << (std::ostream& stream, const moveCommand& cmd);
+//std::ostream& operator << (std::ostream& stream, const armCommand& cmd);
 #endif /* PRINTER_GLOBAL_H_ */

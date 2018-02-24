@@ -8,12 +8,11 @@
 #ifndef STEPPERCONFIG_H_
 #define STEPPERCONFIG_H_
 
-#include "myGlobal.h"
+#include "global.h"
 
 typedef struct
 {
     float setpointAngle;
-	//uint32_t value; // Value in range 0.000 - 100.000% (thousandths of a percent)
     bool enable;
 } StepperSetting;
 

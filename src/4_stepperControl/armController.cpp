@@ -5,11 +5,12 @@
  *      Author: apollo
  */
 
-#include <armController.h>
+#include "armController.h"
 #include "Timer.h"
 #include "global.h"
 
 #include "math_tools.h"
+#include <cstdlib>
 
 ArmController::ArmController(PlotterArm & _armLeft, PlotterArm & _armRight, Servo & _servo)
 :armLeft(_armLeft),

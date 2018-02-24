@@ -1,16 +1,30 @@
+#pragma once
+
+#define LOG(message)
+#define DBG(message)
+
 /*
- * config.cpp
- *
- *  Created on: 27. 2. 2017
- *      Author: apollo
- */
+#include <iostream>
+#include <sstream>
+#include <thread>
 
+#define LOG(message) {						\
+	std::ostringstream os;					\
+	os << message << std::endl;				\
+	std::cout << os.str();					\
+ }
 
+#define LOG(message) {						\
+	std::ostringstream os;					\
+	os << message << std::endl;				\
+	std::cout << os.str();					\
+ }
 
-#include "config.h"
-
-#include "global.h"
-#include "stepperConfig.h"
+#define DBG(message) {                      \
+	std::ostringstream os;                  \
+	os << message << std::endl;	            \
+	std::cout << os.str();                  \
+	}
 
 
 std::ostream& operator<< (std::ostream& stream, position pos)
@@ -19,11 +33,6 @@ std::ostream& operator<< (std::ostream& stream, position pos)
 	return stream;
 }
 
-std::ostream& operator << (std::ostream& stream, const stepperCommand& cmd)
-{
-	//stream << cmd.
-	return stream;
-}
 
 std::ostream& operator << (std::ostream& stream, const moveCommand& cmd)
 {
@@ -40,3 +49,6 @@ std::ostream& operator << (std::ostream& stream, const armCommand& cmd)
 	return stream;
 }
 
+
+
+*/

@@ -9,8 +9,6 @@
 #include "global.h"
 #include "config.h"
 
-#include <iostream>
-
 /*
  * Return distance between point A and B (works only for 2D)
  * @param[in] position A
@@ -87,15 +85,15 @@ float toPositiveAngle(float angle)
  *@param[in] position C
  *@return float angle
  */
-float getAngle(position _A, position _B, position _C)
+float getAngle(position pos_A, position pos_B, position pos_C)
 {
 	// A - base start - rotation center
-	position A = _A - _A;
-	position B = _B - _A;
-	position C = _C - _A;
+	position dA = pos_A - pos_A;
+	position dB = pos_B - pos_A;
+	position dC = pos_C - pos_A;
 
-	float angle1 = radsToDegs(atan2(C.y, C.x));
-	float angle2 = radsToDegs(atan2(B.y, B.x));
+	float angle1 = radsToDegs(atan2(dC.y, dC.x));
+	float angle2 = radsToDegs(atan2(dB.y, dB.x));
 
 	return toPositiveAngle(angle1 - angle2);
 }
@@ -124,14 +122,14 @@ bool getIntersection(position A,
     float d = getDistance(A,B);
     if (d > (r1 + r2))
     {
-        std::cout << "end points are too far" << std::endl;
+        LOG("end points are too far");
         while(1)
         return false;
     }
 
     if (abs(d) < cMinimalDistanceToCenter)
     {
-        std::cout << "end points are too close" << A << B << std::endl;
+        LOG("end points are too close" << A << B);
         while(1)
         return false;
     }
@@ -209,7 +207,7 @@ position getCirclePosition(position center, float radius, float angle)
 
     pos.x = center.x + radius * cos(degsToRads(angle));
     pos.y = center.y + (radius * sin(degsToRads(angle)));
-    pos.z = 0;
+    pos.z = center.z;
 
     return pos;
 }
