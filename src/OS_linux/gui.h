@@ -45,7 +45,11 @@ public:
     static void drawLine(position start, position end);
     static void clear(void);
     static void glSelectColor(eColor color);
-    static void registerUpdateCallback( void (* callback)( void ));
+
+    static void registerIdleFunction( void (* callback)( void ));
+    static void registerDisplayFunction( void (* callback)( void ));
+    static void registerTimerFunction( unsigned int time, void (* callback)( int ), int value);
+    //static void registerUpdateCallback( void (* callback)( void ));
     static void registerMouseCallback( void (*callback)(int button, int state, int x, int y));
     static void registerKeyboardCallback( void (* callback)( unsigned char, int, int ));
     static void guiInit(int argc, char** argv);

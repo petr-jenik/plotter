@@ -89,15 +89,34 @@ void Gui::glSelectColor(eColor color)
     }
 }
 
-void Gui::registerUpdateCallback( void (* callback)( void ))
+void Gui::registerIdleFunction( void (* callback)( void ))
 {
     glutIdleFunc(callback);
+}
+
+void Gui::registerDisplayFunction( void (* callback)( void ))
+{
+	glutDisplayFunc(callback);
+}
+
+void Gui::registerTimerFunction( unsigned int time, void (* callback)( int ), int value)
+{
+	glutTimerFunc( time, callback, value);
 }
 
 void Gui::registerMouseCallback( void (*callback)(int button, int state, int x, int y))
 {
     glutMouseFunc(callback);
 }
+
+
+/*
+void Gui::postRedisplay()
+{
+	glutPostRedisplay();
+}
+*/
+
 
 void Gui::registerKeyboardCallback( void (* callback)( unsigned char, int, int ))
 {

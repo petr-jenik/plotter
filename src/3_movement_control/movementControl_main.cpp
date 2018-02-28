@@ -12,6 +12,9 @@
 #include "stepperControl_main.h"
 #include "movementControl_main.h"
 
+// TODO remove next include - my_gui.h
+#include "my_gui.h"
+
 using namespace std;
 
 position gCurrentPosition = {0,0,0};
@@ -61,8 +64,9 @@ bool createArmCommand(position C, armCommand& outputCmd)
     	float angle1 = getAngle(pos_S1, {pos_S1.x+100, pos_S1.y, pos_S1.z}, A);
     	float angle2 = getAngle(pos_S2, {pos_S2.x+100, pos_S2.y, pos_S2.z}, B);
 
-		//LOG("movementControl_loop: Angles: " << angle1 << "," << angle2);
-    	//LOG("ANGLE1: " << angle1);
+		std::cout << "movementControl_loop: Angles: " << 180 - angle1 << "," << angle2 << std::endl;
+		std::cout << "diff: " << 180 - angle1 - angle2 << std::endl;
+		//LOG("ANGLE1: " << angle1);
     	//LOG("ANGLE2: " << angle2);
     	//std::cout << "ANGLE1: " << angle1 << std::endl;
     	//std::cout << "ANGLE2: " << angle2 << std::endl;
@@ -101,6 +105,10 @@ void movementControl_createLine(position finalPosition,
 {
 	position startPos = gCurrentPosition;
 
+	// TODO remove next line
+	guiCommand cmd = {1,1,startPos, finalPosition};
+	gui_add_line(cmd, eColor_green);
+
 	// get distance between start and end points
 	float distance = getDistance3D(startPos, finalPosition);
 
@@ -111,8 +119,8 @@ void movementControl_createLine(position finalPosition,
 	}
 
 	#define deltaX (finalPosition.x - startPos.x)
-	#define deltaY	(finalPosition.y - startPos.y)
-	#define deltaZ	(finalPosition.z - startPos.z)
+	#define deltaY (finalPosition.y - startPos.y)
+	#define deltaZ (finalPosition.z - startPos.z)
 
 	// A close approximation to a straight line between two points
 	// TODO 13.10.2017 - This loop causes all the troubles!!!!!
@@ -137,7 +145,6 @@ void movementControl_createLine(position finalPosition,
 		sendArmCommand(currentPos, extrudeLength / numberOfSteps);
 		gCurrentPosition = currentPos;
 	}
-
 	LOG("diff: " << gCurrentPosition - finalPosition);
 }
 
@@ -207,16 +214,19 @@ void printCircle(float radius, position center)
 static void showDemo()
 {
 
-//printRectangle(10, {0, 0, 0});
+	//printRectangle(10, {0, 0, 0});
 
-for (int i = 0; i < 100; i += 5)
-{
-	printRectangle(2*i, {0,0,0});
-	//printLine({-150, i, 0}, {150, i, 0});
-	//printCircle(i, { 0, 0, 0});
-}
+	printLine({0,0,0}, {0,100, 0});
 
-/*
+	/*
+	for (int i = 0; i < 100; i += 5)
+	{
+		printRectangle(2*i, {0,0,0});
+		//printLine({-150, i, 0}, {150, i, 0});
+		//printCircle(i, { 0, 0, 0});
+	}
+	 */
+	/*
 	printCircle(10, {-100, 100, 0});
 	printCircle(10, {-100, -100, 0});
 	printCircle(10, {100, -100, 0});
@@ -225,7 +235,10 @@ for (int i = 0; i < 100; i += 5)
 
 void movementControl_showDemo(void)
 {
-	showDemo();
+	while(1)
+	{
+		showDemo();
+	}
 }
 
 void movementControl_init()

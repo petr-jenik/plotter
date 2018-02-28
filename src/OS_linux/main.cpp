@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 
 	/* Start main app */
 #ifdef DEBUG_LOOP
-	debug_loop();
+	movementControl_showDemo();
 #else
 	//std::string fileName = "sample.gcode";
 	reader_readAndProcess();

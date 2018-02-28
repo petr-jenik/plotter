@@ -44,7 +44,6 @@ void stepperControl_init(void)
 
 void stepperControl_parseCommand(armCommand newCommand)
 {
-	// TODO remove this - only for me to be able to see a difference between requested and actual position
     stepperController.OnUpdateAll(newCommand);
     stepperController.OnMove();
 }

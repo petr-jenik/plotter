@@ -32,6 +32,7 @@ typedef struct position
     float x;
     float y;
     float z;
+
     position operator+(const struct position &right)
     {
     	return {this->x + right.x, this->y + right.y, this->z + right.z};

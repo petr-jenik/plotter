@@ -50,7 +50,9 @@ public:
        rotationCenter.y = y;
 
        minAngle = MIN_ANGLE;
-       maxAngle = MAX_ANGLE;
+
+       //TODO Why "-1" ????
+       maxAngle = MAX_ANGLE-1;
 
        stepCount = 0;
        angle = 0;
@@ -59,8 +61,8 @@ public:
        endPoint.y = 0;
        endPoint.z = 0;
 
-       stepsPerOneTurn = 100;
-       gearRatio = 50;
+       stepsPerOneTurn = 1000;
+       gearRatio = 10;
        directionLeft = true;
 
        this->update();
@@ -147,8 +149,8 @@ public:
         //std::cout << "Angle: " << tmpAngle << std::endl;
         //std::cout << "Step count: " << stepCount << std::endl;
 
-        tmpAngle = std::max(tmpAngle, this->minAngle);
-        tmpAngle = std::min(tmpAngle, this->maxAngle);
+        //tmpAngle = std::max(tmpAngle, this->minAngle);
+        //tmpAngle = std::min(tmpAngle, this->maxAngle);
 
         //this->angle = tmpAngle + (float)armAngleOffset;
         this->angle = tmpAngle;

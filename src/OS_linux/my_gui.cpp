@@ -443,15 +443,18 @@ void update(void)
 		for (auto command : drawList)
 		{
 			eColor color = (command.extrudeLength > 0)? eColor_blue : eColor_red;
-			//Gui::glSelectColor(color);
-			Gui::glSelectColor(eColor_green);
-			Gui::drawLines(center(command.startPosition));
-			Gui::glSelectColor(eColor_red);
-			Gui::drawLines(center(command.endPosition));
-			//drawLine((command.startPosition), (command.endPosition));
-
+			Gui::glSelectColor(color);
+			//Gui::glSelectColor(eColor_green);
+			//if (command.extrudeLength > 0)
+			//{
+				Gui::drawLines(center(command.startPosition));
+				//Gui::glSelectColor(eColor_red);
+				Gui::drawLines(center(command.endPosition));
+				//drawLine((command.startPosition), (command.endPosition));
+			//}
 		}
     	Gui::drawLinesEnd();
+
 
     	Gui::drawLinesStart();
     	std::lock_guard<std::mutex> hold2(drawListRequired_lock);
@@ -459,7 +462,7 @@ void update(void)
 		{
 			eColor color = (item.cmd.extrudeLength)? item.color : eColor_black;
 			Gui::glSelectColor(color);
-			//Gui::drawLines(center(command.startPosition));
+			Gui::drawLines(center(item.cmd.startPosition));
 			Gui::drawLines(center(item.cmd.endPosition));
 			//drawLine((item.cmd.startPosition), (item.cmd.endPosition));
 		}
@@ -500,6 +503,14 @@ void keyboardHandler(unsigned char x, int y, int z)
 	cout << "x: " << x << ", y: " << y << ", z: "<< z<< endl;
 }
 
+static void myTimerEvent(int te)
+{
+	//update player and other objects pos.
+	Gui::registerTimerFunction(10, myTimerEvent, 1);
+	//glutTimerfunc( 10, My_timer_event, 1); //Timer is a one shot have to restart it!!! important you have this....
+	Gui::forceRedraw();
+}
+
 void gui_loop(void)
 {
 	cout << "Plotter simulation" << endl;
@@ -508,7 +519,12 @@ void gui_loop(void)
 	pStepperGPIOs2 = getStepperGPIOs(1);
 
 	Gui::guiInit(0, NULL);
-    Gui::registerUpdateCallback(update);
+
+    //Gui::registerIdleFunction(update);
+    Gui::registerDisplayFunction(update);
+    Gui::registerTimerFunction(10, myTimerEvent, 1);
+
+    //Gui::registerUpdateCallback(update);
     Gui::registerMouseCallback(mouseHandler);
     Gui::registerKeyboardCallback(keyboardHandler);
 
