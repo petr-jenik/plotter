@@ -1,4 +1,4 @@
 .settings/
-/Release
-/Debug
+Release
+Debug
 *.gcode
