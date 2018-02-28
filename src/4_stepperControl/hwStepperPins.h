@@ -25,8 +25,30 @@ typedef struct
     GpioDesc_t limitSwitch2;
 } sSwichPins;
 
-sStepperPins getStepperPins(int idx);
 
-sSwichPins getLimitSwitchPins(int idx);
+class StepperGPIOs
+{
+public:
+	Gpio directionPin;
+	Gpio enablePin;
+	Gpio resetPin;
+	Gpio sleepPin;
+	Gpio stepPin;
+
+	Gpio switchPin1;
+	Gpio switchPin2;
+
+	StepperGPIOs(sStepperPins stepperPinsDescription, sSwichPins switchPinsDescription)
+	:directionPin(stepperPinsDescription.directionPinDesc),
+	enablePin(stepperPinsDescription.enablePinDesc),
+	resetPin(stepperPinsDescription.resetPinDesc),
+	sleepPin(stepperPinsDescription.sleepPinDesc),
+	stepPin(stepperPinsDescription.stepPinDesc),
+	switchPin1(switchPinsDescription.limitSwitch1),
+	switchPin2(switchPinsDescription.limitSwitch2)
+	{};
+};
+
+StepperGPIOs* getStepperGPIOs(int idx);
 
 #endif /* HWAPI_HWSTEPPERPINS_H_ */

@@ -5,15 +5,12 @@
  *      Author: apollo
  */
 
-#include <iostream> // cout
-
-
 #include <cstdint>
-#include <cstdio>
 #include <cstdlib>
 #include <string.h>
 #include "parser.h"
 
+/*
 std::ostream& operator << (std::ostream& stream, const command& cmd)
 {
 	stream << "Used " << cmd.used;
@@ -27,6 +24,7 @@ std::ostream& operator << (std::ostream& stream, const command& cmd)
 	}
 	return stream;
 }
+*/
 
 static const int STRCMP_MATCH = 0;
 
@@ -47,11 +45,14 @@ void path_parser::set_zoom(float _zoom)
 }
 
 
-void path_parser::newData(std::string newLine)
+void path_parser::newData(char* pData, size_t dataLength)
 {
 	memset(dataBuffer, 0, sizeof(dataBuffer));
 	memset(cmdData.parts, 0, sizeof(cmdData.parts));
-	strcpy(dataBuffer, newLine.c_str());
+
+	size_t sizeToCopy = MIN(dataLength, sizeof(dataBuffer));
+
+	memcpy(dataBuffer, pData, sizeToCopy);
 
 	// Check for comments in new line data
 	if (dataBuffer[0] == ';')

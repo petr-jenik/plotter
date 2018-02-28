@@ -42,7 +42,7 @@ void setCenterPoint(position newCenterPoint)
 	point.y = ((newCenterPoint.y - (windowSize.y/2)) / zoom) + gOffsetPoint.y;
 	point.z = 0;
 
-	cout << point << endl;
+	//cout << point << endl;
 	gOffsetPoint = point;
 }
 

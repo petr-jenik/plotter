@@ -8,7 +8,6 @@
 #ifndef HWAPI_HWGPIO_H_
 #define HWAPI_HWGPIO_H_
 
-//#include "myGlobal.h"
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal.h"
 
@@ -85,6 +84,8 @@ public:
   isOn ();
 
   bool isValid();
+
+  bool operator==(Gpio &A);
 private:
     bool valid;
     eGPIO_Pull pull;

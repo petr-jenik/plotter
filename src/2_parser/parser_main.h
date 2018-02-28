@@ -8,9 +8,9 @@
 #ifndef PLOTTER_2_PARSER_PARSER_MAIN_H_
 #define PLOTTER_2_PARSER_PARSER_MAIN_H_
 
-#include <iostream>
+#include "global.h"
 
 void parser_init(void);
-void parser_update(std::string receivedData);
+void parser_update(char* pData, size_t dataLength);
 
 #endif /* PLOTTER_2_PARSER_PARSER_MAIN_H_ */

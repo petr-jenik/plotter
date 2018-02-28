@@ -5,12 +5,6 @@
  *      Author: apollo
  */
 
-
-#include <iostream>
-
-
-void reader_readAndProcessFile(std::string fileName){};
-
+void reader_readAndProcess(){};
 void reader_init(void){};
-
 

@@ -91,7 +91,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="5_GUI|2_parser/sub/src/main.cpp|1_reader/reader.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|2_parser/sub/src/gui" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="1_reader/fake_reader.cpp|5_GUI|2_parser/sub/src/main.cpp|1_reader/reader.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|2_parser/sub/src/gui" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -190,7 +190,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="5_GUI|2_parser/sub/src/main.cpp|1_reader/reader.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|2_parser/sub/src/gui" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="1_reader/fake_reader.cpp|5_GUI|2_parser/sub/src/main.cpp|1_reader/reader.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|2_parser/sub/src/gui" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -286,7 +286,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="OS_linux|OS_embedded|5_GUI|2_parser/sub/src/main.cpp|1_reader/reader.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|2_parser/sub/src/gui" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="1_reader/fake_reader.cpp|OS_linux|OS_embedded|5_GUI|2_parser/sub/src/main.cpp|1_reader/reader.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|2_parser/sub/src/gui" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

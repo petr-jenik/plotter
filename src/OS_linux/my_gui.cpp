@@ -17,7 +17,14 @@
 #include <stepperControl_main.h>
 #include <iostream>
 
-#include "app_threads.h"
+#include <mutex>
+
+
+#include "reader_main.h"
+#include "parser_main.h"
+#include "movementControl_main.h"
+#include "stepperControl_main.h"
+
 #include "draw.h"
 #include "gui.h"
 #include "math_tools.h"
@@ -30,7 +37,7 @@
 #include "hwStepperPins.h"
 #include "hwServo.h"
 #include "servo.h"
-#include "Timer.h"
+//#include "Timer.h"
 
 using namespace std;
 
@@ -41,9 +48,9 @@ void servoInit()
 
 bool gExtrude = false;
 
-void servoSetPosition(bool turnOn, uint32_t channel)
+void servoSetPosition(int angle, uint32_t channel)
 {
-	gExtrude = turnOn;
+	gExtrude = (angle < 90)? false : true;
 }
 
 struct guiCommandColor
@@ -67,6 +74,41 @@ StepperGui stepperGui2(pos_S2.x, pos_S2.y, armLength_BS2, RIGHT_ARM_OFFSET);
 
 StepperGui * steppers[] = {&stepperGui1, &stepperGui2};
 
+StepperGPIOs* pStepperGPIOs1 = NULL;
+StepperGPIOs* pStepperGPIOs2 = NULL;
+
+typedef struct {
+	ePinType pinType;
+	int stepperIndex;
+} UsedPinDesc_t;
+
+UsedPinDesc_t getUsedPinDesc(Gpio* pObject)
+{
+	if (pObject == NULL)
+	{
+		return {ePin_undef, -1};
+	}
+
+	for (int i = 0; i < 2; i++)
+	{
+		StepperGPIOs * pStepperGPIOs = (i == 0) ? pStepperGPIOs1 : pStepperGPIOs2;
+
+		if (pStepperGPIOs == NULL)
+		{
+			break;
+		}
+
+		if (*pObject == pStepperGPIOs->directionPin) { return {ePin_Dir, i};}
+		if (*pObject == pStepperGPIOs->enablePin)  { return {ePin_Enable, i};}
+		if (*pObject == pStepperGPIOs->resetPin)   { return {ePin_Reset,  i};}
+		if (*pObject == pStepperGPIOs->sleepPin)   { return {ePin_Sleep,  i};}
+		if (*pObject == pStepperGPIOs->stepPin)    { return {ePin_Step,   i};}
+		if (*pObject == pStepperGPIOs->switchPin1) { return {ePin_LimSw1, i};}
+		if (*pObject == pStepperGPIOs->switchPin2) { return {ePin_LimSw2, i};}
+	}
+
+	return {ePin_undef, -1};
+}
 
 bool _getEndpoint(position& C)
 {
@@ -120,6 +162,7 @@ void drawSteppers()
 	}
 }
 
+
 void mouseHandler(int button, int state, int x, int y)
 {
     cout << "Buton: " << button << endl;
@@ -133,12 +176,12 @@ void mouseHandler(int button, int state, int x, int y)
 	}
 }
 
+
 void gui_add_line(const guiCommand& cmd, eColor color)
 {
 	std::lock_guard<std::mutex> hold(drawListRequired_lock);
 	drawListRequired.push_back({cmd, color});
 }
-
 
 
 //TODO Move to class Gui and add some event handler, registerm all gui objects and redraw them at once
@@ -200,21 +243,48 @@ void drawAll(void)
     }
 }
 
+
+#define PIN_MASK(_N)    (1 << (_N))
+
+
+bool Gpio::operator==(Gpio &A)
+{
+	if ((A.fBitMask == this->fBitMask) &&
+		(A.fBitNumber == this->fBitNumber) &&
+		(A.fIsActiveLow == this->fIsActiveLow) &&
+		(A.fPortNumber == this->fPortNumber) &&
+		(A.mode == this->mode) &&
+		(A.pull == this->pull)&&
+		(A.valid == this->valid))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
+
 Gpio::Gpio(GpioDesc_t gpioDesc)
 {
-    if (gpioDesc.pin == ePin_undef)
+    if ((gpioDesc.pin == gpioPinUndef) || (gpioDesc.port == gpioPortUndef))
     {
         valid = false;
         return;
     }
 
     valid = true;
-    this->devId = gpioDesc.devId;
-    this->pin = gpioDesc.pin;
+    pull = gpioDesc.pull;
+    mode = gpioDesc.mode;
+    fPortNumber = gpioDesc.port;
+    fBitNumber = gpioDesc.pin;
+    fIsActiveLow = gpioDesc.activeLow;
+    fBitMask = PIN_MASK(fBitNumber);
 }
 
-void
-Gpio::powerUp ()
+void Gpio::powerUp ()
 {
     if (false == valid)
     {
@@ -235,19 +305,25 @@ Gpio::turnOn ()
         return;
     }
 
-    StepperGui * stepper = steppers[this->devId - 1];
+    UsedPinDesc_t pinDesc = getUsedPinDesc(this);
+    ePinType pin = pinDesc.pinType;
+    int devId = pinDesc.stepperIndex;
 
-    switch(this->pin)
+    switch(pin)
     {
     case ePin_Dir:
-        stepper->setDirection(true);
+    {
+        StepperGui * stepper = steppers[devId];
+    	stepper->setDirection(true);
         break;
-
+    }
     case ePin_Step:
-        stepper->move();
+    {
+    	StepperGui * stepper = steppers[devId];
+    	stepper->move();
         drawAll();
         break;
-
+    }
     case ePin_Reset:
     case ePin_Sleep:
     case ePin_Enable:
@@ -260,7 +336,9 @@ Gpio::turnOn ()
 #ifdef DEBUG_GPIO
     cout << "GPIO::turnOn()" << endl;
 #endif
+
 }
+
 
 void
 Gpio::turnOff ()
@@ -270,11 +348,15 @@ Gpio::turnOff ()
         return;
     }
 
-    switch(this->pin)
+    UsedPinDesc_t pinDesc = getUsedPinDesc(this);
+    ePinType pin = pinDesc.pinType;
+    int devId = pinDesc.stepperIndex;
+
+    switch(pin)
     {
     case ePin_Dir:
     {
-        StepperGui * stepper = steppers[this->devId - 1];
+        StepperGui * stepper = steppers[devId];
     	stepper->setDirection(false);
         break;
     }
@@ -306,6 +388,10 @@ bool Gpio::isOn ()
         return false;
     }
 
+    UsedPinDesc_t pinDesc = getUsedPinDesc(this);
+    ePinType pin = pinDesc.pinType;
+    int devId = pinDesc.stepperIndex;
+
 #ifdef DEBUG_GPIO
     cout << "GPIO::isOn()" << endl;
     cout << this->devId << "," << this->pin << endl;
@@ -315,14 +401,14 @@ bool Gpio::isOn ()
     {
     case ePin_LimSw1:
     {
-        StepperGui * stepper = steppers[this->devId - 1];
+        StepperGui * stepper = steppers[devId];
     	return stepper->isAtLimitPosition();
         break;
     }
 
     case ePin_LimSw2:
     {
-        StepperGui * stepper = steppers[this->devId - 1];
+        StepperGui * stepper = steppers[devId];
         return stepper->isAtLimitPosition();
         break;
     }
@@ -414,10 +500,12 @@ void keyboardHandler(unsigned char x, int y, int z)
 	cout << "x: " << x << ", y: " << y << ", z: "<< z<< endl;
 }
 
-
 void gui_loop(void)
 {
 	cout << "Plotter simulation" << endl;
+
+	pStepperGPIOs1 = getStepperGPIOs(0);
+	pStepperGPIOs2 = getStepperGPIOs(1);
 
 	Gui::guiInit(0, NULL);
     Gui::registerUpdateCallback(update);

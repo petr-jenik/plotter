@@ -14,18 +14,13 @@
 
 #include "hwStepperPins.h"
 #include "plotterArm.h"
+#include "global.h"
 
-PlotterArm::PlotterArm(sStepperPins stepperPinsDescription, const ArmConfig _armConfig, sSwichPins switchPinsDescription)
-:directionPin(stepperPinsDescription.directionPinDesc),
-  stepPin(stepperPinsDescription.stepPinDesc),
-  resetPin(stepperPinsDescription.resetPinDesc),
-  sleepPin(stepperPinsDescription.sleepPinDesc),
-  enablePin(stepperPinsDescription.enablePinDesc),
-  switchPin1(switchPinsDescription.limitSwitch1),
-  switchPin2(switchPinsDescription.limitSwitch2),
-  maxAngle(_armConfig.angleMax),
-  minAngle(_armConfig.angleMin),
-  armAngleOffset(_armConfig.angleOffset)
+PlotterArm::PlotterArm(const ArmConfig _armConfig)
+	:gpio(NULL),
+	 maxAngle(_armConfig.angleMax),
+	 minAngle(_armConfig.angleMin),
+	 armAngleOffset(_armConfig.angleOffset)
 {
     this->actualStepperValue = 0;
     this->maxStepperValue = 0;
@@ -38,27 +33,31 @@ PlotterArm::PlotterArm(sStepperPins stepperPinsDescription, const ArmConfig _arm
     this->makeStep = false;
     this->enableFlag = false;
 
+    }
+
+void PlotterArm::registerGPIOs(StepperGPIOs * gpio)
+{
+    this->calibrationEnabled = true;
+
+	this->gpio = gpio;
+
     // Initialize all GPIOs
-    this->enablePin.powerUp();
-    this->stepPin.powerUp();
-    this->directionPin.powerUp();
-    this->resetPin.powerUp();
-    this->sleepPin.powerUp();
+    this->gpio->enablePin.powerUp();
+    this->gpio->stepPin.powerUp();
+    this->gpio->directionPin.powerUp();
+    this->gpio->resetPin.powerUp();
+    this->gpio->sleepPin.powerUp();
+
+
+	this->gpio->switchPin1.powerUp();
+	this->gpio->switchPin2.powerUp();
 
     //TODO Disable stepper
-    //Enable stepper
+	//Enable stepper
     this->_sleep(false);
     this->_reset();
     this->_enable();
-
-    if (this->switchPin1.isValid())
-    {
-        this->calibrationEnabled = true;
-        this->switchPin1.powerUp();
-        this->switchPin2.powerUp();
-    }
 }
-
 
 bool PlotterArm::Calibrate(void)
 {
@@ -196,14 +195,14 @@ void PlotterArm::moveStart(void)
         if (true == this->directionLeft)
         {
             this->actualStepperValue -= this->stepSize;
-            this->directionPin.turnOn();
+            this->gpio->directionPin.turnOn();
         }
         else
         {
             this->actualStepperValue += this->stepSize;
-            this->directionPin.turnOff();
+            this->gpio->directionPin.turnOff();
         }
-        this->stepPin.turnOn();
+        this->gpio->stepPin.turnOn();
     }
 }
 
@@ -211,7 +210,7 @@ void PlotterArm::moveEnd(void)
 {
     if (true == this->makeStep)
     {
-        this->stepPin.turnOff();
+        this->gpio->stepPin.turnOff();
     }
 }
 
@@ -223,22 +222,22 @@ int PlotterArm::getError(void)
 
 void PlotterArm::_enable(void)
 {
-    this->enablePin.turnOn();
+    this->gpio->enablePin.turnOn();
 }
 
 void PlotterArm::_disable(void)
 {
-    this->enablePin.turnOff();
+    this->gpio->enablePin.turnOff();
 }
 
 void PlotterArm::_reset(void)
 {
-    this->resetPin.turnOn();
+    this->gpio->resetPin.turnOn();
 
     //TODO Move all delay times to named constants
     Timer::sleep(5);
 
-    this->resetPin.turnOff();
+    this->gpio->resetPin.turnOff();
 }
 
 void PlotterArm::_sleep(bool state)
@@ -246,12 +245,12 @@ void PlotterArm::_sleep(bool state)
     if (true == state)
     {
         //Enable sleep mode
-        this->sleepPin.turnOn();
+        this->gpio->sleepPin.turnOn();
     }
     else
     {
         //Disable sleep mode
-        this->sleepPin.turnOff();
+        this->gpio->sleepPin.turnOff();
     }
 }
 
@@ -261,8 +260,8 @@ eStepperPosition PlotterArm::_getPosition(void)
 
     LOG("SW1: " << switchPin1.isOn() << ", SW2:" << switchPin2.isOn());
 
-    bool status = switchPin1.isOn();
-    status |= switchPin2.isOn();
+    bool status = gpio->switchPin1.isOn();
+    status |= gpio->switchPin2.isOn();
 
     if (status == true)
     {

@@ -14,8 +14,11 @@
 #include <algorithm>
 
 #include "reader_main.h"
+#include "parser_main.h"
 #include "communication.h"
 #include "queue.h"
+
+#include "global.h"
 
 Communication comm;
 Queue queue;
@@ -30,9 +33,7 @@ uint32_t lineNumber = 0;
 
 void processLine(char * buffer, uint32_t bufferSize)
 {
-	std::string line;
-	line.assign(buffer, bufferSize);
-	parser_update(line);
+	parser_update(buffer, bufferSize);
 
 	LOG("Line number: " << lineNumber++ << ", data: " << line);
 }
@@ -140,7 +141,7 @@ void serveClient()
 	}
 }
 
-void reader_readAndProcessFile(std::string fileName)
+void reader_readAndProcess()
 {
 	DBG("Start server and listen for data" << std::endl);
 

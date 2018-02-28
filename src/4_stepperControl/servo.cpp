@@ -39,6 +39,6 @@ void Servo::OnUpdate(ServoSetting * pSetting)
 
 void Servo::OnMove(void)
 {
-    servoSetPosition(this->enableFlag, this->channel);
+    servoSetPosition(this->enableFlag * 180, this->channel);
 }
 

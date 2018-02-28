@@ -127,7 +127,7 @@ bool getIntersection(position A,
         return false;
     }
 
-    if (abs(d) < cMinimalDistanceToCenter)
+    if (template_ABS(d) < cMinimalDistanceToCenter)
     {
         LOG("end points are too close" << A << B);
         while(1)
@@ -135,7 +135,7 @@ bool getIntersection(position A,
     }
 
     float  m = (d /2.0) + ((pow(r1, 2) - pow(r2, 2)) / ( 2.0 * d ));
-    float v = pow(abs(pow(r1, 2) - pow(m, 2)), 0.5);
+    float v = pow(template_ABS(pow(r1, 2) - pow(m, 2)), 0.5);
 
     float f_x = A.x + (((B.x - A.x)*m)/d);
     float f_y = A.y + (((B.y - A.y)*m)/d);

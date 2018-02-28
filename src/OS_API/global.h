@@ -8,6 +8,7 @@
 #ifndef PRINTER_GLOBAL_H_
 #define PRINTER_GLOBAL_H_
 
+#include <stddef.h>
 #include <stdint.h>
 
 #include "log.h"
@@ -80,6 +81,12 @@ template<typename T> T map(T x, T in_min, T in_max, T out_min, T out_max)
 
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
+
+template<typename T> T template_ABS(T value)
+{
+	return (value < 0) ? (-value) : (value);
+}
+
 
 //position position::operator+(position lhs, const position &rhs)
 

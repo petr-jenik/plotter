@@ -9,7 +9,14 @@
 #include <iostream>
 #include <thread>
 #include <vector>
-#include "app_threads.h"
+
+#include "reader_main.h"
+#include "parser_main.h"
+#include "movementControl_main.h"
+#include "stepperControl_main.h"
+
+#include "global.h"
+#include "my_gui.h"
 
 using namespace std;
 
@@ -51,8 +58,8 @@ int main(int argc, char** argv)
 #ifdef DEBUG_LOOP
 	debug_loop();
 #else
-	std::string fileName = "sample.gcode";
-	reader_readAndProcessFile(fileName);
+	//std::string fileName = "sample.gcode";
+	reader_readAndProcess();
 #endif // #ifdef DEBUG_LOOP
 
 	thread_GUI.join();

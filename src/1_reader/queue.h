@@ -5,7 +5,7 @@
  *      Author: pi
  */
 
-#pragma(once)
+#pragma once
 
 #include <stdint.h>
 #include <cstring>
