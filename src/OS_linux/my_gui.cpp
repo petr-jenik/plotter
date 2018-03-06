@@ -12,14 +12,12 @@
  *      Author: apollo
  */
 
-#include <armController.h>
-#include <plotterArm.h>
-#include <stepperControl_main.h>
+//#include <armController.h>
+//#include <plotterArm.h>
 #include <iostream>
-
 #include <mutex>
 
-
+#include "stepperControl_main.h"
 #include "reader_main.h"
 #include "parser_main.h"
 #include "movementControl_main.h"
@@ -89,22 +87,25 @@ UsedPinDesc_t getUsedPinDesc(Gpio* pObject)
 		return {ePin_undef, -1};
 	}
 
-	for (int i = 0; i < 2; i++)
+	StepperGPIOs* pStepperGPIOs = NULL;
+	int idx = 0;
+	while((pStepperGPIOs = getStepperGPIOs(idx)) != NULL)
 	{
-		StepperGPIOs * pStepperGPIOs = (i == 0) ? pStepperGPIOs1 : pStepperGPIOs2;
+		if (*pObject == pStepperGPIOs->directionPin) { return {ePin_Dir,    idx};}
+		if (*pObject == pStepperGPIOs->enablePin)    { return {ePin_Enable, idx};}
+		if (*pObject == pStepperGPIOs->resetPin)     { return {ePin_Reset,  idx};}
+		if (*pObject == pStepperGPIOs->sleepPin)     { return {ePin_Sleep,  idx};}
+		if (*pObject == pStepperGPIOs->stepPin)      { return {ePin_Step,   idx};}
+		idx++;
+	}
 
-		if (pStepperGPIOs == NULL)
-		{
-			break;
-		}
-
-		if (*pObject == pStepperGPIOs->directionPin) { return {ePin_Dir, i};}
-		if (*pObject == pStepperGPIOs->enablePin)  { return {ePin_Enable, i};}
-		if (*pObject == pStepperGPIOs->resetPin)   { return {ePin_Reset,  i};}
-		if (*pObject == pStepperGPIOs->sleepPin)   { return {ePin_Sleep,  i};}
-		if (*pObject == pStepperGPIOs->stepPin)    { return {ePin_Step,   i};}
-		if (*pObject == pStepperGPIOs->switchPin1) { return {ePin_LimSw1, i};}
-		if (*pObject == pStepperGPIOs->switchPin2) { return {ePin_LimSw2, i};}
+	LimitSwitchGPIOs* pLimitSwitchGPIOs = NULL;
+	idx = 0;
+	while((pLimitSwitchGPIOs = getLimitSwitchGPIOs(idx)) != NULL)
+	{
+		if (*pObject == pLimitSwitchGPIOs->switchPin1) { return {ePin_LimSw1, idx};}
+		if (*pObject == pLimitSwitchGPIOs->switchPin2) { return {ePin_LimSw2, idx};}
+		idx++;
 	}
 
 	return {ePin_undef, -1};
@@ -515,8 +516,9 @@ void gui_loop(void)
 {
 	cout << "Plotter simulation" << endl;
 
-	pStepperGPIOs1 = getStepperGPIOs(0);
-	pStepperGPIOs2 = getStepperGPIOs(1);
+//	pStepperGPIOs1 = getStepperGPIOs(0);
+//	pStepperGPIOs2 = getStepperGPIOs(1);
+//	pStepperGPIOs3 = getStepperGPIOs(2);
 
 	Gui::guiInit(0, NULL);
 

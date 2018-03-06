@@ -5,7 +5,7 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.exe.debug.881614632" moduleId="org.eclipse.cdt.core.settings" name="Debug">
 				<externalSettings/>
 				<extensions>
-					<extension id="org.eclipse.cdt.core.GNU_ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
@@ -34,6 +34,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.debugging.codecov.891103916" name="Generate gcov information (-ftest-coverage -fprofile-arcs)" superClass="gnu.cpp.compiler.option.debugging.codecov" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<option id="gnu.cpp.compiler.option.debugging.gprof.594700308" name="Generate gprof information (-pg)" superClass="gnu.cpp.compiler.option.debugging.gprof" useByScannerDiscovery="false" value="true" valueType="boolean"/>
@@ -53,6 +55,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.debugging.prof.536929764" name="Generate prof information (-p)" superClass="gnu.c.compiler.option.debugging.prof" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<option id="gnu.c.compiler.option.debugging.gprof.1741608713" name="Generate gprof information (-pg)" superClass="gnu.c.compiler.option.debugging.gprof" useByScannerDiscovery="false" value="false" valueType="boolean"/>
@@ -85,6 +89,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1005070632" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -101,7 +107,7 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.exe.release.394008270" moduleId="org.eclipse.cdt.core.settings" name="Release">
 				<externalSettings/>
 				<extensions>
-					<extension id="org.eclipse.cdt.core.GNU_ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
@@ -133,6 +139,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.dialect.std.1521363641" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.c++11" valueType="enumerated"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.135917969" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
@@ -153,6 +161,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.2130078451" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -184,6 +194,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1680689699" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -200,7 +212,7 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.exe.debug.881614632.472279662" moduleId="org.eclipse.cdt.core.settings" name="STM32">
 				<externalSettings/>
 				<extensions>
-					<extension id="org.eclipse.cdt.core.GNU_ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
@@ -229,6 +241,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.debugging.codecov.2095875092" name="Generate gcov information (-ftest-coverage -fprofile-arcs)" superClass="gnu.cpp.compiler.option.debugging.codecov" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<option id="gnu.cpp.compiler.option.debugging.gprof.1005759021" name="Generate gprof information (-pg)" superClass="gnu.cpp.compiler.option.debugging.gprof" useByScannerDiscovery="false" value="true" valueType="boolean"/>
@@ -248,6 +262,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
 								</option>
 								<option id="gnu.c.compiler.option.debugging.prof.1734351761" name="Generate prof information (-p)" superClass="gnu.c.compiler.option.debugging.prof" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<option id="gnu.c.compiler.option.debugging.gprof.175728094" name="Generate gprof information (-pg)" superClass="gnu.c.compiler.option.debugging.gprof" useByScannerDiscovery="false" value="false" valueType="boolean"/>
@@ -280,6 +296,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1033585005" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
@@ -296,21 +314,6 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="threads_example.cdt.managedbuild.target.gnu.exe.1203912006" name="Executable" projectType="cdt.managedbuild.target.gnu.exe"/>
 	</storageModule>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.881614632;cdt.managedbuild.config.gnu.exe.debug.881614632.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1354237874;cdt.managedbuild.tool.gnu.c.compiler.input.740578595">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.394008270;cdt.managedbuild.config.gnu.exe.release.394008270.;cdt.managedbuild.tool.gnu.c.compiler.exe.release.2109617191;cdt.managedbuild.tool.gnu.c.compiler.input.2130078451">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.394008270;cdt.managedbuild.config.gnu.exe.release.394008270.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.453381020;cdt.managedbuild.tool.gnu.cpp.compiler.input.135917969">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.881614632;cdt.managedbuild.config.gnu.exe.debug.881614632.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.99725833;cdt.managedbuild.tool.gnu.cpp.compiler.input.16713125">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Debug">
@@ -322,4 +325,25 @@
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.881614632;cdt.managedbuild.config.gnu.exe.debug.881614632.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1354237874;cdt.managedbuild.tool.gnu.c.compiler.input.740578595">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.394008270;cdt.managedbuild.config.gnu.exe.release.394008270.;cdt.managedbuild.tool.gnu.c.compiler.exe.release.2109617191;cdt.managedbuild.tool.gnu.c.compiler.input.2130078451">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.881614632.472279662;cdt.managedbuild.config.gnu.exe.debug.881614632.472279662.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.20058762;cdt.managedbuild.tool.gnu.cpp.compiler.input.1207617895">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.394008270;cdt.managedbuild.config.gnu.exe.release.394008270.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.release.453381020;cdt.managedbuild.tool.gnu.cpp.compiler.input.135917969">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.881614632;cdt.managedbuild.config.gnu.exe.debug.881614632.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.99725833;cdt.managedbuild.tool.gnu.cpp.compiler.input.16713125">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.881614632.472279662;cdt.managedbuild.config.gnu.exe.debug.881614632.472279662.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.783216242;cdt.managedbuild.tool.gnu.c.compiler.input.1035892489">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+	</storageModule>
 </cproject>

@@ -20,6 +20,29 @@
 
 using namespace std;
 
+
+std::ostream& operator<< (std::ostream& stream, position pos)
+{
+	stream << "[" << pos.x << "," << pos.y << "," << pos.z << "]";
+	return stream;
+}
+
+
+std::ostream& operator << (std::ostream& stream, const moveCommand& cmd)
+{
+	stream << "Go to: " << cmd.finalPosition;
+	stream << ", extrude: " << cmd.extrudeLength;
+	stream << ", movementSpeed: " << cmd.movementSpeed;
+	return stream;
+}
+
+
+std::ostream& operator << (std::ostream& stream, const armCommand& cmd)
+{
+	stream << "[" << cmd.angle1 << ", " << cmd.angle2 << ", " << cmd.relPosZ << ", " << cmd.extrudeLength << "]";
+	return stream;
+}
+
 void systemInit()
 {
 	// Order of initialisation is important!
@@ -52,7 +75,7 @@ int main(int argc, char** argv)
 	/* App init */
 	systemInit();
 
-//#define DEBUG_LOOP
+#define DEBUG_LOOP
 
 	/* Start main app */
 #ifdef DEBUG_LOOP

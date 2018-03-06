@@ -12,7 +12,7 @@ struct transitionItem transitionTable[] =
     {{eState_Start, eStepperCmd_GoToLeft},  {eState_Left, eStepperCmd_Stop}},      //eState_Start,
     {{eState_Undef, eStepperCmd_GoToRight}, {eState_Left, eStepperCmd_GoToRight}}, //eState_Left,
     {{eState_Undef, eStepperCmd_GoToRight}, {eState_Right, eStepperCmd_Stop}},     //eState_Undef,
-    {{eState_Done, eStepperCmd_Stop},       {eState_Right, eStepperCmd_GoToLeft}}, //eState_Right,
+    {{eState_Done, eStepperCmd_Stop},       {eState_Done, eStepperCmd_Stop}}, //eState_Right,
     {{eState_Done, eStepperCmd_Stop},       {eState_Done, eStepperCmd_Stop}},      //eState_Done,
 };
 

@@ -12,7 +12,7 @@ using namespace std;
 #include <GL/freeglut.h>
 #include <GL/gl.h>
 
-#include <gui.h>
+#include "gui.h"
 
 #include "global.h"
 

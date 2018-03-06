@@ -37,7 +37,7 @@ float getDistance3D(position A, position B)
 
 float radsToDegs(float radians)
 {
-    return ((radians * 180) / M_PI);
+    return ((radians * 180.0) / M_PI);
 	//TODO add modulo 360
 }
 
@@ -71,7 +71,7 @@ float toPositiveAngle(float angle)
 	}
 
 	int count = angle / 360;
-	return angle - 360*count;
+	return angle - 360.0 * count;
 }
 
 

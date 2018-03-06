@@ -28,8 +28,6 @@ std::ostream& operator << (std::ostream& stream, const command& cmd)
 
 static const int STRCMP_MATCH = 0;
 
-// TODO Remove zoom
-
 
 void path_parser::set_offset_position(position offset)
 {

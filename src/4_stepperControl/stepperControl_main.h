@@ -11,7 +11,10 @@
 #include "global.h"
 
 void stepperControl_init();
-void stepperControl_parseCommand(armCommand newCommand);
+//void stepperControl_parseCommand(armCommand newCommand);
+
+
+void stepperControl_goToThisPosition(position newPosition,float extrudeLength);
 
 bool isSystemReady(void);
 

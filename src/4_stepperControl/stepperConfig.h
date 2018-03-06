@@ -14,7 +14,7 @@ typedef struct
 {
     float setpointAngle;
     bool enable;
-} StepperSetting;
+} PlotterArmSetting;
 
 typedef struct
 {
@@ -27,6 +27,6 @@ typedef struct
 	float angleMin;
 	float angleMax;
 	float angleOffset;
-} ArmConfig;
+} PlotterArmConfig;
 
 #endif /* STEPPERCONFIG_H_ */

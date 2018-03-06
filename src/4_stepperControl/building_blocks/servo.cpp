@@ -32,6 +32,7 @@ void Servo::OnUpdate(ServoSetting * pSetting)
    {
        // Enable or disable servo channel
        this->enableFlag = pSetting->enable;
+       //this->
        //this->angle = pSetting->value * (MAX_SERVO_ANGLE - MIN_SERVO_ANGLE) / maxSetpointValueInPercent;
    }
 }

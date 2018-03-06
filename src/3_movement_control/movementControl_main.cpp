@@ -19,85 +19,6 @@ using namespace std;
 
 position gCurrentPosition = {0,0,0};
 
-/* Creates control command for motor
- *
- * Finds required intersections and sets arms to required positions C
- *
- * @param[in]  C           required position
- * @param[out] outputCmd   result
- * @return     bool        True if intersection was found, False if not
- * out - arm command for motor
- *
- */
-bool createArmCommand(position C, armCommand& outputCmd)
-{
-	/*
-	 *           C
-	 *           /\
-	 *          /  \
-	 *         /    \
-	 *        /      \
-	 *       A        B
-	 *        \      /
-	 *         \    /
-	 *          \  /
-	 *          S1 S2
-	 *
-	 */
-
-	// C = Required position
-
-    position A1,A2;
-    position B1,B2;
-
-    bool result = true;
-
-    result = result and getIntersection(C, armLength_AC, pos_S1, armLength_AS1, A1, A2);
-    result = result and getIntersection(C, armLength_BC, pos_S2, armLength_BS2, B1, B2);
-
-    //std::cout << "Intersection of" << C << "and " << pos_S1 << pos_S2 << std::endl;
-    if (result)
-    {
-        position A = (A1.x < A2.x) ? A2 : A1;
-    	position B = (B1.x < B2.x) ? B1 : B2;
-
-    	float angle1 = getAngle(pos_S1, {pos_S1.x+100, pos_S1.y, pos_S1.z}, A);
-    	float angle2 = getAngle(pos_S2, {pos_S2.x+100, pos_S2.y, pos_S2.z}, B);
-
-		std::cout << "movementControl_loop: Angles: " << 180 - angle1 << "," << angle2 << std::endl;
-		std::cout << "diff: " << 180 - angle1 - angle2 << std::endl;
-		//LOG("ANGLE1: " << angle1);
-    	//LOG("ANGLE2: " << angle2);
-    	//std::cout << "ANGLE1: " << angle1 << std::endl;
-    	//std::cout << "ANGLE2: " << angle2 << std::endl;
-
-    	//std::cout << "Req Angle 1: " << angle1 << ", Req angle 2: " << angle2 << std::endl;
-
-    	// Fill only arm positions
-    	// Extruder status will be filled in a different place
-    	outputCmd.angle1 = angle1;
-    	outputCmd.angle2 = angle2;
-        outputCmd.relPosZ = zAxeToRelative(C.z);
-
-    	return true;
-    }
-
-    return false;
-}
-
-// TODO add speed
-void sendArmCommand(position newPosition,float extrudeLength)
-{
-	armCommand armCmd;
-
-	if (createArmCommand(newPosition, armCmd))
-	{
-		armCmd.extrudeLength = extrudeLength;
-		stepperControl_parseCommand(armCmd);
-		//cmdBuffer.send(armCmd);
-	}
-}
-
 
 void movementControl_createLine(position finalPosition,
 									float extrudeLength,
@@ -142,7 +63,7 @@ void movementControl_createLine(position finalPosition,
 		currentPos.y = startPos.y + (deltaY * i)/numberOfSteps;
 		currentPos.z = startPos.z + (deltaZ * i)/numberOfSteps;
 
-		sendArmCommand(currentPos, extrudeLength / numberOfSteps);
+		stepperControl_goToThisPosition(currentPos, extrudeLength / numberOfSteps);
 		gCurrentPosition = currentPos;
 	}
 	LOG("diff: " << gCurrentPosition - finalPosition);
@@ -244,5 +165,6 @@ void movementControl_showDemo(void)
 void movementControl_init()
 {
 	// Go to position {0, 0, 0}
-	sendArmCommand({0, 0, 0}, 0);
+
+	stepperControl_goToThisPosition({0, 0, 0}, 0);
 }

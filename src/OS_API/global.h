@@ -12,13 +12,15 @@
 #include <stdint.h>
 
 #include "log.h"
+#include <iostream>
 
-#define assert(x) if(!(x))	                                            \
-	              {                                                     \
-						while(1)                                        \
-						{                                               \
-						}                                               \
-                   }
+#define assert(x) if(!(x))                                                                         \
+				  {																				    \
+						std::cout << "ASSERT FAILED: " << __FILE__ << ", " << __LINE__ << std::endl;\
+						while(1)                                                                    \
+						{												                            \
+						}                                                                           \
+	              }
 
 #define MIN(x,y) ((x) < (y)) ? (x) : (y)
 #define MAX(x,y) ((x) > (y)) ? (x) : (y)
@@ -62,10 +64,15 @@ typedef struct
 
 typedef struct
 {
+	float relativeStepper1;
+	float relativeStepper2;
+	float relativeStepper3;
+
 	int32_t relPosZ;        // Relative position in Z axe
 	float angle1;
 	float angle2;
 	float extrudeLength;
+	float speed;
 } armCommand;
 
 
@@ -88,10 +95,9 @@ template<typename T> T template_ABS(T value)
 	return (value < 0) ? (-value) : (value);
 }
 
-
 //position position::operator+(position lhs, const position &rhs)
 
-//std::ostream& operator << (std::ostream& stream, position pos);
-//std::ostream& operator << (std::ostream& stream, const moveCommand& cmd);
-//std::ostream& operator << (std::ostream& stream, const armCommand& cmd);
+std::ostream& operator << (std::ostream& stream, position pos);
+std::ostream& operator << (std::ostream& stream, const moveCommand& cmd);
+std::ostream& operator << (std::ostream& stream, const armCommand& cmd);
 #endif /* PRINTER_GLOBAL_H_ */

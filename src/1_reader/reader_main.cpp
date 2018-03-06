@@ -35,7 +35,7 @@ void processLine(char * buffer, uint32_t bufferSize)
 {
 	parser_update(buffer, bufferSize);
 
-	LOG("Line number: " << lineNumber++ << ", data: " << line);
+	LOG("Line number: " << lineNumber++ << ", data: " << buffer);
 }
 
 

@@ -52,6 +52,7 @@ public:
     //static void registerUpdateCallback( void (* callback)( void ));
     static void registerMouseCallback( void (*callback)(int button, int state, int x, int y));
     static void registerKeyboardCallback( void (* callback)( unsigned char, int, int ));
+
     static void guiInit(int argc, char** argv);
     static void flush(void);
     static void forceRedraw(void);
