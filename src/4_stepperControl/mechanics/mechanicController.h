@@ -51,7 +51,7 @@ private:
 public:
     MechanicController();
 
-    void registerArms(PlotterArm * pArms, int armsCount);
+    void registerArms(PlotterArm * pArms);
     void registerServos(Servo * pServos, int servosCount);
     void registerSteppers(Stepper * pSteppers, int steppersCount);
     //PlotterArm & _arm_left, PlotterArm & _arm_right, Servo & _servo

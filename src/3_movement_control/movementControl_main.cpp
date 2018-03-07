@@ -54,7 +54,7 @@ void movementControl_createLine(position finalPosition,
 		numberOfSteps = 1;
 	}
 
-	LOG("numberOfSteps: " << numberOfSteps);
+	//LOG("numberOfSteps: " << numberOfSteps);
 
 	for (float i = 0; i < numberOfSteps+1; i++)
 	{
@@ -66,7 +66,7 @@ void movementControl_createLine(position finalPosition,
 		stepperControl_goToThisPosition(currentPos, extrudeLength / numberOfSteps);
 		gCurrentPosition = currentPos;
 	}
-	LOG("diff: " << gCurrentPosition - finalPosition);
+	//LOG("diff: " << gCurrentPosition - finalPosition);
 }
 
 
@@ -135,7 +135,7 @@ void printCircle(float radius, position center)
 static void showDemo()
 {
 
-	//printRectangle(10, {0, 0, 0});
+	printRectangle(10, {0, 0, 0});
 
 	printLine({0,0,0}, {0,100, 0});
 

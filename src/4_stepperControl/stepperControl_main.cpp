@@ -34,6 +34,38 @@ bool isSystemReady()
 	return mechanicController.calibrationFinished();
 }
 
+void fakeInit(void)
+{
+	while(plotterArms[0].Calibrate() != true)
+	{
+		plotterArms[0].moveStart();
+		plotterArms[0].moveEnd();
+		/*
+		LOG("-------");
+		LOG("calibration state:" << plotterArms[0].calibrationState);
+		LOG("summError:" << plotterArms[0].sumError);
+		LOG("maxAngle:" << plotterArms[0].maxAngle);
+		LOG("maxStepperValue:" << plotterArms[0].maxStepperValue);
+		LOG("currenctStepCount:" << plotterArms[0].currentStepCount);
+		LOG("setpointStepperValue:" << plotterArms[0].setpointStepperValue);
+		*/
+
+
+	}
+	while(1)
+	{
+	for (int i = 0; i < 11; i++)
+	{
+		plotterArms[0].OnUpdate((float)i/10, true);
+		while(plotterArms[0].getError() != 0)
+		{
+			plotterArms[0].OnUpdateRegulation();
+			plotterArms[0].moveStart();
+			plotterArms[0].moveEnd();
+		}
+	}
+	}
+}
 
 void stepperControl_init(void)
 {
@@ -43,8 +75,11 @@ void stepperControl_init(void)
 	plotterArms[1].registerGPIOs(getStepperGPIOs(1));
 	plotterArms[1].registerLimitSwitchGPIOs(getLimitSwitchGPIOs(1));
 
-	mechanicController.registerArms(plotterArms, ARRAY_SIZE(plotterArms));
-	mechanicController.registerServos(servos, ARRAY_SIZE(servos));
+	mechanicController.registerArms(&plotterArms[0]);
+	mechanicController.registerArms(&plotterArms[1]);
+
+	//mechanicController.registerArms(plotterArms, ARRAY_SIZE(plotterArms));
+    mechanicController.registerServos(servos, ARRAY_SIZE(servos));
 
     mechanicController.calibrate(true);
 
@@ -94,7 +129,6 @@ bool calculateArmPosition(position finalPosition, float extrudeLength, armComman
     result = result and getIntersection(finalPosition, armLength_AC, pos_S1, armLength_AS1, A1, A2);
     result = result and getIntersection(finalPosition, armLength_BC, pos_S2, armLength_BS2, B1, B2);
 
-    //std::cout << "Intersection of" << C << "and " << pos_S1 << pos_S2 << std::endl;
     if (result)
     {
         position A = (A1.x < A2.x) ? A2 : A1;
@@ -102,9 +136,6 @@ bool calculateArmPosition(position finalPosition, float extrudeLength, armComman
 
     	float angle1 = getAngle(pos_S1, {pos_S1.x+100, pos_S1.y, pos_S1.z}, A);
     	float angle2 = getAngle(pos_S2, {pos_S2.x+100, pos_S2.y, pos_S2.z}, B);
-
-		//std::cout << "movementControl_loop: Angles: " << 180 - angle1 << "," << angle2 << std::endl;
-		//std::cout << "diff: " << 180 - angle1 - angle2 << std::endl;
 
     	// Fill only arm positions
     	outputCmd.angle1 = angle1;
@@ -124,17 +155,6 @@ void stepperControl_goToThisPosition(position newPosition,float extrudeLength)
 
 	if (calculateArmPosition(newPosition, extrudeLength, armCmd))
 	{
-		// TODO remove next 4 lines
-		/*
-		static float angle = 45;
-		angle += 1;
-		if (angle > 135)
-		{
-			angle = 0;
-		}
-		armCmd.angle1 = angle;
-		armCmd.angle2 = angle;
-		 */
 	    mechanicController.OnUpdateAll(armCmd);
 	    mechanicController.OnMove();
 	}

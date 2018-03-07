@@ -52,7 +52,7 @@ public:
        minAngle = MIN_ANGLE;
 
        //TODO Why "-1" ????
-       maxAngle = MAX_ANGLE-1;
+       maxAngle = MAX_ANGLE;
 
        stepCount = 0;
        angle = 0;
@@ -61,8 +61,8 @@ public:
        endPoint.y = 0;
        endPoint.z = 0;
 
-       stepsPerOneTurn = 100;
-       gearRatio = 10;
+       stepsPerOneTurn = 1000;
+       gearRatio = 30;
        directionLeft = true;
 
        this->update();
@@ -144,7 +144,7 @@ public:
             //this->stepCount = rotation;
         //}
 
-        float tmpAngle = ((float)360 * stepCount / (gearRatio * stepsPerOneTurn));
+        float tmpAngle = ((float)(360 * stepCount) / (gearRatio * stepsPerOneTurn));
 
         //std::cout << "Angle: " << tmpAngle << std::endl;
         //std::cout << "Step count: " << stepCount << std::endl;

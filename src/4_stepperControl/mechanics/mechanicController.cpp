@@ -31,15 +31,11 @@ servoObjectCount(0)
 };
 
 
-void MechanicController::registerArms(PlotterArm * pArms, int armsCount)
+void MechanicController::registerArms(PlotterArm * pArms)//, int armsCount)
 {
-	if ((pArms != NULL) and (armsCount <= cMaxNumberOfPlotterArms))
+	if ((pArms != NULL) and (armObjectCount <= cMaxNumberOfPlotterArms))
 	{
-		for (int i = 0; i < armsCount; i++)
-		{
-			armObjectArray[i] = &(pArms[i]);
-		}
-		armObjectCount = armsCount;
+		armObjectArray[armObjectCount++] = pArms;
 	}
 	else
 	{
@@ -98,16 +94,28 @@ void MechanicController::OnUpdateAll(armCommand command)
 
 	// TODO Unify usage of steppers - use each of them or use an array
 
-	PlotterArmSetting leftArm = {command.angle2, true};
-	PlotterArmSetting rightArm = {command.angle1, true};
+	PlotterArmSetting leftArm = {command.angle1, true};
+	PlotterArmSetting rightArm = {command.angle2, true};
 	ServoSetting servoSetting = {command.relPosZ, (bool)command.extrudeLength };
 
-	assert(this->armObjectCount >= 2 and armObjectArray != NULL);
-	armObjectArray[0]->NewPosition(leftArm); // left
-	armObjectArray[1]->NewPosition(rightArm); // right
+	if (this->armObjectCount > 0)
+	{
+		armObjectArray[0]->NewPosition(leftArm); // left
+	}
 
-	assert(this->servoObjectCount >= 1 and servoObjectArray != NULL);
-	servoObjectArray[0]->OnUpdate(&servoSetting);
+	if (this->armObjectCount > 1)
+	{
+		armObjectArray[1]->NewPosition(rightArm); // right
+	}
+
+	//assert(this->armObjectCount >= 2 and armObjectArray != NULL);
+	//armObjectArray[1]->NewPosition(rightArm); // right
+
+	//assert(this->servoObjectCount >= 1 and servoObjectArray != NULL);
+	if (this->servoObjectCount > 1)
+	{
+		servoObjectArray[0]->OnUpdate(&servoSetting);
+	}
 }
 
 int MechanicController::GetMaxStepperError(void)

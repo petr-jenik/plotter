@@ -85,15 +85,19 @@ template<typename T> T constrain(const T value, const T minValue, const T maxVal
 
 template<typename T> T map(T x, T in_min, T in_max, T out_min, T out_max)
 {
- //TODO poradne deleni + polovina jmenovatele
-
-  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+  return (((x - in_min) * (out_max - out_min))/ (in_max - in_min)) + out_min;
 }
 
 template<typename T> T template_ABS(T value)
 {
 	return (value < 0) ? (-value) : (value);
 }
+
+/*
+int mapInt2(int x, int in_min, int in_max, int out_min, int out_max)
+{
+  return (((x - in_min) * (out_max - out_min) + (in_max - in_min)/2 )/ (in_max - in_min)) + out_min;
+}*/
 
 //position position::operator+(position lhs, const position &rhs)
 

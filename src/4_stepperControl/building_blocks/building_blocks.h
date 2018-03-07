@@ -16,9 +16,7 @@
 
 class Stepper
 {
-public:
-
-
+protected:
     bool directionLeft;        // Movement direction
     bool makeStep;             // Get set in updateRegulation - if low, there is no need for moving, if high - move
     bool enableFlag;           // Enable or disable flag
@@ -26,9 +24,10 @@ public:
     // HW GPIOs for stepper
     StepperGPIOs * gpio;
 
-	int sumError;
-	int currenctStepCount;
 	int error;
+	int sumError;
+	int currentStepCount; 	// Actual position (steps)
+
 	const int stepSize = 1;
 
 	void _enable(void);
@@ -55,7 +54,6 @@ protected:
    // HW GPIOs for limit switches
     LimitSwitchGPIOs * limitSwitchGPIOs;
 
-    int actualStepperValue;    // Actual position (steps)
     int setpointStepperValue;  // Desired position (steps)
     int maxStepperValue;       // Max value (steps)
 
@@ -77,7 +75,6 @@ protected:
     const float minAngle;
     const float maxAngle;
     const float armAngleOffset;
-    StepperWithLimits stepper;
 
 public:
     PlotterArm(const PlotterArmConfig _armConfig);

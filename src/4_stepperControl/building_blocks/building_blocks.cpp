@@ -21,7 +21,7 @@ Stepper::Stepper()
 	:gpio(NULL),
 	 error(0),
 	 sumError(0),
-	 currenctStepCount(0)
+	 currentStepCount(0)
 {
     this->directionLeft = false;
     this->makeStep = false;
@@ -107,14 +107,14 @@ void Stepper::moveStart(void)
     {
         if (true == this->directionLeft)
         {
-        	this->currenctStepCount -= this->stepSize;
-            this->error -= this->stepSize;
+        	this->currentStepCount -= this->stepSize;
+            this->error += this->stepSize;
             this->gpio->directionPin.turnOn();
         }
         else
         {
-        	this->currenctStepCount += this->stepSize;
-        	this->error += this->stepSize;
+        	this->currentStepCount += this->stepSize;
+        	this->error -= this->stepSize;
             this->gpio->directionPin.turnOff();
         }
         this->gpio->stepPin.turnOn();
@@ -127,9 +127,9 @@ void Stepper::moveEnd(void)
     {
         this->gpio->stepPin.turnOff();
     }
-    LOG("current step count: " << this->currenctStepCount);
+    LOG("current step count: " << this->currentStepCount);
+    LOG("current error: " << this->error);
 }
-
 
 void Stepper::_enable(void)
 {
@@ -170,7 +170,6 @@ void Stepper::_sleep(bool state)
 
 StepperWithLimits::StepperWithLimits()
 :limitSwitchGPIOs(NULL),
- actualStepperValue(0),
  setpointStepperValue(0),
  maxStepperValue(0),
  calibrationEnabled(false),
@@ -212,8 +211,7 @@ void StepperWithLimits::OnUpdate(float relativePosition, bool enable)
 									 (float)0.0,
 									 (float)this->maxStepperValue);
 
-	int diff = this->setpointStepperValue - this->actualStepperValue;
-	this->actualStepperValue = setpointStepperValue;
+	int diff = this->setpointStepperValue - this->currentStepCount;
 	Stepper::OnUpdate(diff, enable);
 }
 
@@ -230,10 +228,10 @@ bool StepperWithLimits::Calibrate(void)
     switch(calibrationState)
     {
         case eState_Left:
-            this->actualStepperValue = 0;
+        	//assert(this->currentStepCount == 0); // TODO remove this assertion
             break;
         case eState_Right:
-            this->maxStepperValue = this->actualStepperValue;
+            this->maxStepperValue = this->currentStepCount;
             LOG("max stepper value" << this->maxStepperValue);
 
             break;
@@ -244,14 +242,11 @@ bool StepperWithLimits::Calibrate(void)
     switch(command)
     {
     case eStepperCmd_GoToLeft:
-    	this->actualStepperValue += this->stepSize;
     	Stepper::OnUpdate(-1, true);
     	Stepper::OnUpdateRegulation();
-    	LOG("actual stepper value" << this->actualStepperValue);
         break;
 
     case eStepperCmd_GoToRight:
-    	this->actualStepperValue += this->stepSize;
     	Stepper::OnUpdate(1, true);
     	Stepper::OnUpdateRegulation();
     	break;
@@ -269,13 +264,6 @@ bool StepperWithLimits::Calibrate(void)
 
     return (eState_Done == this->calibrationState);
 }
-
-/*
-int StepperWithLimits::getError(void)
-{
-    int error = this->setpointStepperValue - this->actualStepperValue;
-    return error;
-}*/
 
 /////////// PlotterArm
 
