@@ -18,7 +18,7 @@ typedef struct
 
 typedef struct
 {
-	uint32_t value; // Value in range 0.000 - 100.000% (thousandths of a percent)
+	int32_t value; // Value in range 0.000 - 100.000% (thousandths of a percent)
     bool enable;
 } ServoSetting;
 

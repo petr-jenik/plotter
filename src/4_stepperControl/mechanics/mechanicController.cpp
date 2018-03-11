@@ -14,7 +14,7 @@
 #include <cstdlib>
 #include "stepperConfig.h"
 
-#define SET_EACH_MEMBER_TO_NULL(X) 	for (int i =0; i < ARRAY_SIZE((X));i++){(X)[i] = NULL;}
+#define SET_EACH_MEMBER_TO_NULL(X) 	for (size_t i =0; i < ARRAY_SIZE((X));i++){(X)[i] = NULL;}
 
 
 MechanicController::MechanicController()
@@ -39,7 +39,7 @@ void MechanicController::registerArms(PlotterArm * pArms)//, int armsCount)
 	}
 	else
 	{
-		assert(false);
+		new_assert(false);
 	}
 }
 
@@ -55,7 +55,7 @@ void MechanicController::registerServos(Servo * pServos, int servosCount)
 	}
 	else
 	{
-		assert(false);
+		new_assert(false);
 	}
 }
 
@@ -73,7 +73,7 @@ void MechanicController::registerSteppers(Stepper * pSteppers, int steppersCount
 	}
 	else
 	{
-		assert(false);
+		new_assert(false);
 	}
 }
 
@@ -112,7 +112,7 @@ void MechanicController::OnUpdateAll(armCommand command)
 	//armObjectArray[1]->NewPosition(rightArm); // right
 
 	//assert(this->servoObjectCount >= 1 and servoObjectArray != NULL);
-	if (this->servoObjectCount > 1)
+	if (this->servoObjectCount > 0)
 	{
 		servoObjectArray[0]->OnUpdate(&servoSetting);
 	}

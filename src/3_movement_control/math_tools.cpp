@@ -174,6 +174,7 @@ bool getIntersection(position A,
 int32_t zAxeToRelative(float zPosition)
 {
 	int32_t relative = (maxRelativeZ * (zPosition - zAxeMin))/(zAxeMax - zAxeMin);
+	new_assert(relative >= 0);
 	return relative;
 }
 

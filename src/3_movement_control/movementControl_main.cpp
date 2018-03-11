@@ -7,28 +7,29 @@
 
 #include "math_tools.h"
 #include "config.h"
+#include "global.h"
 #include "stepperConfig.h"
 
 #include "stepperControl_main.h"
 #include "movementControl_main.h"
 
-// TODO remove next include - my_gui.h
-#include "my_gui.h"
-
-using namespace std;
-
 position gCurrentPosition = {0,0,0};
 
+/*
+// TODO add speed
+void stepperControl_goToThisPosition(position newPosition,float extrudeLength)
+{
+}
 
+
+void stepperControl_init(void){};
+
+*/
 void movementControl_createLine(position finalPosition,
 									float extrudeLength,
 									float movementSpeed)
 {
 	position startPos = gCurrentPosition;
-
-	// TODO remove next line
-	guiCommand cmd = {1,1,startPos, finalPosition};
-	gui_add_line(cmd, eColor_green);
 
 	// get distance between start and end points
 	float distance = getDistance3D(startPos, finalPosition);
@@ -76,7 +77,7 @@ void movementControl_createLine(const moveCommand& cmd)
 }
 
 
-moveCommand getSqueatePoints(int idx, float size, position center)
+moveCommand getSquearePoints(int idx, float size, position center)
 {
 	idx = (idx < 0)? 0 : idx;
 	idx = (idx > 4)? 4 : idx;
@@ -111,7 +112,7 @@ void printRectangle(float size, position center)
 
 	for (int idx = 0; idx < 5; idx++)
 	{
-		moveCommand cmd = getSqueatePoints(idx, size, center);
+		moveCommand cmd = getSquearePoints(idx, size, center);
 		movementControl_createLine(cmd);
 	}
 }
@@ -125,7 +126,7 @@ void printCircle(float radius, position center)
 		float angle = (float)(360 * i) / (float)(numberOfSteps);
 		position pos = getCirclePosition(center, radius, angle);
 
-		moveCommand cmd = {(i == 0)?0.0:1.0 /*extrudeLength*/, 1 /*speed*/, pos};
+		moveCommand cmd = {(i == 0)?0:1 /*extrudeLength*/, 1 /*speed*/, pos};
 		movementControl_createLine(cmd);
 	}
 }

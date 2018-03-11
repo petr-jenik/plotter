@@ -5,7 +5,6 @@
  *      Author: pi
  */
 
-#include "assert.h"
 #include "building_blocks.h"
 #include "calibration.h"
 #include "config.h"
@@ -15,18 +14,15 @@
 #include "stepperConfig.h"
 #include "Timer.h"
 
-using namespace std;
-
 Stepper::Stepper()
 	:gpio(NULL),
 	 error(0),
 	 sumError(0),
-	 currentStepCount(0)
-{
-    this->directionLeft = false;
-    this->makeStep = false;
-    this->enableFlag = false;
-}
+	 currentStepCount(0),
+     directionLeft(false),
+     makeStep(false),
+     enableFlag(false)
+{}
 
 
 void Stepper::registerGPIOs(StepperGPIOs * gpio)
@@ -77,6 +73,9 @@ int Stepper::getError(void)
 
 void Stepper::OnUpdateRegulation(void)
 {
+	// Send heartbeat signal
+	heartbeat();
+
     if (false == this->enableFlag)
     {
         this->makeStep = false;
@@ -127,8 +126,8 @@ void Stepper::moveEnd(void)
     {
         this->gpio->stepPin.turnOff();
     }
-    LOG("current step count: " << this->currentStepCount);
-    LOG("current error: " << this->error);
+    //LOG("current step count: " << this->currentStepCount);
+    //LOG("current error: " << this->error);
 }
 
 void Stepper::_enable(void)
@@ -228,9 +227,11 @@ bool StepperWithLimits::Calibrate(void)
     switch(calibrationState)
     {
         case eState_Left:
+        	atLimitSwitch(0);
         	//assert(this->currentStepCount == 0); // TODO remove this assertion
             break;
         case eState_Right:
+        	atLimitSwitch(1);
             this->maxStepperValue = this->currentStepCount;
             LOG("max stepper value" << this->maxStepperValue);
 
@@ -242,12 +243,12 @@ bool StepperWithLimits::Calibrate(void)
     switch(command)
     {
     case eStepperCmd_GoToLeft:
-    	Stepper::OnUpdate(-1, true);
+    	Stepper::OnUpdate(-this->stepSize, true);
     	Stepper::OnUpdateRegulation();
         break;
 
     case eStepperCmd_GoToRight:
-    	Stepper::OnUpdate(1, true);
+    	Stepper::OnUpdate(this->stepSize, true);
     	Stepper::OnUpdateRegulation();
     	break;
 

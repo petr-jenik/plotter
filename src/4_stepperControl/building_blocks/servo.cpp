@@ -9,20 +9,23 @@
 #include "stepperConfig.h"
 #include "config.h"
 
-#include <stdlib.h>
+#include <cstdlib>
 
 bool timerInitialized = false;
 
-Servo::Servo(int channel)
+Servo::Servo(int _channel)
+:angle(0),
+ channel(_channel),
+ enableFlag(false)
 {
     if (false == timerInitialized)
     {
         servoInit();
     }
 
-    this->angle = 0;
-    this->channel = (uint32_t)channel;
-    this->enableFlag = false;
+    //this->angle = 0;
+    //this->channel = (uint32_t)channel;
+    //this->enableFlag = false;
 }
 
 

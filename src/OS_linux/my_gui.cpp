@@ -516,10 +516,6 @@ void gui_loop(void)
 {
 	cout << "Plotter simulation" << endl;
 
-//	pStepperGPIOs1 = getStepperGPIOs(0);
-//	pStepperGPIOs2 = getStepperGPIOs(1);
-//	pStepperGPIOs3 = getStepperGPIOs(2);
-
 	Gui::guiInit(0, NULL);
 
     //Gui::registerIdleFunction(update);
@@ -530,14 +526,9 @@ void gui_loop(void)
     Gui::registerMouseCallback(mouseHandler);
     Gui::registerKeyboardCallback(keyboardHandler);
 
-
-    //std::thread thr_receive(&_receiveFromQueue, std::ref(queueInput));
-
 	Gui::guiMainLoop();
 
 	cout << "GUI closed" << endl;
-
-	//thr_receive.join();
 }
 
 

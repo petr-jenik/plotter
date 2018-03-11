@@ -61,8 +61,8 @@ public:
        endPoint.y = 0;
        endPoint.z = 0;
 
-       stepsPerOneTurn = 1000;
-       gearRatio = 30;
+       stepsPerOneTurn = 18000;
+       gearRatio = 1;
        directionLeft = true;
 
        this->update();
@@ -70,9 +70,13 @@ public:
 
     void draw(void)
     {
-        drawCircle(getCirclePosition(rotationCenter, armLength, 0), 10);
-        drawCircle(getCirclePosition(rotationCenter, armLength, 90), 10);
-        drawCircle(getCirclePosition(rotationCenter, armLength, 180) , 10);
+        drawCircle(getCirclePosition(rotationCenter, armLength, 0), 2);
+        drawCircle(getCirclePosition(rotationCenter, armLength, 90), 2);
+        drawCircle(getCirclePosition(rotationCenter, armLength, 180) , 2);
+
+        drawCircle(getCirclePosition(rotationCenter, armLength, 45), 2);
+        drawCircle(getCirclePosition(rotationCenter, armLength, 135) , 2);
+
 
         position needle = getCirclePosition(rotationCenter, 30, this->angle);
         drawLine(rotationCenter, needle);

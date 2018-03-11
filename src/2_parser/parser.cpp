@@ -10,22 +10,6 @@
 #include <string.h>
 #include "parser.h"
 
-/*
-std::ostream& operator << (std::ostream& stream, const command& cmd)
-{
-	stream << "Used " << cmd.used;
-	if (cmd.used)
-	{
-		stream << ", Parts:";
-		for (int32_t i = 0; i < cmd.length; i++)
-		{
-			stream << " " << cmd.parts[i];
-		}
-	}
-	return stream;
-}
-*/
-
 static const int STRCMP_MATCH = 0;
 
 
