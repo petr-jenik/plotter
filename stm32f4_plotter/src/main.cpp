@@ -27,6 +27,8 @@
 
 // ----------------------------------------------------------------------------
 
+#include "diag/Trace.h"
+
 #include "Timer.h"
 #include "BlinkLed.h"
 
@@ -38,6 +40,7 @@
 #include "parser_main.h"
 #include "movementControl_main.h"
 #include "stepperControl_main.h"
+
 #include "global.h"
 
 // ----------------------------------------------------------------------------
@@ -149,124 +152,43 @@ BlinkLed blinkLeds[1] =
 
 // ----- main() ---------------------------------------------------------------
 
-// Sample pragmas to cope with warnings. Please note the related line at
-// the end of this function, used to pop the compiler diagnostics status.
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#pragma GCC diagnostic ignored "-Wmissing-declarations"
-#pragma GCC diagnostic ignored "-Wreturn-type"
-
-int
-old_main(int argc, char* argv[])
-{
-  // Send a greeting to the trace device (skipped on Release).
-  LOG("Hello ARM World!");
-
-  // At this stage the system clock should have already been configured
-  // at high speed.
-  //LOG("System clock: " << SystemCoreClock << " Hz\n");
-
-  Timer timer;
-  timer.start ();
-
-  // Perform all necessary initialisations for the LEDs.
-  for (size_t i = 0; i < (sizeof(blinkLeds) / sizeof(blinkLeds[0])); ++i)
-    {
-      blinkLeds[i].powerUp ();
-    }
-
-  uint32_t seconds = 0;
-
-  for (size_t i = 0; i < (sizeof(blinkLeds) / sizeof(blinkLeds[0])); ++i)
-    {
-      blinkLeds[i].turnOn ();
-    }
-
-  // First second is long.
-  timer.sleep (Timer::FREQUENCY_HZ);
-
-  for (size_t i = 0; i < (sizeof(blinkLeds) / sizeof(blinkLeds[0])); ++i)
-    {
-      blinkLeds[i].turnOff ();
-    }
-
-  timer.sleep (BLINK_OFF_TICKS);
-
-  ++seconds;
-  //LOG ("Second "<<  seconds);
-
-  if ((sizeof(blinkLeds) / sizeof(blinkLeds[0])) > 1)
-    {
-      // Blink individual LEDs.
-      for (size_t i = 0; i < (sizeof(blinkLeds) / sizeof(blinkLeds[0])); ++i)
-        {
-          blinkLeds[i].turnOn ();
-          timer.sleep (BLINK_ON_TICKS);
-
-          blinkLeds[i].turnOff ();
-          timer.sleep (BLINK_OFF_TICKS);
-
-          ++seconds;
-          //LOG ("Second " <<  seconds);
-        }
-
-      // Blink binary.
-      while (1)
-        {
-          for (size_t l = 0; l < (sizeof(blinkLeds) / sizeof(blinkLeds[0]));
-              ++l)
-            {
-              blinkLeds[l].toggle ();
-              if (blinkLeds[l].isOn ())
-                {
-                  break;
-                }
-            }
-          timer.sleep (Timer::FREQUENCY_HZ);
-
-          ++seconds;
-          //LOG ("Second " <<  seconds);
-        }
-      // Infinite loop, never return.
-    }
-  else
-    {
-      while (1)
-        {
-          blinkLeds[0].turnOn ();
-          timer.sleep (BLINK_ON_TICKS);
-
-          blinkLeds[0].turnOff ();
-          timer.sleep (BLINK_OFF_TICKS);
-
-          ++seconds;
-          //LOG ("Second " <<  seconds);
-        }
-      // Infinite loop, never return.
-    }
-}
-
 Timer timer;
 
-void systemInit()
+void heartbeat(void)
 {
-	//std::cout << "TEST" << std::endl;
-	LOG("System clock: %u Hz\n" <<  SystemCoreClock);
-
-    timer.start ();
-
-    // Perform all necessary initialisations for the LEDs.
-    for (size_t i = 0; i < (sizeof(blinkLeds) / sizeof(blinkLeds[0])); ++i)
-    {
-        blinkLeds[i].powerUp ();
-    }
-
-	// Order of initialisation is important!
-	stepperControl_init();
-	movementControl_init();
-	parser_init();
-	reader_init();
+	blinkLeds[0].toggle();
 }
+
+void heartbeat_mainApp(void)
+{
+	blinkLeds[1].toggle();
+}
+
+
+
+void atLimitSwitch(int i)
+{
+	if (i == 0)
+	{
+		blinkLeds[2].turnOn();
+	}
+	else
+	{
+		blinkLeds[3].turnOn();
+	}
+}
+
+
+void LEDs_init(void)
+{
+	// Perform all necessary initialisations for the LEDs.
+	for (size_t i = 0; i < (sizeof(blinkLeds) / sizeof(blinkLeds[0])); ++i)
+	{
+		blinkLeds[i].powerUp ();
+	}
+}
+
+
 
 /*
  * List of tasks:
@@ -279,22 +201,106 @@ void systemInit()
  *
  */
 
+void initialize_hardware(void)
+{
+  // Initialise the HAL Library; it must be the first function
+  // to be executed before the call of any HAL function.
+  HAL_Init();
+
+  // Enable HSE Oscillator and activate PLL with HSE as source
+  //SystemClock_Config();
+
+  // Call the CSMSIS system clock routine to store the clock frequency
+  // in the SystemCoreClock global RAM location.
+  SystemCoreClockUpdate();
+}
+
+void LED_loop(void)
+{
+    timer.start ();
+    LEDs_init();
+
+	// Button init
+	Gpio userButton({eGPIO_PORT_A, 0, false, eGPIO_Mode_Input, eGPIO_Pull_No });
+	userButton.powerUp();
+
+	while(1)
+	{
+		if (userButton.isOn())
+		{
+			static int idx = 0;
+			blinkLeds[idx].turnOff();
+			idx = (idx + 1) % 4;
+			blinkLeds[idx].turnOn();
+
+			Timer::sleep(100);
+		}
+	}
+
+}
+
+void systemInit()
+{
+	initialize_hardware();
+
+	LOG("System clock: %u Hz\n" <<  SystemCoreClock);
+
+    timer.start ();
+
+    // Heartbeat LED initialization
+    LEDs_init();
+}
+
+
+void appInit()
+{
+	// Order of initialization is important!
+	stepperControl_init();
+	movementControl_init();
+	parser_init();
+	reader_init();
+}
+
+
 int main(int argc, char** argv)
 {
-	// App init
+	/* System init */
 	systemInit();
 
-//#define DEBUG_LOOP
+	// User button init
+	Gpio userButton({eGPIO_PORT_A, 0, false, eGPIO_Mode_Input, eGPIO_Pull_No });
+	userButton.powerUp();
 
-	// Start main app
+	// Wait for user button press
+	while(false == userButton.isOn())
+	{
+		Timer::sleep(100);
+		heartbeat_mainApp();
+	}
+
+	/* App init */
+	appInit();
+
+	// Wait for user button press
+	while(false == userButton.isOn())
+	{
+		Timer::sleep(100);
+		heartbeat_mainApp();
+	}
+
+
+#define DEBUG_LOOP
+
+	/* Start main app */
 #ifdef DEBUG_LOOP
-	debug_loop();
+	movementControl_showDemo();
 #else
-	//reader_readAndProcess();
+	reader_readAndProcess();
 #endif // #ifdef DEBUG_LOOP
 
 	LOG("PROGRAM END");
 	return 0;
 }
+
 
 // ----------------------------------------------------------------------------

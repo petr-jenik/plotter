@@ -43,7 +43,10 @@ private:
 
 public:
   // Default constructor
-  Timer() = default;
+  Timer()
+  {
+	int tmp = 42;
+  }
 
   inline void
   start(void)
@@ -53,7 +56,7 @@ public:
   }
 
   static void
-  sleep(ticks_t ticks);
+  sleep(int miliseconds);
 
   inline static void
   tick(void)

@@ -41,13 +41,14 @@ volatile Timer::ticks_t Timer::ms_delayCount;
 // ----------------------------------------------------------------------------
 
 void
-Timer::sleep(ticks_t ticks)
+Timer::sleep(int miliseconds)
 {
-  ms_delayCount = ticks;
+  HAL_Delay(miliseconds);
+  //ms_delayCount = ticks;
 
   // Busy wait until the SysTick decrements the counter to zero.
-  while (ms_delayCount != 0u)
-    ;
+  //while (ms_delayCount != 0u)
+//    ;
 }
 
 // ----- SysTick_Handler() ----------------------------------------------------
