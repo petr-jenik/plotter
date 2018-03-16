@@ -143,7 +143,7 @@ void serveClient()
 
 void reader_readAndProcess()
 {
-	DBG("Start server and listen for data" << std::endl);
+	DBG("Start server and listen for data");
 
 	while(comm.listen())
 	{

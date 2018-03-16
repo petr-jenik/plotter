@@ -20,28 +20,17 @@
 
 using namespace std;
 
-
-std::ostream& operator<< (std::ostream& stream, position pos)
+void heartbeat(void)
 {
-	stream << "[" << pos.x << "," << pos.y << "," << pos.z << "]";
-	return stream;
+	//LOG("Alive!");
+}
+
+void atLimitSwitch(int i)
+{
+	LOG("At limit switch. Channel: " << i);
 }
 
 
-std::ostream& operator << (std::ostream& stream, const moveCommand& cmd)
-{
-	stream << "Go to: " << cmd.finalPosition;
-	stream << ", extrude: " << cmd.extrudeLength;
-	stream << ", movementSpeed: " << cmd.movementSpeed;
-	return stream;
-}
-
-
-std::ostream& operator << (std::ostream& stream, const armCommand& cmd)
-{
-	stream << "[" << cmd.angle1 << ", " << cmd.angle2 << ", " << cmd.relPosZ << ", " << cmd.extrudeLength << "]";
-	return stream;
-}
 
 void systemInit()
 {
@@ -67,7 +56,7 @@ void systemInit()
 int main(int argc, char** argv)
 {
 	unsigned int pocetProcesoru = std::thread::hardware_concurrency();
-	std::cout << "Pocet procesoru: " << pocetProcesoru << std::endl;
+	LOG("Pocet procesoru: " << pocetProcesoru);
 
 	/* Create GUI loop before an initialization of the rest of the system */
 	std::thread thread_GUI(gui_loop);
@@ -87,7 +76,7 @@ int main(int argc, char** argv)
 
 	thread_GUI.join();
 
-	std::cout << "PROGRAM END" << std::endl;
+	LOG("PROGRAM END");
 
 	return 0;
 }

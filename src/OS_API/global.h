@@ -23,7 +23,7 @@
 	              }
 #endif //OS_EMBEDDED
 #ifdef OS_LINUX
-threads
+
 #define new_assert(x) if(!(x))                                                                         \
 				  {																				    \
 						LOG("ASSERT FAILED: ");\
@@ -62,6 +62,7 @@ typedef struct position
     }
 } position;
 
+EmbeddedCout& operator<<(EmbeddedCout& cout, position pos);
 
 typedef struct
 {
@@ -115,6 +116,9 @@ int mapInt2(int x, int in_min, int in_max, int out_min, int out_max)
   return (((x - in_min) * (out_max - out_min) + (in_max - in_min)/2 )/ (in_max - in_min)) + out_min;
 }*/
 
-//position position::operator+(position lhs, const position &rhs)
+EmbeddedCout& operator<<(EmbeddedCout& stream, position pos);
+EmbeddedCout& operator<<(EmbeddedCout& stream, const moveCommand& cmd);
+EmbeddedCout& operator<<(EmbeddedCout& stream, const armCommand& cmd);
+
 
 #endif /* PRINTER_GLOBAL_H_ */
