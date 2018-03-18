@@ -23,8 +23,8 @@ void stepperControl_goToThisPosition(position newPosition,float extrudeLength)
 
 
 void stepperControl_init(void){};
-
 */
+
 void movementControl_createLine(position finalPosition,
 									float extrudeLength,
 									float movementSpeed)
@@ -136,18 +136,16 @@ void printCircle(float radius, position center)
 static void showDemo()
 {
 
-	printRectangle(10, {0, 0, 0});
+	//printRectangle(50, {0, 0, 0});
 
-	printLine({0,0,0}, {0,100, 0});
+	//printLine({0,0,0}, {0,100, 0});
 
-	/*
-	for (int i = 0; i < 100; i += 5)
+	for (int i = 0; i < 30; i += 1)
 	{
-		printRectangle(2*i, {0,0,0});
+		//printRectangle(2*i, {0,0,0});
 		//printLine({-150, i, 0}, {150, i, 0});
-		//printCircle(i, { 0, 0, 0});
+		printCircle(i, { 0, 0, 0});
 	}
-	 */
 	/*
 	printCircle(10, {-100, 100, 0});
 	printCircle(10, {-100, -100, 0});

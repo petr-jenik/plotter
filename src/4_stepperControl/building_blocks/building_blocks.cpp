@@ -43,7 +43,7 @@ void Stepper::registerGPIOs(StepperGPIOs * gpio)
     this->_enable();
 }
 
-void Stepper::OnUpdate(int numberOfSteps, bool enable)
+void Stepper::OnUpdate(int32_t numberOfSteps, bool enable)
 {
 	//this->sumError = 0;
 	this->sumError += numberOfSteps;
@@ -66,7 +66,7 @@ void Stepper::OnUpdate(int numberOfSteps, bool enable)
 }
 
 
-int Stepper::getError(void)
+int32_t Stepper::getError(void)
 {
 	return this->error;
 }
@@ -210,7 +210,7 @@ void StepperWithLimits::OnUpdate(float relativePosition, bool enable)
 									 (float)0.0,
 									 (float)this->maxStepperValue);
 
-	int diff = this->setpointStepperValue - this->currentStepCount;
+	int32_t diff = this->setpointStepperValue - this->currentStepCount;
 	Stepper::OnUpdate(diff, enable);
 }
 

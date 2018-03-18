@@ -4,7 +4,6 @@
  *  Created on: 15 Mar 2018
  *      Author: pi
  */
-#include <cstdio>
 #include <string>
 #include <string.h>
 #include <stdlib.h>
@@ -15,7 +14,7 @@ EmbeddedCout dbgCout;
 
 void EmbeddedCout::_putChar(char c)
 {
-	printf("%c", c);
+	//printf("%c", c);
 }
 
 size_t EmbeddedCout::_getFreeSpaceSize()

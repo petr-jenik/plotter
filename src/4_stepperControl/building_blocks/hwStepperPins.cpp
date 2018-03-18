@@ -38,12 +38,12 @@ StepperGPIOs stepperGPIOs3(
 	});
 */
 
-LimitSwitchGPIOs limitSwitches1(
+LimitSwitchGPIOs limitSwitches2(
 	{{eGPIO_PORT_D, 0 ,  true, eGPIO_Mode_Input, eGPIO_Pull_Up}, // Limit switch 1
 	{eGPIO_PORT_C, 11 , true, eGPIO_Mode_Input, eGPIO_Pull_Up } // Limit switch 2
 	});
 
-LimitSwitchGPIOs limitSwitches2(
+LimitSwitchGPIOs limitSwitches1(
    {{eGPIO_PORT_E, 7 ,  true, eGPIO_Mode_Input, eGPIO_Pull_Up}, // Limit switch 1
     {eGPIO_PORT_E, 8 ,  true, eGPIO_Mode_Input, eGPIO_Pull_Up} // Limit switch 2
     });

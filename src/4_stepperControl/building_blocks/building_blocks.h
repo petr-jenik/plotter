@@ -12,7 +12,7 @@
 #include "stepperConfig.h"
 #include "calibration.h"
 #include "hwStepperPins.h"
-
+#include <stdint.h>
 
 class Stepper
 {
@@ -24,11 +24,11 @@ protected:
     // HW GPIOs for stepper
     StepperGPIOs * gpio;
 
-	int error;
-	int sumError;
-	int currentStepCount; 	// Actual position (steps)
+	int32_t error;
+	int32_t sumError;
+	int32_t currentStepCount; 	// Actual position (steps)
 
-	const int stepSize = 1;
+	const int32_t stepSize = 1;
 
 	void _enable(void);
     void _disable(void);
@@ -39,12 +39,12 @@ public:
     Stepper();
     void registerGPIOs(StepperGPIOs * gpio);
 
-    void OnUpdate(int numberOfSteps, bool enable);
+    void OnUpdate(int32_t numberOfSteps, bool enable);
     void OnUpdateRegulation(void);
 
     void moveStart(void);
     void moveEnd(void);
-    int getError(void);
+    int32_t getError(void);
 };
 
 
@@ -54,8 +54,8 @@ protected:
    // HW GPIOs for limit switches
     LimitSwitchGPIOs * limitSwitchGPIOs;
 
-    int setpointStepperValue;  // Desired position (steps)
-    int maxStepperValue;       // Max value (steps)
+    int32_t setpointStepperValue;  // Desired position (steps)
+    int32_t maxStepperValue;       // Max value (steps)
 
     // Flags
     bool calibrationEnabled; //TODO maybe rename this flag to hasLimitSwitches

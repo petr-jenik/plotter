@@ -26,27 +26,27 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>src/plotter/1_reader</name>
+			<name>src/1_reader</name>
 			<type>2</type>
 			<location>/home/apollo/Dokumenty/coding/3d-tisk/workspace/threads_example/src/1_reader</location>
 		</link>
 		<link>
-			<name>src/plotter/2_parser</name>
+			<name>src/2_parser</name>
 			<type>2</type>
 			<location>/home/apollo/Dokumenty/coding/3d-tisk/workspace/threads_example/src/2_parser</location>
 		</link>
 		<link>
-			<name>src/plotter/3_movement_control</name>
+			<name>src/3_movement_control</name>
 			<type>2</type>
 			<location>/home/apollo/Dokumenty/coding/3d-tisk/workspace/threads_example/src/3_movement_control</location>
 		</link>
 		<link>
-			<name>src/plotter/4_stepperControl</name>
+			<name>src/4_stepperControl</name>
 			<type>2</type>
 			<location>/home/apollo/Dokumenty/coding/3d-tisk/workspace/threads_example/src/4_stepperControl</location>
 		</link>
 		<link>
-			<name>src/plotter/OS_API</name>
+			<name>src/OS_API</name>
 			<type>2</type>
 			<location>/home/apollo/Dokumenty/coding/3d-tisk/workspace/threads_example/src/OS_API</location>
 		</link>

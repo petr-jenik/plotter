@@ -56,8 +56,8 @@ typedef enum
 
 typedef struct
 {
-    unsigned int port;
-    unsigned int pin;
+    uint32_t port;
+    uint32_t pin;
     bool activeLow;
     eGPIO_Mode mode;
     eGPIO_Pull pull;

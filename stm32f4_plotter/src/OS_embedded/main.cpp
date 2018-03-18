@@ -278,8 +278,39 @@ int main(int argc, char** argv)
 		heartbeat_mainApp();
 	}
 
+
+	// TODO remove this - start
+	Timer::sleep(1000);
+
+	LimitSwitchGPIOs* pLimitSwitches1 = getLimitSwitchGPIOs(0);
+	LimitSwitchGPIOs* pLimitSwitches2 = getLimitSwitchGPIOs(1);
+
+	Gpio * pGPIOs[] =
+	{
+			&pLimitSwitches1->switchPin1,
+			&pLimitSwitches1->switchPin2,
+			&pLimitSwitches2->switchPin1,
+			&pLimitSwitches2->switchPin2
+	};
+
+	for (int i = 0 ; i < ARRAY_SIZE(pGPIOs); i++)
+	{
+		pGPIOs[i]->powerUp();
+	}
+
+	while(false == userButton.isOn())
+	{
+		for (int i = 0 ; i < ARRAY_SIZE(pGPIOs); i++)
+		{
+			(pGPIOs[i]->isOn()) ? blinkLeds[i].turnOn() : blinkLeds[i].turnOff();
+		}
+	}
+	// TODO remove this - end
+
 	/* App init */
 	appInit();
+
+	Timer::sleep(1000);
 
 	// Wait for user button press
 	while(false == userButton.isOn())
@@ -298,7 +329,10 @@ int main(int argc, char** argv)
 	reader_readAndProcess();
 #endif // #ifdef DEBUG_LOOP
 
-	LOG("PROGRAM END");
+	while(1)
+	{
+		LOG("PROGRAM END");
+	}
 	return 0;
 }
 

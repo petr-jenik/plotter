@@ -32,8 +32,16 @@ public:
 	EmbeddedCout& operator<<(char * c_string);
 	//EmbeddedCout& operator<<(std::string data);
 	EmbeddedCout& operator<<(eStreamControl command);
-	EmbeddedCout& operator<<(const int data);
-	EmbeddedCout& operator<<(const unsigned int data);
+
+	EmbeddedCout& operator<<(const uint8_t data);
+	EmbeddedCout& operator<<(const uint16_t data);
+	EmbeddedCout& operator<<(const uint32_t data);
+
+
+	EmbeddedCout& operator<<(const int8_t data);
+	EmbeddedCout& operator<<(const int16_t data);
+	EmbeddedCout& operator<<(const int32_t data);
+
 	EmbeddedCout& operator<<(const float fData);
 };
 
