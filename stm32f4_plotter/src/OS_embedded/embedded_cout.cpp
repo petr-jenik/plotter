@@ -8,13 +8,16 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "hwUart.h"
+
 #include "embedded_cout.h"
 
 EmbeddedCout dbgCout;
 
 void EmbeddedCout::_putChar(char c)
 {
-	//printf("%c", c);
+	// HW specific
+	uartSendChar(c);
 }
 
 size_t EmbeddedCout::_getFreeSpaceSize()
@@ -54,6 +57,9 @@ EmbeddedCout::EmbeddedCout()
 {
 	memset(buffer, 0, sizeof(buffer));
 	charIndex = 0;
+
+	//HW specific
+	uartInit();
 }
 
 
