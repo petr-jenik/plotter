@@ -18,7 +18,7 @@ typedef struct
 
 typedef struct
 {
-	int32_t value; // Value in range 0.000 - 100.000% (thousandths of a percent)
+	float angle; // Value in range 0.000 - 180.0 DEG
     bool enable;
 } ServoSetting;
 

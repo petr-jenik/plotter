@@ -29,20 +29,16 @@ Servo::Servo(int _channel)
 }
 
 
-void Servo::OnUpdate(ServoSetting * pSetting)
+void Servo::OnUpdate(ServoSetting & setting)
 {
-   if (pSetting != NULL)
-   {
-       // Enable or disable servo channel
-       this->enableFlag = pSetting->enable;
-       //this->
-       //this->angle = pSetting->value * (MAX_SERVO_ANGLE - MIN_SERVO_ANGLE) / maxSetpointValueInPercent;
-   }
+   // Enable or disable servo channel
+   this->enableFlag = setting.enable;
+   this->angle = constrain(setting.angle, MIN_SERVO_ANGLE, MAX_SERVO_ANGLE);
 }
 
 
 void Servo::OnMove(void)
 {
-    servoSetPosition(this->enableFlag * 180, this->channel);
+    servoSetPosition(this->angle, this->channel);
 }
 

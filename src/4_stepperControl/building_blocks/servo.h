@@ -14,16 +14,18 @@
 class Servo
 {
 private:
-    // Flags
-    uint32_t angle;                 // Desired angle
-    bool enableFlag;                // Enable or disable flag
+	// Desired angle
+    float angle;
 
-    // Servo channel
+	// Servo channel
     uint32_t channel;
+
+    // Enable/disable flag
+    bool enableFlag;
 
 public:
     Servo(int channel);
-    void OnUpdate(ServoSetting * pSetting);
+    void OnUpdate(ServoSetting & setting);
     void OnMove(void);
 };
 

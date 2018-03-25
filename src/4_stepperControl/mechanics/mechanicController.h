@@ -21,11 +21,6 @@ typedef enum
     eObjectType_COUNT
 } eObjectType;
 
-const int cMaxNumberOfPlotterArms = 10;
-const int cMaxNumberOfSteppers = 10;
-const int cMaxNumberOfServos = 10;
-const int cNumberOfSteppersWithLimit = 10;
-
 class MechanicController
 {
 private:
@@ -55,7 +50,8 @@ public:
     void registerServos(Servo * pServos, int servosCount);
     void registerSteppers(Stepper * pSteppers, int steppersCount);
     //PlotterArm & _arm_left, PlotterArm & _arm_right, Servo & _servo
-    void OnUpdateAll(armCommand command);
+    //void OnUpdateAll(armCommand command);
+    void OnUpdateAll(MechanicCommand command);
     void OnMove(void);
     void calibrate(bool startNewCalibration);
     bool calibrationFinished(void);

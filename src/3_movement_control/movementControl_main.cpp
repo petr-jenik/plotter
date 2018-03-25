@@ -142,7 +142,7 @@ static void showDemo()
 
 	for (int i = 0; i < 30; i += 1)
 	{
-		//printRectangle(2*i, {0,0,0});
+		printRectangle(2*i, {0,0,0});
 		//printLine({-150, i, 0}, {150, i, 0});
 		printCircle(i, { 0, 0, 0});
 	}

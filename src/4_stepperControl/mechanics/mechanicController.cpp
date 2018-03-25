@@ -77,11 +77,47 @@ void MechanicController::registerSteppers(Stepper * pSteppers, int steppersCount
 	}
 }
 
+void MechanicController::OnUpdateAll(MechanicCommand command)
+{
+	// TODO Unify usage of steppers - use each of them or use an array
 
+	new_assert(command.servoObjectCount == this->servoObjectCount);
+	new_assert(command.stepperObjectCount == this->stepperObjectCount);
+	new_assert(command.limStepperObjectCount == this->limStepperObjectCount);
+	new_assert(command.plotterArmObjectCount == this->armObjectCount);
+
+	// Servos
+	for (int i = 0; i < command.servoObjectCount; i++)
+	{
+		ServoSetting servoSetting = {command.servoAngle[i], true};
+		servoObjectArray[i]->OnUpdate(servoSetting);
+	}
+
+	// Basic steppers
+	for (int i = 0; i < command.stepperObjectCount; i++)
+	{
+		stepperObjectArray[i]->OnUpdate(command.stepperNumberOfStepps[i], true);
+	}
+
+	// Steppers with limit switches
+	for (int i = 0; i < command.limStepperObjectCount; i++)
+	{
+		limStepperObjectArray[i]->OnUpdate(command.limStepperRelativePosition[i], true);
+	}
+
+	// Plotter Arms (special kind of steppers with limit switches)
+	for (int i = 0; i < command.plotterArmObjectCount; i++)
+	{
+		PlotterArmSetting setting = {command.plotterArmAngle[i], true};
+		armObjectArray[i]->NewPosition(setting); // left
+	}
+}
+
+/*
 void MechanicController::OnUpdateAll(armCommand command)
 {
 	// Add better command/setting
-	/* struct
+	 struct
 	 * {
 	 *		angle1, angle2, angle3, .....
 	 *		numberOfUsedPlotter arms
@@ -90,7 +126,7 @@ void MechanicController::OnUpdateAll(armCommand command)
 	 *		stepCount, stepCount, stepCount, ....
 	 *		number of used servos
 	 * }
-	*/
+
 
 	// TODO Unify usage of steppers - use each of them or use an array
 
@@ -114,9 +150,11 @@ void MechanicController::OnUpdateAll(armCommand command)
 	//assert(this->servoObjectCount >= 1 and servoObjectArray != NULL);
 	if (this->servoObjectCount > 0)
 	{
-		servoObjectArray[0]->OnUpdate(&servoSetting);
+		servoObjectArray[0]->OnUpdate(servoSetting);
 	}
 }
+*/
+
 
 int MechanicController::GetMaxStepperError(void)
 {

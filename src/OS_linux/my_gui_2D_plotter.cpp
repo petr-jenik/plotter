@@ -46,7 +46,7 @@ void servoInit()
 
 bool gExtrude = false;
 
-void servoSetPosition(int angle, uint32_t channel)
+void servoSetPosition(float angle, uint32_t channel)
 {
 	gExtrude = (angle < 90)? false : true;
 }
@@ -67,8 +67,8 @@ GpioDesc_t undefPin = {0, ePin_undef};
 // ----------------------------------------------------------------------------
 
 // HW simulation
-StepperGui stepperGui2(pos_S1.x, pos_S1.y, armLength_AS1, LEFT_ARM_OFFSET);
-StepperGui stepperGui1(pos_S2.x, pos_S2.y, armLength_BS2, RIGHT_ARM_OFFSET);
+StepperGui stepperGui1(pos_S1.x, pos_S1.y, armLength_AS1, LEFT_ARM_OFFSET);
+StepperGui stepperGui2(pos_S2.x, pos_S2.y, armLength_BS2, RIGHT_ARM_OFFSET);
 
 StepperGui * steppers[] = {&stepperGui1, &stepperGui2};
 

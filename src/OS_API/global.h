@@ -24,12 +24,15 @@
 #endif //OS_EMBEDDED
 #ifdef OS_LINUX
 
-#define new_assert(x) if(!(x))                                                                         \
-				  {																				    \
-						LOG("ASSERT FAILED: ");\
-						while(1)                                                                    \
-						{												                            \
-						}                                                                           \
+#define new_assert(x) if(!(x))                              \
+				  {										    \
+						LOG("ASSERT FAILED on line ");      \
+						LOG(__LINE__); 						\
+						LOG(" in file ");					\
+						LOG(__FILE__);						\
+						while(1)                            \
+						{				                    \
+						}                                   \
 	              }
 #endif //OS_LINUX
 //#include <iostream>
@@ -92,6 +95,25 @@ typedef struct
 	float speed;
 } armCommand;
 
+const int cMaxNumberOfPlotterArms = 10;
+const int cMaxNumberOfSteppers = 10;
+const int cMaxNumberOfServos = 10;
+const int cNumberOfSteppersWithLimit = 10;
+
+typedef struct
+{
+	float plotterArmAngle[cMaxNumberOfPlotterArms];
+	int plotterArmObjectCount;
+
+	int32_t stepperNumberOfStepps[cMaxNumberOfSteppers];
+	int stepperObjectCount;
+
+	float limStepperRelativePosition[cNumberOfSteppersWithLimit];
+	int limStepperObjectCount;
+
+	float servoAngle[cMaxNumberOfServos];
+	int servoObjectCount;
+} MechanicCommand;
 
 template<typename T> T constrain(const T value, const T minValue, const T maxValue)
 {

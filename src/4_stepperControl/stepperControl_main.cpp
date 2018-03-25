@@ -102,8 +102,7 @@ void stepperControl_init(void)
  * out - arm command for motor
  *
  */
-bool calculateArmPosition(position finalPosition, float extrudeLength, armCommand& outputCmd)
-//bool createArmCommand(position C, armCommand& outputCmd)
+bool calculatePosition(position finalPosition, float extrudeLength, MechanicCommand& outputCmd)
 {
 	/*
 	 *           C
@@ -138,10 +137,17 @@ bool calculateArmPosition(position finalPosition, float extrudeLength, armComman
     	float angle2 = getAngle(pos_S2, {pos_S2.x+100, pos_S2.y, pos_S2.z}, B);
 
     	// Fill only arm positions
-    	outputCmd.angle1 = angle1;
-    	outputCmd.angle2 = angle2;
-        outputCmd.relPosZ = zAxeToRelative(finalPosition.z);
-        outputCmd.extrudeLength = extrudeLength;
+    	outputCmd.plotterArmAngle[0] = angle1;
+    	outputCmd.plotterArmAngle[1] = angle2;
+    	outputCmd.plotterArmObjectCount = 2;
+
+    	// Fill servo setting
+    	outputCmd.servoAngle[0] = (extrudeLength > 0) ? 180 : 0;
+    	outputCmd.servoObjectCount = 1;
+
+    	// Null other counts
+		outputCmd.stepperObjectCount = 0;
+		outputCmd.limStepperObjectCount = 0;
     	return true;
     }
 
@@ -151,11 +157,11 @@ bool calculateArmPosition(position finalPosition, float extrudeLength, armComman
 // TODO add speed
 void stepperControl_goToThisPosition(position newPosition,float extrudeLength)
 {
-	armCommand armCmd;
+	MechanicCommand command = {0};
 
-	if (calculateArmPosition(newPosition, extrudeLength, armCmd))
+	if (calculatePosition(newPosition, extrudeLength, command))
 	{
-	    mechanicController.OnUpdateAll(armCmd);
+	    mechanicController.OnUpdateAll(command);
 	    mechanicController.OnMove();
 	}
 	else
