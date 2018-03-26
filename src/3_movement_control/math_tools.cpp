@@ -38,40 +38,40 @@ float getDistance3D(position A, position B)
 float radsToDegs(float radians)
 {
     return ((radians * 180.0) / M_PI);
-	//TODO add modulo 360
+    //TODO add modulo 360
 }
 
 
 float degsToRads(float degs)
 {
-	return (degs * M_PI) / 180;
+    return (degs * M_PI) / 180;
 }
 
 
 position operator-(position &val1, position &val2)
 {
-	position retval = {val1.x - val2.x, val1.y - val2.y, val1.z - val2.z};
-	return retval;
+    position retval = {val1.x - val2.x, val1.y - val2.y, val1.z - val2.z};
+    return retval;
 }
 
 
 position operator+(position val1, position &val2)
 {
-	position retval = {val1.x + val2.x, val1.y + val2.y, val1.z + val2.z};
-	return retval;
+    position retval = {val1.x + val2.x, val1.y + val2.y, val1.z + val2.z};
+    return retval;
 }
 
 
 float toPositiveAngle(float angle)
 {
-	//return angle;
-	while(angle < 0)
-	{
-		angle += 360;
-	}
+    //return angle;
+    while(angle < 0)
+    {
+        angle += 360;
+    }
 
-	int count = angle / 360;
-	return angle - 360.0 * count;
+    int count = angle / 360;
+    return angle - 360.0 * count;
 }
 
 
@@ -87,15 +87,15 @@ float toPositiveAngle(float angle)
  */
 float getAngle(position pos_A, position pos_B, position pos_C)
 {
-	// A - base start - rotation center
-	position dA = pos_A - pos_A;
-	position dB = pos_B - pos_A;
-	position dC = pos_C - pos_A;
+    // A - base start - rotation center
+    position dA = pos_A - pos_A;
+    position dB = pos_B - pos_A;
+    position dC = pos_C - pos_A;
 
-	float angle1 = radsToDegs(atan2(dC.y, dC.x));
-	float angle2 = radsToDegs(atan2(dB.y, dB.x));
+    float angle1 = radsToDegs(atan2(dC.y, dC.x));
+    float angle2 = radsToDegs(atan2(dB.y, dB.x));
 
-	return toPositiveAngle(angle1 - angle2);
+    return toPositiveAngle(angle1 - angle2);
 }
 
 
@@ -113,11 +113,11 @@ float getAngle(position pos_A, position pos_B, position pos_C)
  *@return True if intersection was found, else False
  */
 bool getIntersection(position A,
-                       float r1,
-					   position B,
-					   float r2,
-					   position &inter1,
-					   position &inter2)
+                    float r1,
+                    position B,
+                    float r2,
+                    position &inter1,
+                    position &inter2)
 {
     float d = getDistance(A,B);
     if (d > (r1 + r2))
@@ -173,32 +173,32 @@ bool getIntersection(position A,
  */
 int32_t zAxeToRelative(float zPosition)
 {
-	int32_t relative = (maxRelativeZ * (zPosition - zAxeMin))/(zAxeMax - zAxeMin);
-	new_assert(relative >= 0);
-	return relative;
+    int32_t relative = (maxRelativeZ * (zPosition - zAxeMin))/(zAxeMax - zAxeMin);
+    new_assert(relative >= 0);
+    return relative;
 }
 
 
 float relativeToZAxe(int32_t relative)
 {
-	float zPosition = ((relative/maxRelativeZ) * (zAxeMax - zAxeMin)) + zAxeMin;
-	return zPosition;
+    float zPosition = ((relative/maxRelativeZ) * (zAxeMax - zAxeMin)) + zAxeMin;
+    return zPosition;
 }
 
 /*
 
 int32_t angleToRelative(float angle)
 {
-	//angle += 180;
-	return (angle * maxRelativeAngle) / 180.0;
+    //angle += 180;
+    return (angle * maxRelativeAngle) / 180.0;
 }
 
 
 float relativeToAngle(int32_t relative)
 {
-	float angle = (relative * 180.0) / maxRelativeAngle;
-	//angle -= 90;
-	return angle;
+    float angle = (relative * 180.0) / maxRelativeAngle;
+    //angle -= 90;
+    return angle;
 }
 */
 

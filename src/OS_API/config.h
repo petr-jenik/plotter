@@ -16,13 +16,13 @@ const int MIN_ANGLE = 0;
 const int MAX_ANGLE = 180;
 
 
-const int LEFT_ARM_OFFSET = -45;
-const int RIGHT_ARM_OFFSET = +45;
+const int LEFT_ARM_OFFSET = 0;//-45;
+const int RIGHT_ARM_OFFSET = 0; //+45;
 
 const int STEP_SIZE = 1;
 
-const position pos_S1 = {0, -100, 0};
-const position pos_S2 = {0, -100, 0};
+const position pos_S1 = {20, -100, 0};
+const position pos_S2 = {-20, -100, 0};
 
 const float zAxeMin = 0;
 const float zAxeMax = 1000;
@@ -34,6 +34,11 @@ const int armLength_AC =  100;
 const int armLength_AS1 = 100;
 const int armLength_BC =  100;
 const int armLength_BS2 = 100;
+
+//TODO Move this to a better location
+const int armLength_AD =  20;
+const int armLength_BD = 102;
+
 
 /*
  *           C

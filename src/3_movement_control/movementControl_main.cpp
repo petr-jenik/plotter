@@ -13,23 +13,23 @@
 #include "stepperControl_main.h"
 #include "movementControl_main.h"
 
+#ifdef OS_LINUX
+// TODO remove this
+#include "my_gui.h"
+#endif
+
 position gCurrentPosition = {0,0,0};
-
-/*
-// TODO add speed
-void stepperControl_goToThisPosition(position newPosition,float extrudeLength)
-{
-}
-
-
-void stepperControl_init(void){};
-*/
 
 void movementControl_createLine(position finalPosition,
 									float extrudeLength,
 									float movementSpeed)
 {
 	position startPos = gCurrentPosition;
+
+#ifdef OS_LINUX
+	guiCommand cmd = {1, 1, gCurrentPosition, finalPosition};
+	gui_add_line(cmd, eColor_green);
+#endif //OS_LINUX
 
 	// get distance between start and end points
 	float distance = getDistance3D(startPos, finalPosition);

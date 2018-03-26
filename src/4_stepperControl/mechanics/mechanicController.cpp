@@ -113,48 +113,6 @@ void MechanicController::OnUpdateAll(MechanicCommand command)
 	}
 }
 
-/*
-void MechanicController::OnUpdateAll(armCommand command)
-{
-	// Add better command/setting
-	 struct
-	 * {
-	 *		angle1, angle2, angle3, .....
-	 *		numberOfUsedPlotter arms
-	 *		float relativePos1, relativePos2, relativePos3,
-	 *		numberOf used steppers with limits
-	 *		stepCount, stepCount, stepCount, ....
-	 *		number of used servos
-	 * }
-
-
-	// TODO Unify usage of steppers - use each of them or use an array
-
-	PlotterArmSetting leftArm = {command.angle1, true};
-	PlotterArmSetting rightArm = {command.angle2, true};
-	ServoSetting servoSetting = {command.relPosZ, (bool)command.extrudeLength };
-
-	if (this->armObjectCount > 0)
-	{
-		armObjectArray[0]->NewPosition(leftArm); // left
-	}
-
-	if (this->armObjectCount > 1)
-	{
-		armObjectArray[1]->NewPosition(rightArm); // right
-	}
-
-	//assert(this->armObjectCount >= 2 and armObjectArray != NULL);
-	//armObjectArray[1]->NewPosition(rightArm); // right
-
-	//assert(this->servoObjectCount >= 1 and servoObjectArray != NULL);
-	if (this->servoObjectCount > 0)
-	{
-		servoObjectArray[0]->OnUpdate(servoSetting);
-	}
-}
-*/
-
 
 int MechanicController::GetMaxStepperError(void)
 {
