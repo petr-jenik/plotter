@@ -20,7 +20,7 @@ Servo::Servo(int _channel)
 {
     if (false == timerInitialized)
     {
-        servoInit();
+        hwServoInit();
     }
 
     //this->angle = 0;
@@ -39,6 +39,6 @@ void Servo::OnUpdate(ServoSetting & setting)
 
 void Servo::OnMove(void)
 {
-    servoSetPosition(this->angle, this->channel);
+    hwServoSetPosition(this->angle, this->channel);
 }
 

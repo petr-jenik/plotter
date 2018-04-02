@@ -10,19 +10,47 @@
 
 #include "global.h"
 
+#define PRINTER_TYPE_2D_PLOTTER       1
+#define PRINTER_TYPE_PLOTTER_CLOCK    2
+#define PRINTER_TYPE_3D_PRINTER       3
+
+// Select type of connected hardware
+#define PRINTER_TYPE PRINTER_TYPE_3D_PRINTER
+
 const int SPEED_MAGICAL_CONSTANT = 50;
 
 const int MIN_ANGLE = 0;
 const int MAX_ANGLE = 180;
 
 
-const int LEFT_ARM_OFFSET = 0;//-45;
-const int RIGHT_ARM_OFFSET = 0; //+45;
+const int LEFT_ARM_OFFSET = -45;
+const int RIGHT_ARM_OFFSET = +45;
 
 const int STEP_SIZE = 1;
 
-const position pos_S1 = {20, -100, 0};
-const position pos_S2 = {-20, -100, 0};
+#if PRINTER_TYPE == PRINTER_TYPE_PLOTTER_CLOCK
+	const position pos_S1 = {20, -100, 0};
+	const position pos_S2 = {-20, -100, 0};
+#elif PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER
+	const position pos_S1 = {0, -100, 0};
+	const position pos_S2 = {0, -100, 0};
+#elif PRINTER_TYPE == PRINTER_TYPE_3D_PRINTER
+
+	const position pos_START = { -150, -150, -150}; // Bottom left corner
+	const position pos_END = { 150, 150, 150}; // Upper right corner
+
+	enum
+	{
+		eStepperIdx_X = 0,
+		eStepperIdx_Y,
+		eStepperIdx_Z,
+
+		eStepperIdx_COUNT
+	} eStepperIdx3D;
+
+#endif
+
+
 
 const float zAxeMin = 0;
 const float zAxeMax = 1000;
@@ -36,7 +64,7 @@ const int armLength_BC =  100;
 const int armLength_BS2 = 100;
 
 //TODO Move this to a better location
-const int armLength_AD =  20;
+const int armLength_CD =  20;
 const int armLength_BD = 102;
 
 

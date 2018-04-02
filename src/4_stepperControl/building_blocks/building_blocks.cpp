@@ -208,7 +208,7 @@ void StepperWithLimits::OnUpdate(float relativePosition, bool enable)
 									 (float)0.0,
 									 (float)1.0,
 									 (float)0.0,
-									 (float)this->maxStepperValue);
+									 (float)this->maxStepperValue); //TODO Proc je max stepper value o 1 vetsi nez by mela byt?
 
 	int32_t diff = this->setpointStepperValue - this->currentStepCount;
 	Stepper::OnUpdate(diff, enable);

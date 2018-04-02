@@ -54,16 +54,24 @@ typedef struct position
     float y;
     float z;
 
-    position operator+(const struct position &right)
+    /*position operator+(const struct position &right)
     {
     	return {this->x + right.x, this->y + right.y, this->z + right.z};
-    }
-
+    }*/
+/*
     position operator-(const struct position &right)
     {
     	return {this->x - right.x, this->y - right.y, this->z - right.z};
     }
+    */
 } position;
+
+position operator-(const position &val1, const position &val2);
+
+position operator+(const position &val1, const position &val2);
+
+//position operator+=(const position &val1);
+
 
 EmbeddedCout& operator<<(EmbeddedCout& cout, position pos);
 
@@ -114,6 +122,12 @@ typedef struct
 	float servoAngle[cMaxNumberOfServos];
 	int servoObjectCount;
 } MechanicCommand;
+
+
+template<typename T> bool isInRange(const T value, const T minValue, const T maxValue)
+{
+	return ((minValue <= value) and (value <= maxValue));
+}
 
 template<typename T> T constrain(const T value, const T minValue, const T maxValue)
 {

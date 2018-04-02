@@ -16,7 +16,7 @@
 #define SERVO_PIN                 GPIO_PIN_7
 #define SERVO_PORT                GPIOB
 
-void servoInit();
-void servoSetPosition(float angle, uint32_t channel);
+void hwServoInit();
+void hwServoSetPosition(float angle, uint32_t channel);
 
 #endif // HW_SERVO_H_

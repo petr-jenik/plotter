@@ -28,7 +28,7 @@ StepperGPIOs stepperGPIOs2(
 	{eGPIO_PORT_E, 6 , true,  eGPIO_Mode_OUTPUT_PP, eGPIO_Pull_No }  //nEnablePin
 	});
 
-/*
+
 StepperGPIOs stepperGPIOs3(
 	{{eGPIO_PORT_C, 9 ,  false, eGPIO_Mode_OUTPUT_PP, eGPIO_Pull_No }, //directionPin
 	{eGPIO_PORT_C, 8 ,  false, eGPIO_Mode_OUTPUT_PP, eGPIO_Pull_No }, //stepPin
@@ -36,17 +36,18 @@ StepperGPIOs stepperGPIOs3(
 	{eGPIO_PORT_A, 8 ,  true,  eGPIO_Mode_OUTPUT_PP, eGPIO_Pull_No }, //nSleepPin
 	{eGPIO_PORT_A, 10 , true,  eGPIO_Mode_OUTPUT_PP, eGPIO_Pull_No } //nEnablePin
 	});
-*/
 
-LimitSwitchGPIOs limitSwitches2(
-	{{eGPIO_PORT_D, 0 ,  true, eGPIO_Mode_Input, eGPIO_Pull_Up}, // Limit switch 1
-	{eGPIO_PORT_C, 11 , true, eGPIO_Mode_Input, eGPIO_Pull_Up } // Limit switch 2
-	});
 
 LimitSwitchGPIOs limitSwitches1(
    {{eGPIO_PORT_E, 7 ,  true, eGPIO_Mode_Input, eGPIO_Pull_Up}, // Limit switch 1
     {eGPIO_PORT_E, 8 ,  true, eGPIO_Mode_Input, eGPIO_Pull_Up} // Limit switch 2
     });
+
+
+LimitSwitchGPIOs limitSwitches2(
+	{{eGPIO_PORT_D, 0 ,  true, eGPIO_Mode_Input, eGPIO_Pull_Up}, // Limit switch 1
+	{eGPIO_PORT_C, 11 , true, eGPIO_Mode_Input, eGPIO_Pull_Up } // Limit switch 2
+	});
 
 
 LimitSwitchGPIOs limitSwitches3(
@@ -61,7 +62,7 @@ StepperGPIOs* getStepperGPIOs(int idx)
 	{
 		&stepperGPIOs1,
 		&stepperGPIOs2,
-		//&stepperGPIOs3
+		&stepperGPIOs3
 	};
 
 	const int cStepperMaxCount = sizeof(stepperGPIOs)/sizeof(stepperGPIOs[0]);

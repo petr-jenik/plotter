@@ -4,30 +4,28 @@
  *  Created on: 24. 3. 2018
  *      Author: apollo
  */
-#include <iostream>
+
+#include "config.h"
+#if PRINTER_TYPE == PRINTER_TYPE_PLOTTER_CLOCK
 #include <mutex>
 
+/*
 #include "stepperControl_main.h"
 #include "reader_main.h"
 #include "parser_main.h"
 #include "movementControl_main.h"
 #include "stepperControl_main.h"
-
+*/
 #include "draw.h"
 #include "gui.h"
 #include "math_tools.h"
-#include "config.h"
 #include "hwGpio.h"
 #include "stepperSim.h"
 #include "math_tools.h"
 #include "global.h"
-#include "math_tools.h"
 #include "hwStepperPins.h"
 #include "hwServo.h"
 #include "servo.h"
-//#include "Timer.h"
-
-using namespace std;
 
 class ServoGui
 {
@@ -147,46 +145,28 @@ std::mutex drawListRequired_lock;
 
 // HW simulation
 
-bool _getEndpoint(position& C)
+static bool _getEndpoint(position& C)
 {
     position A = servo[0]->getEndPoint();
     position B = servo[1]->getEndPoint();
-    position C1, C2;
 
-    if (getIntersection(A, armLength_AC, B, armLength_BC, C1, C2))
-    {
-        float distC1 = getDistance(C1, pos_S1);
-        float distC2 = getDistance(C2, pos_S2);
-
-        C = (distC1 < distC2)? C2 : C1;
-        return true;
-    }
-    else
-    {
-        //std::cout << A << B << C1 << C2;
-        return false;
-    }
+	return getIntersectionCloserToRefPoint(	A,
+											armLength_AC,
+											B,
+											armLength_BC,
+											pos_S1,
+											C);
 }
 
-bool _getPositionOfPenholder(position B, position C, position& D)
+static bool _getPositionOfPenholder(position B, position C, position& D)
 {
-    position D1, D2;
-
-    if (getIntersection(C, armLength_AD, B, armLength_BD, D1, D2))
-    {
-        float dist1 = getDistance(D1, pos_S1);
-        float dist2 = getDistance(D2, pos_S2);
-
-        D = (dist1 < dist2)? D2 : D1;
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+	return getIntersectionCloserToRefPoint(	B,
+											armLength_BD,
+											C,
+											armLength_CD,
+											pos_S1,
+											D);
 }
-
-
 
 void drawSteppers()
 {
@@ -265,10 +245,6 @@ void addPointToDrawList(void)
 
     // C = Required position
 
-    position S1 = pos_S1;
-    position S2 = pos_S2;
-    position A = servo[0]->getEndPoint();
-    position B = servo[1]->getEndPoint();
     bool extrude = (servo[2]->getAngle() > 90) ? true : false;
 
     // Calculate position of the point C
@@ -281,6 +257,8 @@ void addPointToDrawList(void)
 
     // Calculate position of the point D
     position D;
+    position B = servo[1]->getEndPoint();
+
     if(!_getPositionOfPenholder(B, C, D))
     {
     	LOG("Point D not found");
@@ -289,10 +267,7 @@ void addPointToDrawList(void)
 
     static position currentPos = D;
 /*  static position tmpC = C;
-
-
 	float k = 1;
-
 	tmpC.x = k * C.x + (1 - k) * tmpC.x;
 	tmpC.y = k * C.y + (1 - k) * tmpC.y;
 	tmpC.z = k * C.z + (1 - k) * tmpC.z;
@@ -443,3 +418,5 @@ bool Gpio::isValid()
     return false;
 }
 
+
+#endif // PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER

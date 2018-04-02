@@ -4,6 +4,10 @@
  *  Created on: 24. 3. 2018
  *      Author: apollo
  */
+
+#include "config.h"
+#if PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER
+
 #include "mechanicController.h"
 #include "global.h"
 
@@ -138,3 +142,4 @@ void stepperControl_goToThisPosition(position newPosition,float extrudeLength)
 	}
 }
 
+#endif //PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER

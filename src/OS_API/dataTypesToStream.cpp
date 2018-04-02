@@ -30,3 +30,23 @@ EmbeddedCout& operator << (EmbeddedCout& stream, const armCommand& cmd)
 	return stream;
 }
 
+position operator-(const position &val1, const position &val2)
+{
+    position retval = {val1.x - val2.x, val1.y - val2.y, val1.z - val2.z};
+    return retval;
+}
+
+
+position operator+(const position &val1, const position &val2)
+{
+    position retval = {val1.x + val2.x, val1.y + val2.y, val1.z + val2.z};
+    return retval;
+}
+
+/*
+position operator+=(const position &val)
+{
+	this.x += val.x;
+	this.y += val.y;
+	this.z += val.z;
+}*/

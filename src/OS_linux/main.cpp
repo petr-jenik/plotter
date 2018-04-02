@@ -27,7 +27,7 @@ void heartbeat(void)
 
 void atLimitSwitch(int i)
 {
-	LOG("At limit switch. Channel: " << i);
+	//("At limit switch. Channel: " << i);
 }
 
 
@@ -52,7 +52,6 @@ void systemInit()
  *  5. (optional) GUI (plot actual state)
  *
  */
-
 int main(int argc, char** argv)
 {
 	unsigned int pocetProcesoru = std::thread::hardware_concurrency();
@@ -64,7 +63,7 @@ int main(int argc, char** argv)
 	/* App init */
 	systemInit();
 
-#define DEBUG_LOOP
+//#define DEBUG_LOOP
 
 	/* Start main app */
 #ifdef DEBUG_LOOP
