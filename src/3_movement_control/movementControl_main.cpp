@@ -28,6 +28,9 @@ void movementControl_createLine(position finalPosition,
 {
 	TRACE; // Trace macro
 
+	// Flip image along the X axis
+	finalPosition.y *= -1;
+
 	position startPos = gCurrentPosition;
 
 //#ifdef OS_LINUX
