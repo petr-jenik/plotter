@@ -149,4 +149,20 @@ EmbeddedCout& operator<<(EmbeddedCout& stream, const moveCommand& cmd);
 EmbeddedCout& operator<<(EmbeddedCout& stream, const armCommand& cmd);
 
 
+
+// Time intervals in miliseconds
+typedef struct
+{
+	int stepPulseLength;
+	int resetPulseLength;
+	int waitAfterEachMovement; // Settle time
+} TimeDelayConfig;
+
+void timeDelayInit();
+
+const TimeDelayConfig& getTimeDelayConfig();
+
+void setTimeDelayConfig(TimeDelayConfig &config);
+
+
 #endif /* PRINTER_GLOBAL_H_ */

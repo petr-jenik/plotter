@@ -35,6 +35,7 @@ void atLimitSwitch(int i)
 void systemInit()
 {
 	// Order of initialisation is important!
+	timeDelayInit();
 	stepperControl_init();
 	movementControl_init();
 	parser_init();

@@ -144,8 +144,8 @@ void Stepper::_reset(void)
 {
     this->gpio->resetPin.turnOn();
 
-    //TODO Move all delay times to named constants
-    Timer::sleep(5);
+    // wait for a configured time period
+    Timer::sleep(getTimeDelayConfig().resetPulseLength);
 
     this->gpio->resetPin.turnOff();
 }

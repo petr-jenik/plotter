@@ -50,8 +50,6 @@ public:
        rotationCenter.y = y;
 
        minAngle = MIN_ANGLE;
-
-       //TODO Why "-1" ????
        maxAngle = MAX_ANGLE;
 
        stepCount = 0;

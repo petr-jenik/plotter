@@ -194,7 +194,8 @@ void MechanicController::moveWithEach(void)
         this->limStepperObjectArray[idx]->moveStart();
     }
 
-    Timer::sleep(2); //Sleep in ms
+    // wait for a configured time period
+    Timer::sleep(getTimeDelayConfig().stepPulseLength); //Sleep in ms
 
     // End step pulse
     for(int idx = 0; idx < this->armObjectCount; idx++)
@@ -212,8 +213,8 @@ void MechanicController::moveWithEach(void)
         this->limStepperObjectArray[idx]->moveEnd();
     }
 
-    //TODO maybe remove delay
-    Timer::sleep(10); //Sleep in ms
+    // wait for a configured time period
+    Timer::sleep(getTimeDelayConfig().waitAfterEachMovement); //Sleep in ms
 }
 
 void MechanicController::OnMove(void)
@@ -245,7 +246,6 @@ void MechanicController::calibrate(bool startNewCalibration)
 	{
 		this->bCalibrationFinished = false;
 	}
-    //bool calibrationFinished = false;
 
     if (false == this->bCalibrationFinished)
     {
@@ -265,20 +265,5 @@ void MechanicController::calibrate(bool startNewCalibration)
         this->bCalibrationFinished = bIsCalibrationDone;
 
     	this->moveWithEach();
-/*
-        for(int i = 0; i < this->armObjectCount; i++)
-        {
-            this->armObjectArray[i]->moveStart();
-        }
-
-        Timer::sleep(2); //Sleep in ms
-
-        for(int i = 0; i < this->armObjectCount; i++)
-        {
-            this->armObjectArray[i]->moveEnd();
-        }
-*/
-        //TODO maybe remove delay
-        //Timer::sleep(10); //Sleep in ms
     }
 }
