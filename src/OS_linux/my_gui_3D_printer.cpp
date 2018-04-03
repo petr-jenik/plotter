@@ -58,8 +58,6 @@ public:
 	  pitching(_pitching),
 	  stepsPerOneTurn(_stepsPerOneTurn)
 {
-       //pitching = 1.0f; // TODO Add proper (much lower) value to this variable
-       //stepsPerOneTurn = 10; // 200 basic steps * microstepping
        length = getDistance3D(startPos, endPos);
        directionLeft = true;
        this->update();
@@ -256,7 +254,6 @@ void gui_add_line(const guiCommand& cmd, eColor color)
 }
 
 
-//TODO Move to class Gui and add some event handler, registerm all gui objects and redraw them at once
 void addPointToDrawList(void)
 {
     position C;
@@ -361,7 +358,6 @@ Gpio::turnOn ()
     {
     	LimStepperGui * stepper = limSteppers[devId];
     	stepper->move();
-    	addPointToDrawList();
         break;
     }
     case ePin_Reset:
@@ -400,6 +396,12 @@ Gpio::turnOff ()
     	stepper->setDirection(false);
         break;
     }
+    case ePin_Step:
+	{
+		addPointToDrawList();
+        break;
+	}
+
     default:
         break;
     }
