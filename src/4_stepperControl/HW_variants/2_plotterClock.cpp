@@ -10,14 +10,14 @@
 #include "hwStepperPins.h"
 #include "servo.h"
 #include "Timer.h"
-#include "config.h"
+#include "project_config.h"
 
 #include "stepperControl_main.h"
 #include "math_tools.h"
 
 MechanicController mechanicController;
 
-Servo servos[] =
+PlotterServo usedServos[] =
 {
 		{0}, {1}, {2}
 };
@@ -25,7 +25,9 @@ Servo servos[] =
 
 void stepperControl_init(void)
 {
-    mechanicController.registerServos(servos, ARRAY_SIZE(servos));
+	TRACE; // Trace macro
+
+    mechanicController.registerServos(usedServos, ARRAY_SIZE(usedServos));
 
     mechanicController.calibrate(true);
 
@@ -50,6 +52,7 @@ void stepperControl_init(void)
  */
 bool calculatePosition(position finalPosition, float extrudeLength, MechanicCommand& outputCmd)
 {
+	TRACE; // Trace macro
 	/*              D
 	 *             /
 	 *           C/
@@ -92,8 +95,8 @@ bool calculatePosition(position finalPosition, float extrudeLength, MechanicComm
     	float angle2 = getAngle(pos_S2, {pos_S2.x+100, pos_S2.y, pos_S2.z}, B);
 
     	// Fill servo setting
-    	outputCmd.servoAngle[0] = angle1 - LEFT_ARM_OFFSET;
-    	outputCmd.servoAngle[1] = angle2 - RIGHT_ARM_OFFSET;
+    	outputCmd.servoAngle[0] = angle1 - RIGHT_ARM_OFFSET;
+    	outputCmd.servoAngle[1] = angle2 - LEFT_ARM_OFFSET;
     	outputCmd.servoAngle[2] = (extrudeLength > 0) ? 180 : 0;
     	outputCmd.servoObjectCount = 3;
 
@@ -116,6 +119,8 @@ bool isSystemReady()
 // TODO add speed
 void stepperControl_goToThisPosition(position newPosition,float extrudeLength)
 {
+	TRACE; // Trace macro
+
 	MechanicCommand command = {0};
 
 	if (calculatePosition(newPosition, extrudeLength, command))

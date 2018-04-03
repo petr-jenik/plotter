@@ -18,6 +18,7 @@ void moveTo(position end, float movementSpeed, float extrude);
 
 void parser_init(void)
 {
+	TRACE; // Trace macro
 	gParser.registerMoveToCallback(moveTo);
 }
 

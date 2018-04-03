@@ -18,6 +18,8 @@
 #include "global.h"
 #include "my_gui.h"
 
+#include "servo.h"
+
 using namespace std;
 
 void heartbeat(void)
@@ -68,7 +70,10 @@ int main(int argc, char** argv)
 
 	/* Start main app */
 #ifdef DEBUG_LOOP
-	movementControl_showDemo();
+	while(1)
+	{
+		movementControl_showDemo();
+	}
 #else
 	//std::string fileName = "sample.gcode";
 	reader_readAndProcess();

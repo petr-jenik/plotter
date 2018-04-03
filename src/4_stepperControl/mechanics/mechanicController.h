@@ -35,7 +35,7 @@ private:
     StepperWithLimits *limStepperObjectArray[cNumberOfSteppersWithLimit];
 	int limStepperObjectCount;
 
-    Servo * servoObjectArray[cMaxNumberOfServos];
+    PlotterServo * servoObjectArray[cMaxNumberOfServos];
     int servoObjectCount;
 
     int GetMaxStepperError(void);
@@ -47,7 +47,7 @@ public:
     MechanicController();
 
     void registerArms(PlotterArm * pArms);
-    void registerServos(Servo * pServos, int servosCount);
+    void registerServos(PlotterServo * pServos, int servosCount);
     void registerSteppers(Stepper * pSteppers, int steppersCount);
     //PlotterArm & _arm_left, PlotterArm & _arm_right, Servo & _servo
     //void OnUpdateAll(armCommand command);

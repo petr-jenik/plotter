@@ -8,6 +8,10 @@
 #ifndef OS_API_EMBEDDED_COUT_H_
 #define OS_API_EMBEDDED_COUT_H_
 
+#include <cstdint>
+#include <cstdlib>
+
+
 typedef enum
 {
 	dbgEndl = 0
@@ -29,8 +33,7 @@ public:
 	EmbeddedCout();
 	void flush();
 
-	EmbeddedCout& operator<<(char * c_string);
-	//EmbeddedCout& operator<<(std::string data);
+	EmbeddedCout& operator<<(const char * c_string);
 	EmbeddedCout& operator<<(eStreamControl command);
 
 	EmbeddedCout& operator<<(const uint8_t data);

@@ -11,7 +11,7 @@
 #include "global.h"
 #include "stepperConfig.h"
 
-class Servo
+class PlotterServo
 {
 private:
 	// Desired angle
@@ -20,11 +20,13 @@ private:
 	// Servo channel
     uint32_t channel;
 
+    bool initDone;
+
     // Enable/disable flag
     bool enableFlag;
 
 public:
-    Servo(int channel);
+    PlotterServo(int channel);
     void OnUpdate(ServoSetting & setting);
     void OnMove(void);
 };

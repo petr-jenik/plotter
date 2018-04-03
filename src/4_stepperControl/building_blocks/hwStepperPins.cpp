@@ -8,7 +8,7 @@
 #include "global.h"
 #include "hwStepperPins.h"
 #include "stepperConfig.h"
-#include "config.h"
+#include "project_config.h"
 
 
 StepperGPIOs stepperGPIOs1(

@@ -6,12 +6,14 @@
  */
 
 #include "math_tools.h"
-#include "config.h"
+#include "project_config.h"
 #include "global.h"
 #include "stepperConfig.h"
 
 #include "stepperControl_main.h"
 #include "movementControl_main.h"
+#include "Timer.h"
+
 
 #ifdef OS_LINUX
 // TODO remove this
@@ -24,6 +26,8 @@ void movementControl_createLine(position finalPosition,
 									float extrudeLength,
 									float movementSpeed)
 {
+	TRACE; // Trace macro
+
 	position startPos = gCurrentPosition;
 
 #ifdef OS_LINUX
@@ -36,7 +40,7 @@ void movementControl_createLine(position finalPosition,
 
 	if (distance == 0)
 	{
-		LOG("distance = 0");
+		//LOG("distance = 0");
 		return;
 	}
 
@@ -66,6 +70,10 @@ void movementControl_createLine(position finalPosition,
 
 		stepperControl_goToThisPosition(currentPos, extrudeLength / numberOfSteps);
 		gCurrentPosition = currentPos;
+
+		// Useless delay used for a kicking of the WDT
+		Timer::sleep(0);
+
 	}
 	//LOG("diff: " << gCurrentPosition - finalPosition);
 }
@@ -73,12 +81,16 @@ void movementControl_createLine(position finalPosition,
 
 void movementControl_createLine(const moveCommand& cmd)
 {
+	TRACE; // Trace macro
+
 	movementControl_createLine(cmd.finalPosition, cmd.extrudeLength, cmd.movementSpeed);
 }
 
 
 moveCommand getSquearePoints(int idx, float size, position center)
 {
+	TRACE; // Trace macro
+
 	idx = (idx < 0)? 0 : idx;
 	idx = (idx > 4)? 4 : idx;
 
@@ -101,6 +113,8 @@ moveCommand getSquearePoints(int idx, float size, position center)
 
 void printLine(position startPos, position endPos)
 {
+	TRACE; // Trace macro
+
 	moveCommand cmd = {0, 1 , startPos};
 	movementControl_createLine(cmd);
     cmd = {1, 1 , endPos};
@@ -109,6 +123,7 @@ void printLine(position startPos, position endPos)
 
 void printRectangle(float size, position center)
 {
+	TRACE; // Trace macro
 
 	for (int idx = 0; idx < 5; idx++)
 	{
@@ -120,6 +135,8 @@ void printRectangle(float size, position center)
 
 void printCircle(float radius, position center)
 {
+	TRACE; // Trace macro
+
 	int numberOfSteps = 36;
 	for (int i = 0; i < numberOfSteps + 1; i++)
 	{
@@ -135,17 +152,18 @@ void printCircle(float radius, position center)
 
 static void showDemo()
 {
+	TRACE; // Trace macro
 
-	//printRectangle(50, {0, 0, 0});
+	printRectangle(50, {0, 0, 0});
 
 	//printLine({0,0,0}, {0,100, 0});
-
+	/*
 	for (int i = 0; i < 30; i += 1)
 	{
 		printRectangle(2*i, {0,0,0});
 		//printLine({-150, i, 0}, {150, i, 0});
 		printCircle(i, { 0, 0, 0});
-	}
+	}*/
 	/*
 	printCircle(10, {-100, 100, 0});
 	printCircle(10, {-100, -100, 0});
@@ -155,15 +173,18 @@ static void showDemo()
 
 void movementControl_showDemo(void)
 {
-	while(1)
-	{
+	TRACE; // Trace macro
+//	while(1)
+	//{
 		showDemo();
-	}
+		//Timer::sleep(100);
+	//}
 }
 
 void movementControl_init()
 {
-	// Go to position {0, 0, 0}
+	TRACE; // Trace macro
 
+	// Go to position {0, 0, 0}
 	stepperControl_goToThisPosition({0, 0, 0}, 0);
 }

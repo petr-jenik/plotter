@@ -7,37 +7,34 @@
 #include "servo.h"
 #include "hwServo.h"
 #include "stepperConfig.h"
-#include "config.h"
+#include "project_config.h"
 
 #include <cstdlib>
 
-bool timerInitialized = false;
-
-Servo::Servo(int _channel)
+PlotterServo::PlotterServo(int32_t _channel)
 :angle(0),
  channel(_channel),
+ initDone(false),
  enableFlag(false)
 {
-    if (false == timerInitialized)
-    {
-        servoInit();
-    }
-
-    //this->angle = 0;
-    //this->channel = (uint32_t)channel;
-    //this->enableFlag = false;
 }
 
 
-void Servo::OnUpdate(ServoSetting & setting)
+void PlotterServo::OnUpdate(ServoSetting & setting)
 {
+   if (initDone == false)
+   {
+	   servoInit(this->channel);
+	   initDone = true;
+   }
+
    // Enable or disable servo channel
    this->enableFlag = setting.enable;
    this->angle = constrain(setting.angle, MIN_SERVO_ANGLE, MAX_SERVO_ANGLE);
-}
+};
 
 
-void Servo::OnMove(void)
+void PlotterServo::OnMove(void)
 {
     servoSetPosition(this->angle, this->channel);
 }

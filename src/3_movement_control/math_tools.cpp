@@ -7,7 +7,7 @@
 
 #include <cmath>
 #include "global.h"
-#include "config.h"
+#include "project_config.h"
 
 /*
  * Return distance between point A and B (works only for 2D)

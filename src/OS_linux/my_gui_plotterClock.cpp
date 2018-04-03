@@ -16,7 +16,7 @@
 #include "draw.h"
 #include "gui.h"
 #include "math_tools.h"
-#include "config.h"
+#include "project_config.h"
 #include "hwGpio.h"
 #include "stepperSim.h"
 #include "math_tools.h"
@@ -43,7 +43,9 @@ class ServoGui
     float maxAngle;
 
 public:
-    ServoGui(position _rotationCenter, int _armLength, int _armAngleOffset)
+    ServoGui(position _rotationCenter,
+    		 int _armLength,
+			 int _armAngleOffset)
     :endPoint({0, 0, 0}),
     rotationCenter(_rotationCenter),
     angle(0),
@@ -91,7 +93,9 @@ public:
     void updateFilter(void)
     {
         filteredAngle = ((1 - this->Kfilter) * filteredAngle) + (this->Kfilter * angle);
-        endPoint = getCirclePosition(rotationCenter, armLength, this->filteredAngle + (float)armAngleOffset);
+        float tmpAngle = this->filteredAngle + (float)armAngleOffset;
+
+        endPoint = getCirclePosition(rotationCenter, armLength, tmpAngle);
     }
 
     void update(float angle)
@@ -101,16 +105,20 @@ public:
     }
 };
 
-ServoGui servo1(pos_S1, armLength_AS1, LEFT_ARM_OFFSET);
-ServoGui servo2(pos_S2, armLength_BS2, RIGHT_ARM_OFFSET);
+// Servo motor in position S1 is right servo
+// Servo motor in position S2 is left servo
+
+ServoGui servo1(pos_S1, armLength_AS1, -45 /*RIGHT_ARM_OFFSET*/);
+ServoGui servo2(pos_S2, armLength_BS2, 45);
 ServoGui servo3(pos_S1, 0, 0);
 
 ServoGui * servo[] = {&servo1, &servo2, &servo3};
 
 static uint32_t cServoCount = ARRAY_SIZE(servo);
 
-void servoInit()
+void servoInit(int32_t channel)
 {
+	//DBG("servo init - channel: " << channel);
     return;
 }
 
@@ -121,8 +129,17 @@ void servoSetPosition(float angle, uint32_t channel)
 {
     if (channel < cServoCount)
     {
+		//DBG("channel OK");
+		DBG("channel: " << channel << ", angle: " << (int) angle);
+
+		//DBG("angle (float):" << angle << ", angle (int): " << (int) angle);
         float tmpAngle = angle;//((int)(angle * 2))/2.0;
         servo[channel]->update(tmpAngle);
+    }
+    else
+    {
+    	DBG("Fail in file " << __FILE__ << " on line " << __LINE__);
+    	new_assert(false);
     }
 
     if (channel == cServoCount - 1)
@@ -191,9 +208,12 @@ bool _getPositionOfPenholder(position B, position C, position& D)
 void drawSteppers()
 {
     // Draw stepper
+
+	//Right
     Gui::glSelectColor(eColor_green);
     servo[0]->draw();
 
+    // Left
     Gui::glSelectColor(eColor_blue);
     servo[1]->draw();
 

@@ -7,7 +7,7 @@
 
 #include "building_blocks.h"
 #include "calibration.h"
-#include "config.h"
+#include "project_config.h"
 #include "global.h"
 #include "hwStepperPins.h"
 #include "math_tools.h"

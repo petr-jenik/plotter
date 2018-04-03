@@ -10,7 +10,7 @@
 #include "hwStepperPins.h"
 #include "servo.h"
 #include "Timer.h"
-#include "config.h"
+#include "project_config.h"
 
 #include "stepperControl_main.h"
 #include "math_tools.h"

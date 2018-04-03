@@ -13,17 +13,6 @@
 
 #include "log.h"
 
-#ifdef OS_EMBEDDED
-
-#define new_assert(x) if(!(x))                                                                         \
-				  {																				    \
-						while(1)                                                                    \
-						{												                            \
-						}                                                                           \
-	              }
-#endif //OS_EMBEDDED
-#ifdef OS_LINUX
-
 #define new_assert(x) if(!(x))                              \
 				  {										    \
 						LOG("ASSERT FAILED on line ");      \
@@ -34,9 +23,6 @@
 						{				                    \
 						}                                   \
 	              }
-#endif //OS_LINUX
-//#include <iostream>
-
 
 void heartbeat(void) __attribute((weak));
 void atLimitSwitch(int i) __attribute((weak));

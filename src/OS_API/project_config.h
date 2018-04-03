@@ -16,8 +16,8 @@ const int MIN_ANGLE = 0;
 const int MAX_ANGLE = 180;
 
 
-const int LEFT_ARM_OFFSET = 0;//-45;
-const int RIGHT_ARM_OFFSET = 0; //+45;
+const int LEFT_ARM_OFFSET = +45;
+const int RIGHT_ARM_OFFSET = -45;
 
 const int STEP_SIZE = 1;
 

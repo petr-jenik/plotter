@@ -5,6 +5,14 @@
  *      Author: apollo
  */
 
-void reader_readAndProcess(){};
-void reader_init(void){};
+#include "log.h"
+
+void reader_readAndProcess()
+{
+	TRACE; // Trace macro
+};
+void reader_init(void)
+{
+	TRACE; // Trace macro
+};
 

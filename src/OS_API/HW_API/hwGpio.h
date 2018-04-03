@@ -11,6 +11,8 @@
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal.h"
 
+#include <stdint.h>
+
 const unsigned int gpioPinUndef = (unsigned int)- 1;
 const unsigned int gpioPortUndef = (unsigned int)- 1;
 
