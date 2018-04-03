@@ -43,6 +43,9 @@ void MechanicController::registerArms(PlotterArm * pArms)//, int armsCount)
 	}
 }
 
+<<<<<<< HEAD
+void MechanicController::registerServos(PlotterServo * pServos, int servosCount)
+=======
 
 void MechanicController::registerLimSteppers(StepperWithLimits * pLimSteppers, int cSteppersCount)
 {
@@ -61,7 +64,8 @@ void MechanicController::registerLimSteppers(StepperWithLimits * pLimSteppers, i
 }
 
 
-void MechanicController::registerServos(PlotterServo * pServos, int servosCount)
+void MechanicController::registerServos(Servo * pServos, int servosCount)
+>>>>>>> origin/devel
 {
 	if ((pServos != NULL) and (servosCount <= cMaxNumberOfServos))
 	{
@@ -213,7 +217,7 @@ void MechanicController::moveWithEach(void)
     }
 
     //TODO maybe remove delay
-    Timer::sleep(10); //Sleep in ms
+    //Timer::sleep(10); //Sleep in ms
 }
 
 void MechanicController::OnMove(void)

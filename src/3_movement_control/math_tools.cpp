@@ -48,20 +48,6 @@ float degsToRads(float degs)
 }
 
 
-position operator-(position &val1, position &val2)
-{
-    position retval = {val1.x - val2.x, val1.y - val2.y, val1.z - val2.z};
-    return retval;
-}
-
-
-position operator+(position val1, position &val2)
-{
-    position retval = {val1.x + val2.x, val1.y + val2.y, val1.z + val2.z};
-    return retval;
-}
-
-
 float toPositiveAngle(float angle)
 {
     //return angle;
@@ -165,6 +151,93 @@ bool getIntersection(position A,
     inter2.z = 0;
 
     return true;
+}
+
+/*
+ * Find intersection between 2 circles.
+ * There are always 2 intersections.
+ * This function returns the one which closer to the reference point.
+ *
+ * First circle - center A, radius r1
+ * Second circle - center B, radius r2
+ *
+ *@param[in] position point1
+ *@param[in] r1 - arm length from position A
+ *@param[in] position B
+ *@param[in] r2 - arm length from position B
+ *@param[out] position inter1
+ *@param[out] positoon inter2
+ *@return True if intersection was found, else False
+ */
+bool getIntersectionWithRefPoint(const position A,
+									const float r1,
+									const position B,
+									const float r2,
+									const position referencePoint,
+									position& resultPoint,
+									bool getCloser)
+{
+    position destPoint1, destPoint2;
+
+    if (getIntersection(A,
+						r1,
+						B,
+						r2,
+						destPoint1,
+						destPoint2))
+    {
+        float dist1 = getDistance(destPoint1, referencePoint);
+        float dist2 = getDistance(destPoint2, referencePoint);
+
+        if (getCloser)
+        {
+            resultPoint = (dist1 < dist2)? destPoint1 : destPoint2;
+        }
+        else
+        {
+        	resultPoint = (dist1 < dist2)? destPoint2 : destPoint1;
+        }
+
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool getIntersectionCloserToRefPoint(const position A,
+									const float r1,
+									const position B,
+									const float r2,
+									const position referencePoint,
+									position& resultPoint)
+{
+	bool getCloser = true;
+	return getIntersectionWithRefPoint(A,
+										r1,
+										B,
+										r2,
+										referencePoint,
+										resultPoint,
+										getCloser);
+}
+
+bool getIntersectionFartherToRefPoint(const position A,
+									const float r1,
+									const position B,
+									const float r2,
+									const position referencePoint,
+									position& resultPoint)
+{
+	bool getCloser = false;
+	return getIntersectionWithRefPoint(A,
+										r1,
+										B,
+										r2,
+										referencePoint,
+										resultPoint,
+										getCloser);
 }
 
 

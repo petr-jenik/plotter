@@ -1,0 +1,21 @@
+#ifndef HW_SERVO_H_
+#define HW_SERVO_H_
+
+//#include "global.h"
+#include <cstdint>
+
+#define MIN_SERVO_ANGLE             0.0f
+#define MAX_SERVO_ANGLE             180.0f //us
+
+<<<<<<< HEAD
+void servoInit(int32_t channel);
+void servoSetPosition(float angle, uint32_t channel);
+=======
+#define SERVO_PIN                 GPIO_PIN_7
+#define SERVO_PORT                GPIOB
+
+void hwServoInit();
+void hwServoSetPosition(float angle, uint32_t channel);
+>>>>>>> origin/devel
+
+#endif // HW_SERVO_H_

@@ -17,6 +17,17 @@ PlotterServo::PlotterServo(int32_t _channel)
  initDone(false),
  enableFlag(false)
 {
+<<<<<<< HEAD
+=======
+    if (false == timerInitialized)
+    {
+        hwServoInit();
+    }
+
+    //this->angle = 0;
+    //this->channel = (uint32_t)channel;
+    //this->enableFlag = false;
+>>>>>>> origin/devel
 }
 
 
@@ -24,7 +35,7 @@ void PlotterServo::OnUpdate(ServoSetting & setting)
 {
    if (initDone == false)
    {
-	   hwServoInit(this->channel);
+	   servoInit(this->channel);
 	   initDone = true;
    }
 

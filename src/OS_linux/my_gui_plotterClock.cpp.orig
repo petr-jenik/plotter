@@ -5,13 +5,24 @@
  *      Author: apollo
  */
 
-#include "project_config.h"
+#include "config.h"
 #if PRINTER_TYPE == PRINTER_TYPE_PLOTTER_CLOCK
 #include <mutex>
 
+/*
+#include "stepperControl_main.h"
+#include "reader_main.h"
+#include "parser_main.h"
+#include "movementControl_main.h"
+#include "stepperControl_main.h"
+*/
 #include "draw.h"
 #include "gui.h"
 #include "math_tools.h"
+<<<<<<< HEAD
+#include "project_config.h"
+=======
+>>>>>>> origin/devel
 #include "hwGpio.h"
 #include "stepperSim.h"
 #include "math_tools.h"
@@ -84,7 +95,9 @@ public:
     void updateFilter(void)
     {
         filteredAngle = ((1 - this->Kfilter) * filteredAngle) + (this->Kfilter * angle);
-        endPoint = getCirclePosition(rotationCenter, armLength, this->filteredAngle + (float)armAngleOffset);
+        float tmpAngle = this->filteredAngle + (float)armAngleOffset;
+
+        endPoint = getCirclePosition(rotationCenter, armLength, tmpAngle);
     }
 
     void update(float angle)
@@ -94,48 +107,34 @@ public:
     }
 };
 
-
-/*              D
- *             /
- *           C/
- *           /\
- *          /  \
- *         /    \
- *        /      \
- *       A        B
- *        \      /
- *         \    /
- *          \  /
- *  right - S1 S2 - left
- *
- */
-
 // Servo motor in position S1 is right servo
 // Servo motor in position S2 is left servo
 
-ServoGui servoRight(pos_S1, armLength_AS1, RIGHT_ARM_OFFSET);
-ServoGui servoLeft(pos_S2, armLength_BS2, LEFT_ARM_OFFSET);
-ServoGui servoZ(pos_S1, 0, 0);
+ServoGui servo1(pos_S1, armLength_AS1, -45 /*RIGHT_ARM_OFFSET*/);
+ServoGui servo2(pos_S2, armLength_BS2, 45);
+ServoGui servo3(pos_S1, 0, 0);
 
-ServoGui * servo[] = {&servoRight, &servoLeft, &servoZ};
-//static_assert(servo[eIdxRight] ==  servoRight, "test");
-//static_assert(servo[eIdxLeft] ==  servoLeft, "test");
+ServoGui * servo[] = {&servo1, &servo2, &servo3};
 
 static uint32_t cServoCount = ARRAY_SIZE(servo);
 
-void hwServoInit(int32_t channel)
+void servoInit(int32_t channel)
 {
+	//DBG("servo init - channel: " << channel);
     return;
 }
 
 // Forward declaration
 void addPointToDrawList(void);
 
-void hwServoSetPosition(float angle, uint32_t channel)
+void servoSetPosition(float angle, uint32_t channel)
 {
     if (channel < cServoCount)
     {
-        DBG("channel: " << channel << ", angle: " << (int) angle);
+		//DBG("channel OK");
+		DBG("channel: " << channel << ", angle: " << (int) angle);
+
+		//DBG("angle (float):" << angle << ", angle (int): " << (int) angle);
         float tmpAngle = angle;//((int)(angle * 2))/2.0;
         servo[channel]->update(tmpAngle);
     }
@@ -169,10 +168,10 @@ std::mutex drawListRequired_lock;
 
 static bool _getEndpoint(position& C)
 {
-    position A = servo[eIdxRight]->getEndPoint();
-    position B = servo[eIdxLeft]->getEndPoint();
+    position A = servo[0]->getEndPoint();
+    position B = servo[1]->getEndPoint();
 
-	return getIntersectionFartherToRefPoint(A,
+	return getIntersectionCloserToRefPoint(	A,
 											armLength_AC,
 											B,
 											armLength_BC,
@@ -182,11 +181,11 @@ static bool _getEndpoint(position& C)
 
 static bool _getPositionOfPenholder(position B, position C, position& D)
 {
-	return getIntersectionFartherToRefPoint(B,
+	return getIntersectionCloserToRefPoint(	B,
 											armLength_BD,
 											C,
 											armLength_CD,
-											pos_S2,
+											pos_S1,
 											D);
 }
 
@@ -196,15 +195,15 @@ void drawSteppers()
 
 	//Right
     Gui::glSelectColor(eColor_green);
-    servo[eIdxRight]->draw();
+    servo[0]->draw();
 
     // Left
     Gui::glSelectColor(eColor_blue);
-    servo[eIdxLeft]->draw();
+    servo[1]->draw();
 
     Gui::glSelectColor(eColor_black);
 
-    position A = servo[eIdxRight]->getEndPoint();
+    position A = servo[0]->getEndPoint();
     position B = servo[1]->getEndPoint();
 
     // Calculate position of the point C
@@ -253,6 +252,23 @@ void gui_add_line(const guiCommand& cmd, eColor color)
 
 void addPointToDrawList(void)
 {
+    /*              D
+     *             /
+     *           C/
+     *           /\
+     *          /  \
+     *         /    \
+     *        /      \
+     *       A        B
+     *        \      /
+     *         \    /
+     *          \  /
+     *          S1 S2
+     *
+     */
+
+    // C = Required position
+
     bool extrude = (servo[2]->getAngle() > 90) ? true : false;
 
     // Calculate position of the point C
@@ -366,10 +382,6 @@ static void myTimerEvent(int te)
 void gui_loop(void)
 {
     cout << "Plotter simulation" << endl;
-
-    servo[eIdxRight] = &servoRight;
-    servo[eIdxLeft] = &servoLeft;
-    servo[2] = &servoZ;
 
     Gui::guiInit(0, NULL);
 

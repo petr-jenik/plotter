@@ -18,8 +18,6 @@
 #include "global.h"
 #include "my_gui.h"
 
-#include "servo.h"
-
 using namespace std;
 
 void heartbeat(void)
@@ -29,7 +27,7 @@ void heartbeat(void)
 
 void atLimitSwitch(int i)
 {
-	LOG("At limit switch. Channel: " << i);
+	//("At limit switch. Channel: " << i);
 }
 
 
@@ -54,7 +52,6 @@ void systemInit()
  *  5. (optional) GUI (plot actual state)
  *
  */
-
 int main(int argc, char** argv)
 {
 	unsigned int pocetProcesoru = std::thread::hardware_concurrency();
@@ -66,14 +63,11 @@ int main(int argc, char** argv)
 	/* App init */
 	systemInit();
 
-#define DEBUG_LOOP
+//#define DEBUG_LOOP
 
 	/* Start main app */
 #ifdef DEBUG_LOOP
-	while(1)
-	{
-		movementControl_showDemo();
-	}
+	movementControl_showDemo();
 #else
 	//std::string fileName = "sample.gcode";
 	reader_readAndProcess();

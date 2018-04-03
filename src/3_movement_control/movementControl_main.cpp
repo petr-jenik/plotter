@@ -30,10 +30,10 @@ void movementControl_createLine(position finalPosition,
 
 	position startPos = gCurrentPosition;
 
-#ifdef OS_LINUX
-	guiCommand cmd = {1, 1, gCurrentPosition, finalPosition};
-	gui_add_line(cmd, eColor_green);
-#endif //OS_LINUX
+//#ifdef OS_LINUX
+//	guiCommand cmd = {1, 1, gCurrentPosition, finalPosition};
+//	gui_add_line(cmd, eColor_green);
+//#endif //OS_LINUX
 
 	// get distance between start and end points
 	float distance = getDistance3D(startPos, finalPosition);
@@ -174,11 +174,10 @@ static void showDemo()
 void movementControl_showDemo(void)
 {
 	TRACE; // Trace macro
-//	while(1)
-	//{
+	while(1)
+	{
 		showDemo();
-		//Timer::sleep(100);
-	//}
+	}
 }
 
 void movementControl_init()

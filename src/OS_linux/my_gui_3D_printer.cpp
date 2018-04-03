@@ -1,52 +1,22 @@
 /*
- * merged mainApp.cpp and hwGpio.cpp
+ * my_gui_3D_printer.cpp
  *
- *  Created on: Dec 27, 2015
- *      Author: apollo
- */
-
-/*
- * gui.cpp
- *
- *  Created on: 4. 2. 2017
- *      Author: apollo
+ *  Created on: 26 Mar 2018
+ *      Author: pi
  */
 #include "project_config.h"
-#if PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER
-#include <iostream>
+#if PRINTER_TYPE == PRINTER_TYPE_3D_PRINTER
 #include <mutex>
-
-#include "stepperControl_main.h"
-#include "reader_main.h"
-#include "parser_main.h"
-#include "movementControl_main.h"
-#include "stepperControl_main.h"
+#include <vector>
 
 #include "draw.h"
 #include "gui.h"
 #include "math_tools.h"
 #include "hwGpio.h"
-#include "stepperSim.h"
-#include "global.h"
 #include "math_tools.h"
+#include "global.h"
 #include "hwStepperPins.h"
 #include "hwServo.h"
-#include "servo.h"
-//#include "Timer.h"
-
-using namespace std;
-
-void hwServoInit(int32_t channel)
-{
-	return;
-}
-
-bool gExtrude = false;
-
-void hwServoSetPosition(float angle, uint32_t channel)
-{
-	gExtrude = (angle < 90)? false : true;
-}
 
 struct guiCommandColor
 {
@@ -62,31 +32,118 @@ std::mutex drawListRequired_lock;
 
 GpioDesc_t undefPin = {0, ePin_undef};
 // ----------------------------------------------------------------------------
+// Servo stubs
+void hwServoInit(int32_t channel){};
+void hwServoSetPosition(float angle, uint32_t channel){};
 
-/*              D
- *             /
- *           C/
- *           /\
- *          /  \
- *         /    \
- *        /      \
- *       A        B
- *        \      /
- *         \    /
- *          \  /
- *  right - S1 S2 - left
- *
- */
+// --------------------------------
+
+class LimStepperGui
+{
+    position startPos;
+    position endPos;
+    int stepCount; //Number of steps
+    bool directionLeft;
+
+	position currentPosition;
+
+    float stepsPerOneTurn; //Number of steps for one turn of the stepper motor
+    float pitching;// Stoupani - Distance traveled by the screed per one revolution
+    float length;
+public:
+    LimStepperGui(position _start, position _end, float _pitching = 0.1, float _stepsPerOneTurn = 200)
+	: startPos(_start),
+	  endPos(_end),
+	  stepCount(0),
+	  pitching(_pitching),
+	  stepsPerOneTurn(_stepsPerOneTurn)
+{
+       //pitching = 1.0f; // TODO Add proper (much lower) value to this variable
+       //stepsPerOneTurn = 10; // 200 basic steps * microstepping
+       length = getDistance3D(startPos, endPos);
+       directionLeft = true;
+       this->update();
+    };
+
+    void shift(position relativeMove)
+    {
+    	this->startPos = relativeMove + this->startPos;
+    	this->endPos   = relativeMove + this->endPos;
+    }
+
+    void draw(void)
+    {
+    	drawLine(startPos, endPos);
+    	drawCircle(this->getCurrentPosition(), 2);
+    }
+
+    position getCurrentPosition(void)
+    {
+    	this->update();
+    	return currentPosition;
+    }
+
+    void setDirection(bool directionLeft)
+    {
+        this->directionLeft = directionLeft;
+    }
+
+    bool getDirection(void)
+    {
+        return this->directionLeft;
+    }
+
+    void move(void)
+    {
+        if (getDirection() == true)
+        {
+            //Decrease position
+            this->stepCount -= STEP_SIZE;
+        }
+        else
+        {
+            //Increase position
+            this->stepCount += STEP_SIZE;
+        }
+        this->update();
+
+    }
+
+    bool isAtLimitPosition(void)
+    {
+		float maxNumberOfRevolutions = length / pitching;
+    	int maxNumberOfSteps = stepsPerOneTurn * maxNumberOfRevolutions;
+    	return (isInRange(stepCount, 0, maxNumberOfSteps) == false);
+    }
+
+    void update()
+    {
+		float maxNumberOfRevolutions = length / pitching;
+    	int maxNumberOfSteps = stepsPerOneTurn * maxNumberOfRevolutions;
+
+    	float relativeDistance = map((float)stepCount, (float)0, (float)maxNumberOfSteps, 0.0f, 1.0f);
+
+    	position diff = endPos;
+    	diff = diff - startPos;
+    	currentPosition.x = startPos.x + (diff.x * relativeDistance);
+    	currentPosition.y = startPos.y + (diff.y * relativeDistance);
+    	currentPosition.z = startPos.z + (diff.z * relativeDistance);
+    }
+};
 
 
 // HW simulation
-StepperGui stepperRight(pos_S1.x, pos_S1.y, armLength_AS1, RIGHT_ARM_OFFSET);
-StepperGui stepperLeft(pos_S2.x, pos_S2.y, armLength_BS2, LEFT_ARM_OFFSET);
+LimStepperGui limStepperGuiX({pos_START.x, 0, 0}, {pos_END.x, 0, 0}, 1);
+LimStepperGui limStepperGuiY({0, pos_START.y, 0}, {0, pos_END.y, 0}, 1);
+LimStepperGui limStepperGuiZ({0, 0, pos_START.z}, {0, 0, pos_END.z}, 1);
 
-StepperGui * steppers[2] = {NULL, NULL};
+LimStepperGui * limSteppers[] = {&limStepperGuiX, &limStepperGuiY, &limStepperGuiZ};
 
+/*
 StepperGPIOs* pStepperGPIOs1 = NULL;
 StepperGPIOs* pStepperGPIOs2 = NULL;
+StepperGPIOs* pStepperGPIOs3 = NULL;
+*/
 
 typedef struct {
 	ePinType pinType;
@@ -126,16 +183,15 @@ UsedPinDesc_t getUsedPinDesc(Gpio* pObject)
 
 bool _getEndpoint(position& C)
 {
-	position A = steppers[0]->getEndPoint();
-	position B = steppers[1]->getEndPoint();
+	position X = limSteppers[eStepperIdx_X]->getCurrentPosition();
+	position Y = limSteppers[eStepperIdx_Y]->getCurrentPosition();
+	position Z = limSteppers[eStepperIdx_Z]->getCurrentPosition();
 
-	return getIntersectionCloserToRefPoint(	A,
-											armLength_AC,
-											B,
-											armLength_BC,
-											pos_S1,
-											C);
-
+	// TODO fix this horrible sollution - there could be an angle offset (rotation of the whole axis)
+	C.x = X.x;
+	C.y = Y.y;
+	C.z = Z.z;
+	return true;
 }
 
 
@@ -143,25 +199,34 @@ void drawSteppers()
 {
 	// Draw stepper
 	Gui::glSelectColor(eColor_green);
-	steppers[0]->draw();
+	limSteppers[eStepperIdx_X]->draw();
+
+	// Move Y stepper in X axis
+	position posX = limSteppers[eStepperIdx_X]->getCurrentPosition();
+	position posY = limSteppers[eStepperIdx_Y]->getCurrentPosition();
+
+	position diff = posX - posY;
+	limSteppers[eStepperIdx_Y]->shift((position){diff.x, 0, 0});
 
 	Gui::glSelectColor(eColor_blue);
-	steppers[1]->draw();
+	limSteppers[eStepperIdx_Y]->draw();
+
+	Gui::glSelectColor(eColor_red);
+	limSteppers[eStepperIdx_Z]->draw();
 
 	Gui::glSelectColor(eColor_black);
 
-	position C;//1, C2;
-	position A = steppers[0]->getEndPoint();
-	position B = steppers[1]->getEndPoint();
-
-	Gui::glSelectColor(eColor_black);
-
+	position C;
 	if(_getEndpoint(C))
 	{
-		drawLine(A, C);
-		//drawLine(A,C2);
-		drawLine(B, C);
-		//drawLine(B,C2);
+		Gui::glSelectColor(eColor_red);
+
+		for (int i = 1; i < 5; i+=1)
+		{
+			drawCircle(C, i);
+		}
+
+		Gui::glSelectColor(eColor_black);
 	}
 	else
 	{
@@ -194,47 +259,27 @@ void gui_add_line(const guiCommand& cmd, eColor color)
 //TODO Move to class Gui and add some event handler, registerm all gui objects and redraw them at once
 void addPointToDrawList(void)
 {
-    //Gui::clear();
-    //Gui::glSelectColor(eColor_black);
+    position C;
 
-    //stepperGui1.draw();
-    //stepperGui2.draw();
-
-    //return;
-    //drawLine(stepperGui1.getEndPoint(), stepperGui2.getEndPoint());
-
-    position C1, C2;
-    bool result = getIntersection(stepperGui1.getEndPoint(), armLength_AC, stepperGui2.getEndPoint(), armLength_BC, C1, C2);
-    if (result == true)
+    if (_getEndpoint(C))
     {
-    	float dist1 = getDistance3D(pos_S1, C1);
-    	float dist2 = getDistance3D(pos_S1, C2);
+   		static position currentPos = C;
 
-    	position C = (dist1 > dist2) ? C1 : C2;
-
-    	static position tmpC = C;
-    	static position currentPos = C;
-
-    	float k = 1;
-
-    	tmpC.x = k * C.x + (1 - k) * tmpC.x;
-    	tmpC.y = k * C.y + (1 - k) * tmpC.y;
-    	tmpC.z = k * C.z + (1 - k) * tmpC.z;
-
-
-		guiCommand outCmd;
-		outCmd.extrudeLength = gExtrude;
+    	guiCommand outCmd;
+		outCmd.extrudeLength = 1;
 		outCmd.startPosition = currentPos;
-		outCmd.endPosition = tmpC;
+		outCmd.endPosition = C;
 
-#ifndef NO_GUI
 		std::lock_guard<std::mutex> hold(drawList_lock);
-		drawList.push_back(outCmd);
-#else
-		std::cout << "Head position: " << C << std::endl;
-#endif //#ifndef NO_GUI
-		currentPos = tmpC;
 
+		if (currentPos.z != C.z)
+		{
+			LOG("New layer started");
+			drawList.erase(drawList.begin(), drawList.end());
+		}
+
+		drawList.push_back(outCmd);
+		currentPos = C;
     }
 }
 
@@ -308,13 +353,13 @@ Gpio::turnOn ()
     {
     case ePin_Dir:
     {
-        StepperGui * stepper = steppers[devId];
+        LimStepperGui * stepper = limSteppers[devId];
     	stepper->setDirection(true);
         break;
     }
     case ePin_Step:
     {
-    	StepperGui * stepper = steppers[devId];
+    	LimStepperGui * stepper = limSteppers[devId];
     	stepper->move();
     	addPointToDrawList();
         break;
@@ -351,7 +396,7 @@ Gpio::turnOff ()
     {
     case ePin_Dir:
     {
-        StepperGui * stepper = steppers[devId];
+        LimStepperGui * stepper = limSteppers[devId];
     	stepper->setDirection(false);
         break;
     }
@@ -396,14 +441,14 @@ bool Gpio::isOn ()
     {
     case ePin_LimSw1:
     {
-        StepperGui * stepper = steppers[devId];
+        LimStepperGui * stepper = limSteppers[devId];
     	return stepper->isAtLimitPosition();
         break;
     }
 
     case ePin_LimSw2:
     {
-        StepperGui * stepper = steppers[devId];
+        LimStepperGui * stepper = limSteppers[devId];
         return stepper->isAtLimitPosition();
         break;
     }
@@ -466,11 +511,11 @@ void update(void)
     drawSteppers();
 
     // Remove this - X and Y axis
-	position p1 = {-100, 0, 0};
-	position p2 = {100, 0, 0};
+	position p1 = {-10, 0, 0};
+	position p2 = {10, 0, 0};
 
-	position p3 = {0, -50, 0};
-	position p4 = {0, 50, 0};
+	position p3 = {0, -10, 0};
+	position p4 = {0, 10, 0};
 
 	drawLine(p1, p2);
     drawLine(p3, p4);
@@ -510,10 +555,6 @@ void gui_loop(void)
 {
 	cout << "Plotter simulation" << endl;
 
-
-	steppers[eIdxRight] = &stepperRight;
-	steppers[eIdxLeft] = &stepperLeft;
-
 	Gui::guiInit(0, NULL);
 
     //Gui::registerIdleFunction(update);
@@ -529,4 +570,4 @@ void gui_loop(void)
 	cout << "GUI closed" << endl;
 }
 
-#endif // PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER
+#endif // PRINTER_TYPE == PRINTER_TYPE_3D_PRINTER

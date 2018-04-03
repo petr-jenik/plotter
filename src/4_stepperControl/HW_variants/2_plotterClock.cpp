@@ -4,6 +4,10 @@
  *  Created on: 24. 3. 2018
  *      Author: apollo
  */
+
+#include "project_config.h"
+#if PRINTER_TYPE == PRINTER_TYPE_PLOTTER_CLOCK
+
 #include "mechanicController.h"
 #include "global.h"
 
@@ -64,7 +68,7 @@ bool calculatePosition(position finalPosition, float extrudeLength, MechanicComm
 	 *        \      /
 	 *         \    /
 	 *          \  /
-	 *          S1 S2
+	 *  right - S1 S2 - left
 	 *
 	 */
 
@@ -75,28 +79,46 @@ bool calculatePosition(position finalPosition, float extrudeLength, MechanicComm
 	position C;
 	position D = finalPosition;
 
-    position A1,A2;
-    position B1,B2;
-
     bool result = true;
+    position referencePoint;
 
-    result = result and getIntersection(finalPosition, armLength_AC, pos_S1, armLength_AS1, A1, A2);
-    result = result and getIntersection(finalPosition, armLength_AC, pos_S1, armLength_AS1, A1, A2);
 
-    result = result and getIntersection(finalPosition, armLength_AC, pos_S1, armLength_AS1, A1, A2);
-    result = result and getIntersection(finalPosition, armLength_BC, pos_S2, armLength_BS2, B1, B2);
+    // Calculate position of the point B first
+	referencePoint = (position){-10, 0, 0} + pos_S2;
+    result = result and getIntersectionCloserToRefPoint(D,
+														 armLength_BD,
+														 pos_S2,
+														 armLength_BS2,
+														 referencePoint, // move reference point to the left const position referencePoint,
+														 B);
+
+
+    // Next, calculate position of the point C
+    referencePoint = pos_S2;
+    result = result and getIntersectionCloserToRefPoint(D,
+											 armLength_CD,
+											 B,
+											 armLength_BC,
+											 referencePoint,
+											 C);
+
+    // Next, calculate position of the point A
+    referencePoint = (position){10, 0, 0} + pos_S1;
+    result = result and getIntersectionCloserToRefPoint(C,
+											 armLength_AC,
+											 pos_S1,
+											 armLength_AS1,
+											 referencePoint,  // move reference point to the rigth
+											 A);
 
     if (result)
     {
-        A = (A1.x < A2.x) ? A2 : A1;
-    	B = (B1.x < B2.x) ? B1 : B2;
-
-    	float angle1 = getAngle(pos_S1, {pos_S1.x+100, pos_S1.y, pos_S1.z}, A);
-    	float angle2 = getAngle(pos_S2, {pos_S2.x+100, pos_S2.y, pos_S2.z}, B);
+    	float angleRight = getAngle(pos_S1, {pos_S1.x+100, pos_S1.y, pos_S1.z}, A);
+    	float angleLeft = getAngle(pos_S2, {pos_S2.x+100, pos_S2.y, pos_S2.z}, B);
 
     	// Fill servo setting
-    	outputCmd.servoAngle[0] = angle1 - RIGHT_ARM_OFFSET;
-    	outputCmd.servoAngle[1] = angle2 - LEFT_ARM_OFFSET;
+    	outputCmd.servoAngle[eIdxRight] = angleRight - RIGHT_ARM_OFFSET;
+    	outputCmd.servoAngle[eIdxLeft]  = angleLeft  - LEFT_ARM_OFFSET;
     	outputCmd.servoAngle[2] = (extrudeLength > 0) ? 180 : 0;
     	outputCmd.servoObjectCount = 3;
 
@@ -134,3 +156,4 @@ void stepperControl_goToThisPosition(position newPosition,float extrudeLength)
 	}
 }
 
+#endif // PRINTER_TYPE == PRINTER_TYPE_PLOTTER_CLOCK

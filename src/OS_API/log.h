@@ -4,7 +4,7 @@
 
 #define LOG(message) (dbgCout << message << dbgEndl)
 
-#define DBG(message) (dbgCout << "DBG - " << message << dbgEndl)
+#define DBG(message)// (dbgCout << "DBG - " << message << dbgEndl)
 
 
 class Trace
