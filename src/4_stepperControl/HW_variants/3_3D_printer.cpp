@@ -73,9 +73,9 @@ bool calculatePosition(position D, float extrudeLength, MechanicCommand& outputC
     	return false;
     }
 
-    float relativeX = map(D.x, pos_START.x, pos_END.x, 0.0f, 1.0f);
-    float relativeY = map(D.y, pos_START.y, pos_END.y, 0.0f, 1.0f);
-    float relativeZ = map(D.z, pos_START.z, pos_END.z, 0.0f, 1.0f);
+    float relativeX = templateMap(D.x, pos_START.x, pos_END.x, 0.0f, 1.0f);
+    float relativeY = templateMap(D.y, pos_START.y, pos_END.y, 0.0f, 1.0f);
+    float relativeZ = templateMap(D.z, pos_START.z, pos_END.z, 0.0f, 1.0f);
 
 	// Fill only steppers with limits
 	outputCmd.limStepperRelativePosition[eStepperIdx_X] = relativeX;

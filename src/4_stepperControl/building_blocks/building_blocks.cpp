@@ -204,7 +204,7 @@ eStepperPosition StepperWithLimits::getPosition(void)
 
 void StepperWithLimits::OnUpdate(float relativePosition, bool enable)
 {
-	this->setpointStepperValue = map(relativePosition,
+	this->setpointStepperValue = templateMap(relativePosition,
 									 (float)0.0,
 									 (float)1.0,
 									 (float)0.0,
@@ -282,7 +282,7 @@ void PlotterArm::NewPosition(PlotterArmSetting &setting)
 	float requiredAngle = toPositiveAngle(setting.setpointAngle - this->armAngleOffset);
 	requiredAngle = constrain(requiredAngle, this->minAngle, this->maxAngle);
 
-	float relativePosition = map(requiredAngle,
+	float relativePosition = templateMap(requiredAngle,
                                   (float)this->minAngle,
                                   (float)this->maxAngle,
                                   (float)0.0,

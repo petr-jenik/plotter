@@ -121,7 +121,7 @@ public:
 		float maxNumberOfRevolutions = length / pitching;
     	int maxNumberOfSteps = stepsPerOneTurn * maxNumberOfRevolutions;
 
-    	float relativeDistance = map((float)stepCount, (float)0, (float)maxNumberOfSteps, 0.0f, 1.0f);
+    	float relativeDistance = templateMap((float)stepCount, (float)0, (float)maxNumberOfSteps, 0.0f, 1.0f);
 
     	position diff = endPos;
     	diff = diff - startPos;
