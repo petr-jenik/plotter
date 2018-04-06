@@ -29,8 +29,8 @@ const int RIGHT_ARM_OFFSET = -45;
 const int STEP_SIZE = 1;
 
 #if PRINTER_TYPE == PRINTER_TYPE_PLOTTER_CLOCK
-	const position pos_S1 = {20, -120, 0};
-	const position pos_S2 = {-20, -120, 0};
+	const position pos_S1 = {20, -150, 0};
+	const position pos_S2 = {-20, -150, 0};
 #elif PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER
 	const position pos_S1 = {0, -100, 0};
 	const position pos_S2 = {0, -100, 0};

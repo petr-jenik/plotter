@@ -27,7 +27,7 @@ void path_parser::set_zoom(float _zoom)
 }
 
 
-void path_parser::newData(char* pData, size_t dataLength)
+void path_parser::newData(const char* pData, const size_t dataLength)
 {
 	memset(dataBuffer, 0, sizeof(dataBuffer));
 	memset(cmdData.parts, 0, sizeof(cmdData.parts));

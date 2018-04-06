@@ -30,7 +30,7 @@ void PlotterServo::OnUpdate(ServoSetting & setting)
 
    // Enable or disable servo channel
    this->enableFlag = setting.enable;
-   this->angle = constrain(setting.angle, MIN_SERVO_ANGLE, MAX_SERVO_ANGLE);
+   this->angle = templateConstrain(setting.angle, MIN_SERVO_ANGLE, MAX_SERVO_ANGLE);
 };
 
 

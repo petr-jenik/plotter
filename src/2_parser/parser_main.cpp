@@ -64,8 +64,7 @@ void moveTo(position finalPosition, float movementSpeed, float extrudeLength)
 	movementControl_createLine(cmd);
 }
 
-void parser_update(char* pData, size_t dataLength)
-//void parser_update(std::string receivedData)
+void parser_update(const char* pData, const unsigned int dataLength)
 {
 		gParser.newData(pData, dataLength);
 		//LOG("GCODE: " << receivedData);

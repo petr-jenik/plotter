@@ -64,7 +64,8 @@ public:
 
     void set_offset_position(position offset);
     void set_zoom(float _zoom);
-    void newData(char* pData, size_t dataLength);
+    //void newData(char* pData, size_t dataLength);
+    void newData(const char* pData, const size_t dataLength);
     //void newData(std::string newLine);
     void update();
 };

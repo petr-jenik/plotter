@@ -11,6 +11,6 @@
 #include "global.h"
 
 void parser_init(void);
-void parser_update(char* pData, size_t dataLength);
+void parser_update(const char* pData, const unsigned int dataLength);
 
 #endif /* PLOTTER_2_PARSER_PARSER_MAIN_H_ */

@@ -121,7 +121,7 @@ template<typename T> bool isInRange(const T value, const T minValue, const T max
 	return ((minValue <= value) and (value <= maxValue));
 }
 
-template<typename T> T constrain(const T value, const T minValue, const T maxValue)
+template<typename T> T templateConstrain(const T value, const T minValue, const T maxValue)
 {
 	T result = MIN(value, maxValue);
 	result = MAX(result, minValue);

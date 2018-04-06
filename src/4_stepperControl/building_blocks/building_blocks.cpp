@@ -280,7 +280,7 @@ PlotterArm::PlotterArm(const PlotterArmConfig _armConfig)
 void PlotterArm::NewPosition(PlotterArmSetting &setting)
 {
 	float requiredAngle = toPositiveAngle(setting.setpointAngle - this->armAngleOffset);
-	requiredAngle = constrain(requiredAngle, this->minAngle, this->maxAngle);
+	requiredAngle = templateConstrain(requiredAngle, this->minAngle, this->maxAngle);
 
 	float relativePosition = templateMap(requiredAngle,
                                   (float)this->minAngle,
