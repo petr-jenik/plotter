@@ -89,7 +89,7 @@ public:
 
     void update(float angle)
     {
-        this->angle = constrain(angle, this->minAngle, this->maxAngle);
+        this->angle = templateConstrain(angle, this->minAngle, this->maxAngle);
         updateFilter();
     }
 };
@@ -113,8 +113,8 @@ public:
 // Servo motor in position S1 is right servo
 // Servo motor in position S2 is left servo
 
-ServoGui servoRight(pos_S1, armLength_AS1, RIGHT_ARM_OFFSET);
-ServoGui servoLeft(pos_S2, armLength_BS2, LEFT_ARM_OFFSET);
+ServoGui servoRight(pos_S1, armLength_AS1, -59 /*RIGHT_ARM_OFFSET*/);
+ServoGui servoLeft(pos_S2, armLength_BS2, 65/*LEFT_ARM_OFFSET*/);
 ServoGui servoZ(pos_S1, 0, 0);
 
 ServoGui * servo[] = {&servoRight, &servoLeft, &servoZ};
@@ -305,6 +305,12 @@ void update(void)
         {
             eColor color = (command.extrudeLength > 0)? eColor_blue : eColor_red;
             Gui::glSelectColor(color);
+
+            if (command.extrudeLength <= 0)
+            {
+            	continue;
+            }
+
             Gui::drawLines(center(command.startPosition));
             Gui::drawLines(center(command.endPosition));
         }
