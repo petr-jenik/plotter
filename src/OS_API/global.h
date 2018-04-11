@@ -92,7 +92,8 @@ typedef struct
 enum
 {
 	eIdxRight = 0,
-	eIdxLeft
+	eIdxLeft,
+	eIdxZ,
 };
 
 const int cMaxNumberOfPlotterArms = 10;

@@ -2,7 +2,7 @@
  * 2_plotterClock.cpp
  *
  *  Created on: 24. 3. 2018
- *      Author: apollo
+ *      Author: Apollo
  */
 
 #include "project_config.h"
@@ -138,8 +138,9 @@ bool isSystemReady()
 }
 
 
-// TODO add speed
-void stepperControl_goToThisPosition(position newPosition,float extrudeLength)
+void stepperControl_goToThisPosition(position newPosition,
+		                                 float extrudeLength,
+										 float speed)
 {
 	TRACE; // Trace macro
 

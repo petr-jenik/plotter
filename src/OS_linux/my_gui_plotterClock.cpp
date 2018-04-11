@@ -253,7 +253,7 @@ void gui_add_line(const guiCommand& cmd, eColor color)
 
 void addPointToDrawList(void)
 {
-    bool extrude = (servo[2]->getAngle() > 90) ? true : false;
+    bool extrude = (servo[eIdxZ]->getAngle() > 90) ? true : false;
 
     // Calculate position of the point C
     position C;

@@ -58,7 +58,7 @@ protected:
     int32_t maxStepperValue;       // Max value (steps)
 
     // Flags
-    bool calibrationEnabled; //TODO maybe rename this flag to hasLimitSwitches
+    bool calibrationEnabled;
     eState calibrationState;
 
 public:

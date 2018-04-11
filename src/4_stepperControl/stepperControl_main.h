@@ -12,7 +12,9 @@
 
 void stepperControl_init();
 
-void stepperControl_goToThisPosition(position newPosition,float extrudeLength);
+void stepperControl_goToThisPosition(position newPosition,
+		                                 float extrudeLength,
+										 float speed);
 
 bool isSystemReady(void);
 

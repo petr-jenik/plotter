@@ -191,7 +191,6 @@ void gui_add_line(const guiCommand& cmd, eColor color)
 }
 
 
-//TODO Move to class Gui and add some event handler, registerm all gui objects and redraw them at once
 void addPointToDrawList(void)
 {
     //Gui::clear();

@@ -228,7 +228,7 @@ bool StepperWithLimits::Calibrate(void)
     {
         case eState_Left:
         	atLimitSwitch(0);
-        	//assert(this->currentStepCount == 0); // TODO remove this assertion
+        	new_assert(this->currentStepCount == 0);
             break;
         case eState_Right:
         	atLimitSwitch(1);

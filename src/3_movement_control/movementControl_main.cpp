@@ -16,7 +16,6 @@
 
 
 #ifdef OS_LINUX
-// TODO remove this
 #include "my_gui.h"
 #endif
 
@@ -33,10 +32,10 @@ void movementControl_createLine(position finalPosition,
 
 	position startPos = gCurrentPosition;
 
-//#ifdef OS_LINUX
-//	guiCommand cmd = {1, 1, gCurrentPosition, finalPosition};
-//	gui_add_line(cmd, eColor_green);
-//#endif //OS_LINUX
+#ifdef OS_LINUX
+	guiCommand cmd = {1, 1, gCurrentPosition, finalPosition};
+	gui_add_line(cmd, eColor_green);
+#endif //OS_LINUX
 
 	// get distance between start and end points
 	float distance = getDistance3D(startPos, finalPosition);
@@ -52,8 +51,6 @@ void movementControl_createLine(position finalPosition,
 	#define deltaZ (finalPosition.z - startPos.z)
 
 	// A close approximation to a straight line between two points
-	// TODO 13.10.2017 - This loop causes all the troubles!!!!!
-
 	int numberOfSteps = (int)(SPEED_MAGICAL_CONSTANT*distance);
 
 	// Do next loop at least once.
@@ -71,14 +68,15 @@ void movementControl_createLine(position finalPosition,
 		currentPos.y = startPos.y + (deltaY * i)/numberOfSteps;
 		currentPos.z = startPos.z + (deltaZ * i)/numberOfSteps;
 
-		stepperControl_goToThisPosition(currentPos, extrudeLength / numberOfSteps);
+		stepperControl_goToThisPosition(currentPos,
+				                        extrudeLength / numberOfSteps,
+										movementSpeed);
 		gCurrentPosition = currentPos;
 
 		// Useless delay used for a kicking of the WDT
 		Timer::sleep(0);
 
 	}
-	//LOG("diff: " << gCurrentPosition - finalPosition);
 }
 
 
@@ -188,5 +186,5 @@ void movementControl_init()
 	TRACE; // Trace macro
 
 	// Go to position {0, 0, 0}
-	stepperControl_goToThisPosition({0, 0, 0}, 0);
+	stepperControl_goToThisPosition({0, 0, 0} /*position*/, 0/*extrudeLength*/, 1/*movementSpeed*/ );
 }
