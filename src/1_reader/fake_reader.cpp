@@ -1,26 +1,24 @@
 /*
- * network_reader.cpp
+ * fake_reader.cpp
  *
- *  Created on: 20. 1. 2018
+ *  Created on: 24. 2. 2018
  *      Author: apollo
  */
 
-#include <iostream>
-#include <fstream>
-#include <cstdio>
-#include <errno.h>
+#include "log.h"
+#include "reader_main.h"
+#include "gcode.h"
 #include <stdint.h>
 
 #include <algorithm>
 
 #include "reader_main.h"
 #include "parser_main.h"
-#include "communication.h"
 #include "queue.h"
 
 #include "global.h"
 
-Communication comm;
+//Communication comm;
 Queue queue;
 
 void reader_init(void)
@@ -145,8 +143,8 @@ void reader_readAndProcess()
 {
 	DBG("Start server and listen for data");
 
-	while(comm.listen())
-	{
+//	while(comm.listen())
+	//{
 		serveClient();
-	}
+	//}
 }
