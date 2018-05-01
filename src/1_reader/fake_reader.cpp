@@ -93,6 +93,8 @@ bool readLineFromQueue(Queue &queue, char *pBuffer , uint32_t & sizeOfBuffer)
 	return retval;
 }
 
+#include <unistd.h>
+
 void serveClient()
 {
 	int lineNumber = 0;
@@ -129,6 +131,10 @@ void serveClient()
 			processLine(buffer, maxDataSize);
 			memset(buffer, 0, sizeof(buffer));
 			dataSize = sizeof(buffer);
+
+
+			// sleep
+			usleep(1000);
 		}
 
 		LOG("numberOfPushes: " << queue.numberOfPushes);

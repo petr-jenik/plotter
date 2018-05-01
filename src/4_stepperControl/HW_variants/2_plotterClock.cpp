@@ -82,7 +82,6 @@ bool calculatePosition(position finalPosition, float extrudeLength, MechanicComm
     bool result = true;
     position referencePoint;
 
-
     // Calculate position of the point B first
 	referencePoint = (position){-10, 0, 0} + pos_S2;
     result = result and getIntersectionCloserToRefPoint(D,
@@ -108,18 +107,31 @@ bool calculatePosition(position finalPosition, float extrudeLength, MechanicComm
 											 armLength_AC,
 											 pos_S1,
 											 armLength_AS1,
-											 referencePoint,  // move reference point to the rigth
+											 referencePoint,  // move reference point to the right
 											 A);
+
+    // Calculate position of the point B first
+	referencePoint = (position){-10, 0, 0} + pos_S2;
+    result = result and getIntersectionCloserToRefPoint(C,
+														 armLength_BC,
+														 pos_S2,
+														 armLength_BS2,
+														 referencePoint, // move reference point to the left const position referencePoint,
+														 B);
+
 
     if (result)
     {
     	float angleRight = getAngle(pos_S1, {pos_S1.x+100, pos_S1.y, pos_S1.z}, A);
-    	float angleLeft = getAngle(pos_S2, {pos_S2.x+100, pos_S2.y, pos_S2.z}, B);
+    	float angleLeft =  180 - getAngle(pos_S2, {pos_S2.x+100, pos_S2.y, pos_S2.z}, B);
 
     	// Fill servo setting
-    	outputCmd.servoAngle[eIdxRight] = angleRight - RIGHT_ARM_OFFSET;
-    	outputCmd.servoAngle[eIdxLeft]  = angleLeft  - LEFT_ARM_OFFSET;
-    	outputCmd.servoAngle[2] = (extrudeLength > 0) ? 180 : 0;
+    	outputCmd.servoAngle[eIdxRight] = angleRight + RIGHT_ARM_OFFSET;
+    	outputCmd.servoAngle[eIdxLeft]  = angleLeft  + LEFT_ARM_OFFSET;
+
+    	//LOG("angle1Right: " << outputCmd.servoAngle[eIdxRight]  << ", angleLeft: " << outputCmd.servoAngle[eIdxLeft] );
+
+    	outputCmd.servoAngle[2] = (extrudeLength > 0) ? 0 : 180;
     	outputCmd.servoObjectCount = 3;
 
     	// Null other counts

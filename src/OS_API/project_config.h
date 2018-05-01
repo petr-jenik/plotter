@@ -23,8 +23,8 @@ const int MIN_ANGLE = 0;
 const int MAX_ANGLE = 180;
 
 
-const int LEFT_ARM_OFFSET = 65;//+45;
-const int RIGHT_ARM_OFFSET = -52;//-45;
+const int LEFT_ARM_OFFSET = +45;
+const int RIGHT_ARM_OFFSET = +45;
 
 const int STEP_SIZE = 1;
 
@@ -43,8 +43,8 @@ const int STEP_SIZE = 1;
  */
 
 #if PRINTER_TYPE == PRINTER_TYPE_PLOTTER_CLOCK
-	const position pos_S1 = {25, -130, 0};
-	const position pos_S2 = {-25, -130, 0};
+	const position pos_S1 = {25, -120, 0};
+	const position pos_S2 = {-25, -120, 0};
 
 	const int armLength_AC =  85;
 	const int armLength_AS1 = 86;
