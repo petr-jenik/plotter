@@ -63,7 +63,7 @@ int main(int argc, char** argv)
 	/* App init */
 	systemInit();
 
-//#define DEBUG_LOOP
+#define DEBUG_LOOP
 
 	/* Start main app */
 #ifdef DEBUG_LOOP

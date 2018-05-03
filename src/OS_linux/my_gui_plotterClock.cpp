@@ -78,7 +78,8 @@ class ServoGui
 {
     position endPoint;
     position rotationCenter;
-    float angle;
+    float armAngle;
+    float servoAngle;
     float filteredAngle;
     float Kfilter;
     int armLength;
@@ -95,16 +96,17 @@ public:
 			 bool _reverseAngle)
     :endPoint({0, 0, 0}),
     rotationCenter(_rotationCenter),
-    angle(0),
-    filteredAngle(angle),
-    Kfilter(0.2),
+    servoAngle(0),
+	//requiredAngle(0),
+    filteredAngle(armAngle),
+    Kfilter(1),
     armLength(_armLength),
     armAngleOffset(_armAngleOffset),
     minAngle(MIN_ANGLE),
     maxAngle(MAX_ANGLE),
 	reverseAngle(_reverseAngle)
     {
-       this->update(this->angle);
+       this->update(this->armAngle);
     };
 
     void draw(void)
@@ -135,20 +137,12 @@ public:
     float getAngle(void)
     {
         updateFilter();
-        return this->angle;// + this->armAngleOffset;
+        return this->filteredAngle;
     }
 
     void updateFilter(void)
     {
-        if (reverseAngle == true)
-        {
-        	filteredAngle = ((1 - this->Kfilter) * filteredAngle) + (this->Kfilter * (180 - angle));
-        }
-        else
-        {
-        	filteredAngle = ((1 - this->Kfilter) * filteredAngle) + (this->Kfilter * angle);
-        }
-
+		this->filteredAngle = ((1 - this->Kfilter) * filteredAngle) + (this->Kfilter * this->armAngle);
 		endPoint = getCirclePosition(rotationCenter,
 									armLength,
 									this->filteredAngle);
@@ -156,9 +150,19 @@ public:
 
     void update(float angle)
     {
-    	angle -= (float)armAngleOffset;
+    	LOG("Angle:" << angle);
+    	this->servoAngle = angle;
+    	//this->requiredAngle = angle;//templateConstrain(angle, this->minAngle, this->maxAngle);
 
-    	this->angle = angle;//templateConstrain(angle, this->minAngle, this->maxAngle);
+    	if (reverseAngle == true)
+    	{
+			this->armAngle = 180 - (this->armAngleOffset - angle);
+		}
+		else
+		{
+			this->armAngle = angle -this->armAngleOffset;
+		}
+    	LOG("ArmAngle:" << armAngle);
         updateFilter();
     }
 };
@@ -182,8 +186,8 @@ public:
 // Servo motor in position S1 is right servo
 // Servo motor in position S2 is left servo
 
-ServoGui servoRight(pos_S1, armLength_AS1, 45 /*-59*/ /*RIGHT_ARM_OFFSET*/, false);
-ServoGui servoLeft(pos_S2, armLength_BS2, 45/*+61*//*LEFT_ARM_OFFSET*/, true);
+ServoGui servoRight(pos_S1, armLength_AS1, RIGHT_ARM_OFFSET, false);
+ServoGui servoLeft(pos_S2, armLength_BS2, LEFT_ARM_OFFSET, true);
 ServoGui servoZ(pos_S1, 0, 0, false);
 
 ServoGui * servo[] = {&servoRight, &servoLeft, &servoZ};
@@ -220,7 +224,8 @@ void hwServoSetPosition(float angle, uint32_t channel)
     if (channel < cServoCount)
     {
         DBG("channel: " << channel << ", angle: " << (int) angle);
-        float tmpAngle = angle;//((int)(angle * 2))/2.0;
+        //= angle;//((int)(angle * 2))/2.0;
+        float tmpAngle = templateConstrain(angle, 0.0f, 180.0f);
         servo[channel]->update(tmpAngle);
     }
     else
@@ -268,9 +273,9 @@ static bool _getEndpoint(position& C)
 static bool _getPositionOfPenholder(position B, position C, position& D)
 {
 	return getIntersectionFartherToRefPoint(B,
-											102,//armLength_BD,
+											armLength_BD,
 											C,
-											15,//armLength_CD,
+											armLength_CD,
 											pos_S2,
 											D);
 }
@@ -283,14 +288,14 @@ void drawSteppers()
     Gui::glSelectColor(eColor_green);
     servo[eIdxRight]->draw();
 
-    // Left
+    // Left = B = blue
     Gui::glSelectColor(eColor_blue);
     servo[eIdxLeft]->draw();
 
     Gui::glSelectColor(eColor_black);
 
     position A = servo[eIdxRight]->getEndPoint();
-    position B = servo[1]->getEndPoint();
+    position B = servo[eIdxLeft]->getEndPoint();
 
     // Calculate position of the point C
     position C;

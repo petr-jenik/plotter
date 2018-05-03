@@ -79,7 +79,7 @@ bool readLineFromQueue(Queue &queue, char *pBuffer , uint32_t & sizeOfBuffer)
 			queue.push(line[i]);
 		}
 
-		for (int i = 0; i < numberOfItems; i++)
+		for (size_t i = 0; i < numberOfItems; i++)
 		{
 			char byte;
 			queue.pop(byte);
@@ -131,17 +131,10 @@ void serveClient()
 			processLine(buffer, maxDataSize);
 			memset(buffer, 0, sizeof(buffer));
 			dataSize = sizeof(buffer);
-
-
-			// sleep
-			usleep(1000);
 		}
 
 		LOG("numberOfPushes: " << queue.numberOfPushes);
 		LOG("numberOfPops: " << queue.numberOfPops);
-
-		//parser_update(line);
-
 	}
 }
 

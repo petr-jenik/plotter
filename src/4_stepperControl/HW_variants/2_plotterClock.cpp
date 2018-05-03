@@ -23,7 +23,9 @@ MechanicController mechanicController;
 
 PlotterServo usedServos[] =
 {
-		{0}, {1}, {2}
+		{0, 61, false, -45, 180},
+		{1, 140, true, -45, 180},
+		{2, 0, false, 0, 180}
 };
 
 
@@ -122,14 +124,22 @@ bool calculatePosition(position finalPosition, float extrudeLength, MechanicComm
 
     if (result)
     {
+    	static float angle = 45;
+    	//angle = 45 + (angle++)%45;
+    	angle += 0.1;
+    	if (angle > 90)
+    	{
+    		angle = 45;
+    	}
+
     	float angleRight = getAngle(pos_S1, {pos_S1.x+100, pos_S1.y, pos_S1.z}, A);
     	float angleLeft =  180 - getAngle(pos_S2, {pos_S2.x+100, pos_S2.y, pos_S2.z}, B);
 
-    	// Fill servo setting
-    	outputCmd.servoAngle[eIdxRight] = angleRight + RIGHT_ARM_OFFSET;
-    	outputCmd.servoAngle[eIdxLeft]  = angleLeft  + LEFT_ARM_OFFSET;
+    	LOG("angleRight: " << angleRight << ", angleLeft" << angleLeft);
 
-    	//LOG("angle1Right: " << outputCmd.servoAngle[eIdxRight]  << ", angleLeft: " << outputCmd.servoAngle[eIdxLeft] );
+    	// Fill servo setting
+    	outputCmd.servoAngle[eIdxRight] = angleRight;
+    	outputCmd.servoAngle[eIdxLeft]  = angleLeft;
 
     	outputCmd.servoAngle[2] = (extrudeLength > 0) ? 0 : 180;
     	outputCmd.servoObjectCount = 3;
