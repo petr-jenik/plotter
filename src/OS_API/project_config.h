@@ -10,14 +10,16 @@
 
 #include "global.h"
 
-#define PRINTER_TYPE_2D_PLOTTER       1
-#define PRINTER_TYPE_PLOTTER_CLOCK    2
-#define PRINTER_TYPE_3D_PRINTER       3
+#define PRINTER_TYPE_2D_PLOTTER_WITH_SERVOS            1
+#define PRINTER_TYPE_2D_PLOTTER_TYPE_SCARA_ROBOT       2
+#define PRINTER_TYPE_2D_PLOTTER_CARTESIAN              3
+#define PRINTER_TYPE_3D_PRINTER_TYPE_SCARA             4
+#define PRINTER_TYPE_3D_PRINTER_CARTESIAN              5
 
 // Select type of connected hardware
-#define PRINTER_TYPE PRINTER_TYPE_PLOTTER_CLOCK
+#define PRINTER_TYPE PRINTER_TYPE_2D_PLOTTER_CARTESIAN
 
-const int SPEED_MAGICAL_CONSTANT = 50;
+const int SPEED_MAGICAL_CONSTANT = 5;
 
 const int MIN_ANGLE = -45;
 const int MAX_ANGLE = 180;
@@ -28,8 +30,11 @@ const int RIGHT_ARM_OFFSET = 61;
 
 const int STEP_SIZE = 1;
 
-/*
- *           C
+#if PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER_WITH_SERVOS
+
+/*              D
+ *             /
+ *           C/
  *           /\
  *          /  \
  *         /    \
@@ -38,26 +43,35 @@ const int STEP_SIZE = 1;
  *        \      /
  *         \    /
  *          \  /
- *          S1 S2
+ *  right - S1 S2 - left
  *
  */
-
-#if PRINTER_TYPE == PRINTER_TYPE_PLOTTER_CLOCK
 	const position pos_S1 = {25, -120, 0};
 	const position pos_S2 = {-25, -120, 0};
 
 	const int armLength_AC =  85;
 	const int armLength_AS1 = 85;
 	const int armLength_BC =  85;
-	const int armLength_BS2 = 85;
-
-	//TODO Move this to a better location
-	const int armLength_CD =  20;
 	const int armLength_BD = 100;
+	const int armLength_BS2 = 85;
+	const int armLength_CD =  20;
 
+#elif PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER_TYPE_SCARA_ROBOT
 
+	/*
+	 *           C
+	 *           /\
+	 *          /  \
+	 *         /    \
+	 *        /      \
+	 *       A        B
+	 *        \      /
+	 *         \    /
+	 *          \  /
+	 *          S1 S2
+	 *
+	 */
 
-#elif PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER
 	const position pos_S1 = {0, -100, 0};
 	const position pos_S2 = {0, -100, 0};
 
@@ -66,7 +80,21 @@ const int STEP_SIZE = 1;
 	const int armLength_BC =  100;
 	const int armLength_BS2 = 100;
 
-#elif PRINTER_TYPE == PRINTER_TYPE_3D_PRINTER
+#elif PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER_CARTESIAN
+
+	const position pos_START = { -150, -150, 0}; // Bottom left corner
+	const position pos_END = { 150, 150, 0}; // Upper right corner
+
+	enum
+	{
+		eStepperIdx_X = 0,
+		eStepperIdx_Y,
+
+		eStepperIdx_COUNT
+	} eStepperIdx2D;
+
+
+#elif PRINTER_TYPE == PRINTER_TYPE_3D_PRINTER_CARTESIAN
 
 	const position pos_START = { -150, -150, -150}; // Bottom left corner
 	const position pos_END = { 150, 150, 150}; // Upper right corner

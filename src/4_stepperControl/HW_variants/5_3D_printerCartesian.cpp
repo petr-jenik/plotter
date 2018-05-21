@@ -7,7 +7,7 @@
 
 
 #include "project_config.h"
-#if PRINTER_TYPE == PRINTER_TYPE_3D_PRINTER
+#if PRINTER_TYPE == PRINTER_TYPE_3D_PRINTER_CARTESIAN
 
 #include "mechanicController.h"
 #include "global.h"
@@ -97,7 +97,9 @@ bool isSystemReady()
 
 
 // TODO add speed
-void stepperControl_goToThisPosition(position newPosition,float extrudeLength)
+void stepperControl_goToThisPosition(position newPosition,
+		                                 float extrudeLength,
+										 float speed)
 {
 	MechanicCommand command = {0};
 
@@ -112,7 +114,7 @@ void stepperControl_goToThisPosition(position newPosition,float extrudeLength)
 	}
 }
 
-#endif //PRINTER_TYPE == PRINTER_TYPE_3D_PRINTER
+#endif //PRINTER_TYPE == PRINTER_TYPE_3D_PRINTER_CARTESIAN
 
 
 

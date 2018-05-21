@@ -6,7 +6,7 @@
  */
 
 #include "project_config.h"
-#if PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER
+#if PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER_TYPE_SCARA_ROBOT
 
 #include "mechanicController.h"
 #include "global.h"
@@ -127,7 +127,9 @@ bool isSystemReady()
 
 
 // TODO add speed
-void stepperControl_goToThisPosition(position newPosition,float extrudeLength)
+void stepperControl_goToThisPosition(position newPosition,
+		                                 float extrudeLength,
+										 float speed)
 {
 	MechanicCommand command = {0};
 
@@ -142,4 +144,4 @@ void stepperControl_goToThisPosition(position newPosition,float extrudeLength)
 	}
 }
 
-#endif //PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER
+#endif //PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER_TYPE_SCARA_ROBOT

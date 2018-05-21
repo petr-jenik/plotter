@@ -6,7 +6,7 @@
  */
 
 #include "project_config.h"
-#if PRINTER_TYPE == PRINTER_TYPE_PLOTTER_CLOCK
+#if PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER_WITH_SERVOS
 
 #include "mechanicController.h"
 #include "global.h"
@@ -179,4 +179,4 @@ void stepperControl_goToThisPosition(position newPosition,
 	}
 }
 
-#endif // PRINTER_TYPE == PRINTER_TYPE_PLOTTER_CLOCK
+#endif // PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER_WITH_SERVOS
