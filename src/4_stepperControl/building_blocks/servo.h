@@ -14,19 +14,18 @@
 class PlotterServo
 {
 private:
-	// Desired angle
-    float angle;
-
-	// Servo channel
-    uint32_t channel;
-
+	float requiredAngle; // Desired angle
+	float servoAngle;    // Actual servo angle
+    float angleOffset;
+    uint32_t channel; // Servo channel
     bool initDone;
-
-    // Enable/disable flag
-    bool enableFlag;
+    bool enableFlag;     // Enable/disable flag
+    float minAngle;
+    float maxAngle;
+    bool reverseAngle;
 
 public:
-    PlotterServo(int channel);
+    PlotterServo(uint32_t _channel, float _offset, bool reverse, int _minAngle, int _maxAngle);
     void OnUpdate(ServoSetting & setting);
     void OnMove(void);
 };

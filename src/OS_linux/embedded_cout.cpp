@@ -129,9 +129,9 @@ EmbeddedCout& EmbeddedCout::operator<<(const int32_t data)
 
 EmbeddedCout& EmbeddedCout::operator<<(const float fData)
 {
-	int data = (int)fData;
+	//int data = (int)fData;
 	char itoaBuffer[100];
-	sprintf(itoaBuffer, "%d*10^(-6)", data * 1000000);
+	sprintf(itoaBuffer, "%d*10^(-6)", (int)(fData * 1000000));
 	_add(itoaBuffer, strlen(itoaBuffer));
 	return *this;
 }

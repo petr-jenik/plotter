@@ -19,12 +19,12 @@
 
 const int SPEED_MAGICAL_CONSTANT = 50;
 
-const int MIN_ANGLE = 0;
+const int MIN_ANGLE = -45;
 const int MAX_ANGLE = 180;
 
 
-const int LEFT_ARM_OFFSET = 65;//+45;
-const int RIGHT_ARM_OFFSET = -52;//-45;
+const int LEFT_ARM_OFFSET = 140;
+const int RIGHT_ARM_OFFSET = 61;
 
 const int STEP_SIZE = 1;
 
@@ -43,13 +43,13 @@ const int STEP_SIZE = 1;
  */
 
 #if PRINTER_TYPE == PRINTER_TYPE_PLOTTER_CLOCK
-	const position pos_S1 = {25, -130, 0};
-	const position pos_S2 = {-25, -130, 0};
+	const position pos_S1 = {25, -120, 0};
+	const position pos_S2 = {-25, -120, 0};
 
 	const int armLength_AC =  85;
-	const int armLength_AS1 = 86;
+	const int armLength_AS1 = 85;
 	const int armLength_BC =  85;
-	const int armLength_BS2 = 84;
+	const int armLength_BS2 = 85;
 
 	//TODO Move this to a better location
 	const int armLength_CD =  20;

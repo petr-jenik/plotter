@@ -109,7 +109,7 @@ void serveClient()
 		int maxDataSize = std::min(queue.getFreeSpaceSize(), sizeof(buffer));
 
 		// New client connected
-		if (gcodeRecvData((uint8_t*)buffer, &maxDataSize) == false)
+		if (comm.recvData((uint8_t*)buffer, &maxDataSize) == false)
 		{
 			//receiveIsActive = false;
 			// Error during reading, break internal loop

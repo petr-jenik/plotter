@@ -20,11 +20,66 @@
 #include "hwServo.h"
 #include "servo.h"
 
+//#include <stdio.h>
+#include <stdio.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netinet/in_systm.h>
+#include <netinet/ip.h>
+#include <netinet/tcp.h>
+#include <arpa/inet.h>
+#include <string.h>
+
+
+bool udpSend(char * data, size_t dataLen)
+{
+	static bool udpInitialized = false;
+	static int sock = -1;
+	static struct sockaddr_in serverAddr;
+
+	if (udpInitialized == false)
+	{
+		//Send to
+		serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+		serverAddr.sin_family = AF_INET;
+		serverAddr.sin_port = htons(7777);
+
+		sock = socket(PF_INET, SOCK_DGRAM, 0);
+		if (sock == -1)
+		{
+			LOG("socket error");
+			return false;
+		}
+		LOG("socket OK");
+		LOG(sock);
+
+		udpInitialized = true;
+	}
+
+	int bytesCount = sendto(sock,
+							data,
+							dataLen,
+							0,
+							(struct sockaddr *) &serverAddr,
+							sizeof(serverAddr));
+
+	if (bytesCount == -1)
+	{
+		LOG("error: sendto");
+		while(1);
+		return false;
+	}
+
+	return true;
+}
+
+
 class ServoGui
 {
     position endPoint;
     position rotationCenter;
-    float angle;
+    float armAngle;
+    float servoAngle;
     float filteredAngle;
     float Kfilter;
     int armLength;
@@ -32,22 +87,26 @@ class ServoGui
 
     float minAngle;
     float maxAngle;
+    bool reverseAngle;
 
 public:
     ServoGui(position _rotationCenter,
     		 int _armLength,
-			 int _armAngleOffset)
+			 int _armAngleOffset,
+			 bool _reverseAngle)
     :endPoint({0, 0, 0}),
     rotationCenter(_rotationCenter),
-    angle(0),
-    filteredAngle(angle),
+    servoAngle(0),
+	//requiredAngle(0),
+    filteredAngle(armAngle),
     Kfilter(1),
     armLength(_armLength),
     armAngleOffset(_armAngleOffset),
     minAngle(MIN_ANGLE),
-    maxAngle(MAX_ANGLE)
+    maxAngle(MAX_ANGLE),
+	reverseAngle(_reverseAngle)
     {
-       this->update(this->angle);
+       this->update(this->armAngle);
     };
 
     void draw(void)
@@ -61,7 +120,7 @@ public:
         drawCircle(getCirclePosition(rotationCenter, armLength, 135) , 2);
 
 
-        position needle = getCirclePosition(rotationCenter, 30, this->angle);
+        position needle = getCirclePosition(rotationCenter, 30, getAngle());
         drawLine(rotationCenter, needle);
 
         drawLine(rotationCenter, endPoint);
@@ -78,18 +137,32 @@ public:
     float getAngle(void)
     {
         updateFilter();
-        return this->angle;
+        return this->filteredAngle;
     }
 
     void updateFilter(void)
     {
-        filteredAngle = ((1 - this->Kfilter) * filteredAngle) + (this->Kfilter * angle);
-        endPoint = getCirclePosition(rotationCenter, armLength, this->filteredAngle + (float)armAngleOffset);
+		this->filteredAngle = ((1 - this->Kfilter) * filteredAngle) + (this->Kfilter * this->armAngle);
+		endPoint = getCirclePosition(rotationCenter,
+									armLength,
+									this->filteredAngle);
     }
 
     void update(float angle)
     {
-        this->angle = templateConstrain(angle, this->minAngle, this->maxAngle);
+    	LOG("Angle:" << angle);
+    	this->servoAngle = angle;
+    	//this->requiredAngle = angle;//templateConstrain(angle, this->minAngle, this->maxAngle);
+
+    	if (reverseAngle == true)
+    	{
+			this->armAngle = 180 - (this->armAngleOffset - angle);
+		}
+		else
+		{
+			this->armAngle = angle -this->armAngleOffset;
+		}
+    	LOG("ArmAngle:" << armAngle);
         updateFilter();
     }
 };
@@ -113,9 +186,9 @@ public:
 // Servo motor in position S1 is right servo
 // Servo motor in position S2 is left servo
 
-ServoGui servoRight(pos_S1, armLength_AS1, -59 /*RIGHT_ARM_OFFSET*/);
-ServoGui servoLeft(pos_S2, armLength_BS2, 65/*LEFT_ARM_OFFSET*/);
-ServoGui servoZ(pos_S1, 0, 0);
+ServoGui servoRight(pos_S1, armLength_AS1, RIGHT_ARM_OFFSET, false);
+ServoGui servoLeft(pos_S2, armLength_BS2, LEFT_ARM_OFFSET, true);
+ServoGui servoZ(pos_S1, 0, 0, false);
 
 ServoGui * servo[] = {&servoRight, &servoLeft, &servoZ};
 //static_assert(servo[eIdxRight] ==  servoRight, "test");
@@ -131,12 +204,28 @@ void hwServoInit(int32_t channel)
 // Forward declaration
 void addPointToDrawList(void);
 
+void sendAnglesToDiag(void)
+{
+	static int cycleCount = 0;
+	cycleCount++;
+	char message[512] = {0};
+	sprintf(message, "start %f %f %f %d",
+			servo[0]->getAngle(),
+			servo[1]->getAngle(),
+			servo[2]->getAngle(),
+			cycleCount);
+	udpSend(message, strlen(message));
+
+}
+
+
 void hwServoSetPosition(float angle, uint32_t channel)
 {
     if (channel < cServoCount)
     {
         DBG("channel: " << channel << ", angle: " << (int) angle);
-        float tmpAngle = angle;//((int)(angle * 2))/2.0;
+        //= angle;//((int)(angle * 2))/2.0;
+        float tmpAngle = templateConstrain(angle, 0.0f, 180.0f);
         servo[channel]->update(tmpAngle);
     }
     else
@@ -147,6 +236,7 @@ void hwServoSetPosition(float angle, uint32_t channel)
 
     if (channel == cServoCount - 1)
     {
+    	sendAnglesToDiag();
         addPointToDrawList();
     }
 }
@@ -198,14 +288,14 @@ void drawSteppers()
     Gui::glSelectColor(eColor_green);
     servo[eIdxRight]->draw();
 
-    // Left
+    // Left = B = blue
     Gui::glSelectColor(eColor_blue);
     servo[eIdxLeft]->draw();
 
     Gui::glSelectColor(eColor_black);
 
     position A = servo[eIdxRight]->getEndPoint();
-    position B = servo[1]->getEndPoint();
+    position B = servo[eIdxLeft]->getEndPoint();
 
     // Calculate position of the point C
     position C;
@@ -253,7 +343,7 @@ void gui_add_line(const guiCommand& cmd, eColor color)
 
 void addPointToDrawList(void)
 {
-    bool extrude = (servo[eIdxZ]->getAngle() > 90) ? true : false;
+    bool extrude = (servo[eIdxZ]->getAngle() > 90) ? false : true;
 
     // Calculate position of the point C
     position C;
@@ -265,7 +355,7 @@ void addPointToDrawList(void)
 
     // Calculate position of the point D
     position D;
-    position B = servo[1]->getEndPoint();
+    position B = servo[eIdxLeft]->getEndPoint();
 
     if(!_getPositionOfPenholder(B, C, D))
     {
@@ -274,12 +364,6 @@ void addPointToDrawList(void)
     }
 
     static position currentPos = D;
-/*  static position tmpC = C;
-	float k = 1;
-	tmpC.x = k * C.x + (1 - k) * tmpC.x;
-	tmpC.y = k * C.y + (1 - k) * tmpC.y;
-	tmpC.z = k * C.z + (1 - k) * tmpC.z;
-*/
 
 	guiCommand outCmd;
 	outCmd.extrudeLength = extrude;
