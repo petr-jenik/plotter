@@ -5,7 +5,7 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.exe.debug.881614632" moduleId="org.eclipse.cdt.core.settings" name="Debug">
 				<externalSettings/>
 				<extensions>
-					<extension id="org.eclipse.cdt.core.GNU_ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
@@ -103,7 +103,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="1_reader/reader_main.cpp|1_reader/communication.cpp|1_reader/arduino_reader.cpp|1_reader/communication_gcode.cpp|5_GUI|2_parser/sub/src/main.cpp|1_reader/reader.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|2_parser/sub/src/gui" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="1_reader/gcode.cpp|1_reader/fake_reader.cpp|1_reader/arduino_reader.cpp|1_reader/communication_gcode.cpp|5_GUI|2_parser/sub/src/main.cpp|1_reader/reader.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|2_parser/sub/src/gui" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -113,7 +113,7 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.exe.release.394008270" moduleId="org.eclipse.cdt.core.settings" name="Release">
 				<externalSettings/>
 				<extensions>
-					<extension id="org.eclipse.cdt.core.GNU_ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
@@ -214,7 +214,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="1_reader/reader_main.cpp|1_reader/communication.cpp|1_reader/arduino_reader.cpp|1_reader/communication_gcode.cpp|5_GUI|2_parser/sub/src/main.cpp|1_reader/reader.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|2_parser/sub/src/gui" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="1_reader/gcode.cpp|1_reader/fake_reader.cpp|1_reader/arduino_reader.cpp|1_reader/communication_gcode.cpp|5_GUI|2_parser/sub/src/main.cpp|1_reader/reader.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|2_parser/sub/src/gui" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -224,7 +224,7 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.exe.debug.881614632.472279662" moduleId="org.eclipse.cdt.core.settings" name="STM32">
 				<externalSettings/>
 				<extensions>
-					<extension id="org.eclipse.cdt.core.GNU_ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
 					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
@@ -322,7 +322,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="1_reader/reader_main.cpp|1_reader/communication.cpp|1_reader/arduino_reader.cpp|1_reader/communication_gcode.cpp|OS_linux|OS_embedded|5_GUI|2_parser/sub/src/main.cpp|1_reader/reader.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|2_parser/sub/src/gui" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="1_reader/gcode.cpp|1_reader/fake_reader.cpp|1_reader/arduino_reader.cpp|1_reader/communication_gcode.cpp|OS_linux|OS_embedded|5_GUI|2_parser/sub/src/main.cpp|1_reader/reader.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|2_parser/sub/src/gui" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

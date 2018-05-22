@@ -23,6 +23,14 @@ MechanicController mechanicController;
 
 StepperWithLimits steppers[eStepperIdx_COUNT];
 
+PlotterServo usedServos[] = {
+		{0/*channel*/,
+		 0/*offset*/,
+		 false/*reverse*/,
+		 0/*min angle*/,
+		 180/*max angle*/}
+};
+
 void stepperControl_init(void)
 {
 	for (int i = 0; i < ARRAY_SIZE(steppers); i++)
@@ -38,6 +46,9 @@ void stepperControl_init(void)
 
 	// Register steppers to the controller
 	mechanicController.registerLimSteppers(steppers, ARRAY_SIZE(steppers));
+
+	// Register servomotors to the controller
+    mechanicController.registerServos(usedServos, ARRAY_SIZE(usedServos));
 
     mechanicController.calibrate(true);
 
@@ -83,8 +94,11 @@ bool calculatePosition(position requiredPos, float extrudeLength, MechanicComman
 	//outputCmd.limStepperRelativePosition[eStepperIdx_Z] = relativeZ;
 	outputCmd.limStepperObjectCount = 2;
 
+	// Control Z axe with a servo
+	outputCmd.servoAngle[0] = (extrudeLength > 0) ? 0 : 180;
+	outputCmd.servoObjectCount = 1;
+
 	// Null other counts
-	outputCmd.servoObjectCount = 0;
 	outputCmd.plotterArmObjectCount = 0;
 	outputCmd.stepperObjectCount = 0;
 	return true;

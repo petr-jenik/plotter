@@ -33,8 +33,8 @@ void movementControl_createLine(position finalPosition,
 	position startPos = gCurrentPosition;
 
 #ifdef OS_LINUX
-	guiCommand cmd = {1, 1, gCurrentPosition, finalPosition};
-	gui_add_line(cmd, eColor_green);
+	guiCommand cmd = {extrudeLength, 1, gCurrentPosition, finalPosition};
+	//gui_add_line(cmd, eColor_green);
 #endif //OS_LINUX
 
 	// get distance between start and end points

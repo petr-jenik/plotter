@@ -33,8 +33,34 @@ std::mutex drawListRequired_lock;
 GpioDesc_t undefPin = {0, ePin_undef};
 // ----------------------------------------------------------------------------
 // Servo stubs
+
+float servoAngles[] = {0};
+
+const int cServoCount = ARRAY_SIZE(servoAngles);
+
 void hwServoInit(int32_t channel){};
-void hwServoSetPosition(float angle, uint32_t channel){};
+
+void hwServoSetPosition(float angle, uint32_t channel)
+{
+    if (channel < cServoCount)
+    {
+        DBG("channel: " << channel << ", angle: " << (int) angle);;
+        servoAngles[channel] = angle;
+    }
+    else
+    {
+    	DBG("Fail in file " << __FILE__ << " on line " << __LINE__);
+    	new_assert(false);
+    }
+
+/*    if (channel == cServoCount - 1)
+    {
+    	sendAnglesToDiag();
+        addPointToDrawList();
+    }
+*/
+}
+
 
 // --------------------------------
 
@@ -258,12 +284,14 @@ void addPointToDrawList(void)
 {
     position C;
 
+    bool extrude = (servoAngles[0] > 90) ? false : true;
+
     if (_getEndpoint(C))
     {
    		static position currentPos = C;
 
     	guiCommand outCmd;
-		outCmd.extrudeLength = 1;
+		outCmd.extrudeLength = (extrude) ? 1 : 0;
 		outCmd.startPosition = currentPos;
 		outCmd.endPosition = C;
 
@@ -275,7 +303,11 @@ void addPointToDrawList(void)
 			drawList.erase(drawList.begin(), drawList.end());
 		}
 
-		drawList.push_back(outCmd);
+		// Retraction simulation - show only printing, not moving
+		if (extrude)
+		{
+			drawList.push_back(outCmd);
+		}
 		currentPos = C;
     }
 }
