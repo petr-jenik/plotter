@@ -22,7 +22,8 @@ void uartInit();
 
 void uartSendChar(char sendChar);
 char uartGetChar(void);
-void uartPrint(char string[]);
+void uartPrint(char *string);
+int uartDataAvailable(void);
 
 #ifdef __cplusplus
 	}

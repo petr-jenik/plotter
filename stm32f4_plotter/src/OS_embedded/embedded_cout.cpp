@@ -71,7 +71,7 @@ EmbeddedCout& EmbeddedCout::operator<<(std::string data)
 }
 */
 
-EmbeddedCout& EmbeddedCout::operator<<(char * c_string)
+EmbeddedCout& EmbeddedCout::operator<<(const char * c_string)
 {
 	_add(c_string, strlen(c_string));
 	return *this;

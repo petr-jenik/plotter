@@ -91,6 +91,11 @@ void DMA2_Stream2_IRQHandler(void)
     HAL_DMA_IRQHandler(&hdma_usart1_rx);
 }
 
+int uartDataAvailable(void)
+{
+	return newDataReceived;
+}
+
 char uartGetChar(void)
 {
 	while(!newDataReceived){};
@@ -110,7 +115,7 @@ void uartSendChar(char sendChar)
 	HAL_UART_Transmit(&huart1, (uint8_t*)&sendChar, 1, 5);
 }
 
-void uartPrint(char string[])
+void uartPrint(char *string)
 {
 	HAL_UART_Transmit(&huart1, (uint8_t*)string, strlen(string), 5);
 }
