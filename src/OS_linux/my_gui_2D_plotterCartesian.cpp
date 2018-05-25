@@ -157,8 +157,8 @@ public:
 
 
 // HW simulation
-LimStepperGui limStepperGuiX({pos_START.x, 0, 0}, {pos_END.x, 0, 0}, 10);
-LimStepperGui limStepperGuiY({0, pos_START.y, 0}, {0, pos_END.y, 0}, 10);
+LimStepperGui limStepperGuiX({pos_START.x, 0, 0}, {pos_END.x, 0, 0}, 1);
+LimStepperGui limStepperGuiY({0, pos_START.y, 0}, {0, pos_END.y, 0}, 1);
 //LimStepperGui limStepperGuiZ({0, 0, pos_START.z}, {0, 0, pos_END.z}, 1);
 
 LimStepperGui * limSteppers[] = {&limStepperGuiX, &limStepperGuiY};
@@ -297,7 +297,10 @@ void addPointToDrawList(void)
 
 		std::lock_guard<std::mutex> hold(drawList_lock);
 
-		if (currentPos.z != C.z)
+		static bool oldExtrude = extrude;
+
+		//if (currentPos.z != C.z)
+		if (oldExtrude != extrude)
 		{
 			LOG("New layer started");
 			drawList.erase(drawList.begin(), drawList.end());

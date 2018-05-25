@@ -63,11 +63,29 @@ protected:
 
 public:
     StepperWithLimits();
-    bool Calibrate(void); //Return true if calibration is done
-    eStepperPosition getPosition(void);// <- musi vracet undef, pokud stepper nema limit switche - nebo budou limit scwitche soucasti podedenych trid?
+    virtual bool Calibrate(void); //Return true if calibration is done
+    virtual eStepperPosition getPosition(void);// <- musi vracet undef, pokud stepper nema limit switche - nebo budou limit scwitche soucasti podedenych trid?
     void OnUpdate(float relativePosition, bool enable);
     void registerLimitSwitchGPIOs(LimitSwitchGPIOs * gpio);
 };
+
+//////////// Stepper with one limit switch (e.g. from the CD drive)
+
+class StepperWithOneLimitSwitch : public StepperWithLimits
+{
+private:
+	   // HW GPIO used as a limit switch
+	    Gpio * limitSwitch;
+public:
+	StepperWithOneLimitSwitch(int32_t maxStepperValue);
+    bool Calibrate(void); //Return true if calibration is done
+    eStepperPosition getPosition(void);// <- musi vracet undef, pokud stepper nema limit switche - nebo budou limit scwitche soucasti podedenych trid?
+    //void OnUpdate(float relativePosition, bool enable);
+    void registerSingleLimitSwitchGPIO(Gpio *gpio);
+};
+
+
+//////// Plotter Arm (SCARA Robot Arm controlled by the stepper motor with 2 limit switches)
 
 class PlotterArm : public StepperWithLimits
 {

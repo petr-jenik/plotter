@@ -21,7 +21,12 @@
 
 MechanicController mechanicController;
 
-StepperWithLimits steppers[eStepperIdx_COUNT];
+//StepperWithLimits steppers[eStepperIdx_COUNT];
+//StepperWithOneLimitSwitch steppers[eStepperIdx_COUNT] = {1000, 1000};
+StepperWithOneLimitSwitch stepperX(10000);
+StepperWithOneLimitSwitch stepperY(10000);
+
+StepperWithLimits * pSteppers[] = {&stepperX, &stepperY};
 
 PlotterServo usedServos[] = {
 		{0/*channel*/,
@@ -33,19 +38,25 @@ PlotterServo usedServos[] = {
 
 void stepperControl_init(void)
 {
-	for (int i = 0; i < ARRAY_SIZE(steppers); i++)
-	{
-		LimitSwitchGPIOs* pLimSwitchGPIOs = getLimitSwitchGPIOs(i);
-		new_assert(pLimSwitchGPIOs != NULL);
-		steppers[i].registerLimitSwitchGPIOs(pLimSwitchGPIOs);
+	Gpio* pLimSwitchGPIO_X = getSingleLimitSwitchGPIO(0);
+	new_assert(pLimSwitchGPIO_X != NULL);
+	stepperX.registerSingleLimitSwitchGPIO(pLimSwitchGPIO_X);
 
-		StepperGPIOs * pStepperGPIOs = getStepperGPIOs(i);
-		new_assert(pStepperGPIOs != NULL);
-		steppers[i].registerGPIOs(pStepperGPIOs);
-	}
+	StepperGPIOs * pStepperGPIOs = getStepperGPIOs(0);
+	new_assert(pStepperGPIOs != NULL);
+	stepperX.registerGPIOs(pStepperGPIOs);
+
+	Gpio* pLimSwitchGPIO_Y = getSingleLimitSwitchGPIO(1);
+	new_assert(pLimSwitchGPIO_Y != NULL);
+	stepperY.registerSingleLimitSwitchGPIO(pLimSwitchGPIO_Y);
+
+	pStepperGPIOs = getStepperGPIOs(1);
+	new_assert(pStepperGPIOs != NULL);
+	stepperY.registerGPIOs(pStepperGPIOs);
 
 	// Register steppers to the controller
-	mechanicController.registerLimSteppers(steppers, ARRAY_SIZE(steppers));
+
+	mechanicController.registerLimSteppers(pSteppers ,ARRAY_SIZE(pSteppers));
 
 	// Register servomotors to the controller
     mechanicController.registerServos(usedServos, ARRAY_SIZE(usedServos));

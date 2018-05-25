@@ -44,13 +44,13 @@ void MechanicController::registerArms(PlotterArm * pArms)//, int armsCount)
 }
 
 
-void MechanicController::registerLimSteppers(StepperWithLimits * pLimSteppers, int cSteppersCount)
+void MechanicController::registerLimSteppers(StepperWithLimits ** ppLimSteppers, int cSteppersCount)
 {
-	if ((pLimSteppers != NULL) and (cSteppersCount <= cNumberOfSteppersWithLimit))
+	if ((ppLimSteppers != NULL) and (cSteppersCount <= cNumberOfSteppersWithLimit))
 	{
 		for (int i = 0; i < cSteppersCount; i++)
 		{
-			limStepperObjectArray[i] = &(pLimSteppers[i]);
+			limStepperObjectArray[i] = ppLimSteppers[i];
 		}
 		limStepperObjectCount = cSteppersCount;
 	}

@@ -59,5 +59,6 @@ public:
 
 StepperGPIOs* getStepperGPIOs(int idx);
 LimitSwitchGPIOs* getLimitSwitchGPIOs(int idx);
+Gpio* getSingleLimitSwitchGPIO(int idx);
 
 #endif /* HWAPI_HWSTEPPERPINS_H_ */

@@ -49,7 +49,7 @@ public:
     void registerArms(PlotterArm * pArms);
     void registerServos(PlotterServo * pServos, int servosCount);
     void registerSteppers(Stepper * pSteppers, int steppersCount);
-    void registerLimSteppers(StepperWithLimits * pLimSteppers, int cSteppersCount);
+    void registerLimSteppers(StepperWithLimits ** ppLimSteppers, int cSteppersCount);
 
     //PlotterArm & _arm_left, PlotterArm & _arm_right, Servo & _servo
     //void OnUpdateAll(armCommand command);

@@ -266,6 +266,56 @@ bool StepperWithLimits::Calibrate(void)
     return (eState_Done == this->calibrationState);
 }
 
+
+/////////// StepperWithOneLimitSwitch
+
+
+StepperWithOneLimitSwitch::StepperWithOneLimitSwitch(int32_t maxStepperValue)
+{
+	this->maxStepperValue = maxStepperValue;
+}
+
+void StepperWithOneLimitSwitch::registerSingleLimitSwitchGPIO(Gpio *gpio)
+{
+	this->limitSwitch = gpio;
+
+	// Initialize the GPIO
+	this->limitSwitch->powerUp();
+}
+
+eStepperPosition StepperWithOneLimitSwitch::getPosition(void)
+{
+    eStepperPosition position = eStepperPosition_Undef;
+
+    if (this->limitSwitch->isOn())
+    {
+        position = eStepperPosition_AtLimitSwitch;
+    }
+    return position;
+}
+
+bool StepperWithOneLimitSwitch::Calibrate(void)
+{
+    bool calibrationFinished = false;
+    eStepperPosition position = this->getPosition();
+
+    if (position == eStepperPosition_AtLimitSwitch)
+    {
+    	// Calibration is done
+    	atLimitSwitch(0);
+    	calibrationFinished = true;
+    	this->currentStepCount = 0;
+    }
+    else
+    {
+    	// Go to the left to hit the limit switch
+		Stepper::OnUpdate(-this->stepSize, true);
+		Stepper::OnUpdateRegulation();
+		calibrationFinished = false;
+    }
+    return calibrationFinished;
+}
+
 /////////// PlotterArm
 
 

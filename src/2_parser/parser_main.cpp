@@ -10,7 +10,7 @@
 #include "parser.h"
 
 
-path_parser gParser(1);
+path_parser gParser(0.5);
 
 
 // Forward declarartion

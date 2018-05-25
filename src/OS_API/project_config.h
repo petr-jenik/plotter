@@ -82,8 +82,8 @@ const int STEP_SIZE = 1;
 
 #elif PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER_CARTESIAN
 
-	const position pos_START = { -150, -150, 0}; // Bottom left corner
-	const position pos_END = { 150, 150, 0}; // Upper right corner
+	const position pos_START = { -25, -25, 0}; // Bottom left corner
+	const position pos_END   = { 25, 25, 0}; // Upper right corner
 
 	enum
 	{
