@@ -126,8 +126,19 @@ void Stepper::moveEnd(void)
     {
         this->gpio->stepPin.turnOff();
     }
-    //LOG("current step count: " << this->currentStepCount);
-    //LOG("current error: " << this->error);
+    LOG("current step count: " << this->currentStepCount);
+    LOG("current error: " << this->error);
+}
+
+void Stepper::forceMove(int32_t relativeStepCount)
+{
+	this->OnUpdate(relativeStepCount, true);
+	while(this->getError() != 0 )
+	{
+		this->OnUpdateRegulation();
+		this->moveStart();
+		this->moveEnd();
+	}
 }
 
 void Stepper::_enable(void)

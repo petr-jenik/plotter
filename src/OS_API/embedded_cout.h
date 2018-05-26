@@ -44,7 +44,7 @@ public:
 	EmbeddedCout& operator<<(const int8_t data);
 	EmbeddedCout& operator<<(const int16_t data);
 	EmbeddedCout& operator<<(const int32_t data);
-	EmbeddedCout& operator<<(const int data);
+	EmbeddedCout& operator<<(const int64_t data);
 
 	EmbeddedCout& operator<<(const float fData);
 };

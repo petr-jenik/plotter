@@ -45,6 +45,8 @@ public:
     void moveStart(void);
     void moveEnd(void);
     int32_t getError(void);
+    void forceMove(int32_t relativeStepCount);
+
 };
 
 

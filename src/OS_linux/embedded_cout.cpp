@@ -11,11 +11,17 @@
 
 #include "embedded_cout.h"
 
+#include "Serial.h"
+
 EmbeddedCout dbgCout;
+
+Serial serial1;
 
 void EmbeddedCout::_putChar(char c)
 {
-	printf("%c", c);
+
+	serial1.write(c);
+	//printf("%c", c);
 }
 
 size_t EmbeddedCout::_getFreeSpaceSize()
