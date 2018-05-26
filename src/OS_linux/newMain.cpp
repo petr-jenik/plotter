@@ -27,7 +27,7 @@
 
 #include "stepperControl_main.h"
 #include "building_blocks.h"
-
+#include <cstring> // memset
 
 using namespace std;
 
@@ -72,6 +72,82 @@ void readInput()
 	}
 }
 
+const int cMaxNumberOfCmdParts = 10;
+
+typedef struct
+{
+	char * parts[cMaxNumberOfCmdParts];
+	int32_t length;
+	bool used;
+} command;
+
+
+bool processInputData(char * pData, int dataLen, command * pCmdData)
+{
+	//char dataBuffer[512];
+	command cmdData;
+	//memset(dataBuffer, 0, sizeof(dataBuffer));
+	memset(cmdData.parts, 0, sizeof(cmdData.parts));
+
+	// Create a local copy of input data
+	//size_t sizeToCopy = MIN(dataLen, sizeof(dataBuffer));
+	//memcpy(dataBuffer, pData, sizeToCopy);
+
+	const char delimiters[] = ",";
+	char *token;
+
+	/* get the first token */
+	token = strtok(pData, delimiters);
+
+	int i = 0;
+	if (token != NULL)
+	{
+		cmdData.parts[i++] = token;
+	}
+
+	/* walk through other tokens */
+	while( token != NULL )
+	{
+		token = strtok(NULL, delimiters);
+		if (token != NULL)
+		{
+			cmdData.parts[i++] = token;
+		}
+	}
+
+	cmdData.length = i;
+	cmdData.used = (i) ? true : false;
+
+
+	if (cmdData.length == 2)
+	{
+		*pCmdData = cmdData;
+		return true;
+	}
+	else
+	{
+		LOG("Invalid input data: ");
+		LOG(pData);
+		return false;
+	}
+}
+
+/*
+int myAtoi(char * pData)
+{
+	char dataBuffer[512];
+	memset(dataBuffer, 0, sizeof(dataBuffer));
+
+	// Create a local copy of input data
+	size_t sizeToCopy = MIN(strlen(pData), sizeof(dataBuffer));
+	memcpy(dataBuffer, pData, sizeToCopy);
+
+	LOG("data len:" << (uint32_t)strlen(pData));
+
+	return atoi(dataBuffer);
+}
+*/
+
 /*
  * List of tasks:
  *
@@ -93,7 +169,6 @@ int main(int argc, char** argv)
 	/* App init */
 	systemInit();
 
-
 	Stepper stepper1;
 	Stepper stepper2;
 
@@ -104,42 +179,21 @@ int main(int argc, char** argv)
 	{
 		if (lineComplete)
 		{
-			LOG(rxBuffer);
+			command cmdData;
 
+			if (processInputData(rxBuffer, rxIndex, &cmdData))
+			{
+				stepper1.forceMove(atoi(cmdData.parts[0]));
+				stepper2.forceMove(atoi(cmdData.parts[1]));
+			}
+
+			// Clear input data
+			memset(rxBuffer, 0, sizeof(rxBuffer));
 			lineComplete = false;
 			rxIndex = 0;
 		}
 
 		readInput();
-	}
-//
-//		bDirection = !bDirection;
-//		int stepCount = 0;
-//		for (int i = 0; i < 100; i++)
-//		{
-//			int stepCmd = (bDirection)? 1 : -1;
-//			stepper1.OnUpdate(stepCmd, true);
-//			stepper2.OnUpdate(stepCmd, true);
-//			while((stepper1.getError() != 0 ) && (stepper2.getError() != 0))
-//			{
-//				stepper1.OnUpdateRegulation();
-//				stepper2.OnUpdateRegulation();
-//
-//				stepper1.moveStart();
-//				stepper2.moveStart();
-//
-//				stepper1.moveEnd();
-//				stepper2.moveEnd();
-//			}
-	//	}
-	//}
-
-	int i = 0;
-	while(1)
-	{
-		char rx = serial.read();
-		LOG(i++);
-		serial.write(rx);
 	}
 
 	thread_GUI.join();
