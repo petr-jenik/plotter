@@ -1,11 +1,15 @@
 #include <stdint.h>
 
-#ifndef OS_LINUX
-	#include <pgmspace.h>
-#else
+#ifdef OS_LINUX
 	#include <string.h>
 	#define memcpy_P memcpy
 	#define PROGMEM
+#elif OS_EMBEDDED
+	#include <string.h>
+	#define memcpy_P memcpy
+	#define PROGMEM
+#else
+	#include <pgmspace.h>
 #endif
 
 const unsigned char gcode_data[] PROGMEM = {

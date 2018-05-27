@@ -25,18 +25,18 @@ bool Serial::available()
 	}
 }
 
-char Serial::readX()
+char Serial::read()
 {
 	return uartGetChar();
 }
 
-void Serial::writeX(char sendChar)
+void Serial::write(char sendChar)
 {
 	uartSendChar(sendChar);
 	//return sizeof(sendChar);
 }
 
-void Serial::writeX(char *string)
+void Serial::write(char *string)
 {
 	uartPrint(string);
 }

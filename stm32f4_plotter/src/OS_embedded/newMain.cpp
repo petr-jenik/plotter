@@ -261,6 +261,7 @@ void systemInit()
 void appInit()
 {
 	// Order of initialization is important!
+	timeDelayInit();
 	//stepperControl_init();
 	//movementControl_init();
 	//parser_init();
@@ -363,6 +364,8 @@ int main(int argc, char** argv)
 		Timer::sleep(100);
 		heartbeat_mainApp();
 	}
+
+	appInit();
 
 	Stepper stepper1;
 	Stepper stepper2;

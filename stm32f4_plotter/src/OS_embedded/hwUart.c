@@ -9,7 +9,7 @@
 uint8_t rxByte = '\0'; // where we store that one character that just came in
 uint8_t myBuffer = '\0';
 
-const int cBufferSize = 1024;
+enum { cBufferSize = 1024};
 uint8_t ringBuffer[cBufferSize];
 int dataStart = 0;
 int dataEnd = 0;

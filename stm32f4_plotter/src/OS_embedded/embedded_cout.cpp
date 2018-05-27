@@ -131,6 +131,13 @@ EmbeddedCout& EmbeddedCout::operator<<(const int32_t data)
 	return *this;
 }
 
+#ifndef OS_LINUX
+EmbeddedCout& EmbeddedCout::operator<<(const int data)
+{
+	this->operator<<((int32_t)data);
+	return *this;
+}
+#endif
 
 EmbeddedCout& EmbeddedCout::operator<<(const float fData)
 {

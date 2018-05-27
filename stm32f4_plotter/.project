@@ -28,27 +28,32 @@
 		<link>
 			<name>src/1_reader</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/src/1_reader</locationURI>
+			<location>/home/apollo/Dokumenty/coding/3d-tisk/workspace/threads_example/src/1_reader</location>
 		</link>
 		<link>
 			<name>src/2_parser</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/src/2_parser</locationURI>
+			<location>/home/apollo/Dokumenty/coding/3d-tisk/workspace/threads_example/src/2_parser</location>
 		</link>
 		<link>
 			<name>src/3_movement_control</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/src/3_movement_control</locationURI>
+			<location>/home/apollo/Dokumenty/coding/3d-tisk/workspace/threads_example/src/3_movement_control</location>
 		</link>
 		<link>
 			<name>src/4_stepperControl</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/src/4_stepperControl</locationURI>
+			<location>/home/apollo/Dokumenty/coding/3d-tisk/workspace/threads_example/src/4_stepperControl</location>
 		</link>
 		<link>
 			<name>src/OS_API</name>
 			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/src/OS_API</locationURI>
+			<location>/home/apollo/Dokumenty/coding/3d-tisk/workspace/threads_example/src/OS_API</location>
+		</link>
+		<link>
+			<name>src/tools</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/src/tools</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
