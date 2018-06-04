@@ -157,24 +157,21 @@ static void showDemo()
 
 	//printRectangle(90, {-10, 0, 0});
 	//printRectangle(90, {0, 0, 0});
-	printRectangle(80, {0, 0, 0});
-	printRectangle(70, {0, 0, 0});
-	printRectangle(60, {0, 0, 0});
-	printRectangle(50, {0, 0, 0});
-	printRectangle(40, {0, 0, 0});
-	printRectangle(30, {0, 0, 0});
-	printRectangle(20, {0, 0, 0});
+	/*for (int i = 20; i < 100; i+= 10)
+	{
+		printRectangle(i, {0, 0, 0});
+	}*/
 
 	//printLine({10,0,0}, {10,100, 0});
 	//printLine({-100, 10, 0}, {100, 10, 0});
 	//printCircle(80, { 0, 50, 0});
-/*
-	for (int i = 10; i < 50; i += 1)
+
+	for (int i = 1; i < 20; i += 2)
 	{
 		printRectangle(2*i, {0,0,0});
 		//printLine({-150, i, 0}, {150, i, 0});
-		printCircle(i, { 0, 0, 0});
-	}*/
+		//printCircle(i, { 0, 0, 0});
+	}
 	/*
 	printCircle(10, {-100, 100, 0});
 	printCircle(10, {-100, -100, 0});

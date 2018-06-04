@@ -58,16 +58,13 @@ LimitSwitchGPIOs limitSwitches3(
 
 Gpio test = {{eGPIO_PORT_E, 8 ,  true, eGPIO_Mode_Input, eGPIO_Pull_Up}}; // Limit switch 2
 
-GpioDesc_t gpioDesc[] = {{eGPIO_PORT_E, 7 ,  true, eGPIO_Mode_Input, eGPIO_Pull_Up}, // Limit switch 1
-    {eGPIO_PORT_E, 8 ,  true, eGPIO_Mode_Input, eGPIO_Pull_Up}, // Limit switch 2
-	{eGPIO_PORT_D, 0 ,  true, eGPIO_Mode_Input, eGPIO_Pull_Up}, // Limit switch 1
-	{eGPIO_PORT_C, 11 , true, eGPIO_Mode_Input, eGPIO_Pull_Up} // Limit switch 2
+GpioDesc_t gpioDesc[] = {
+	{eGPIO_PORT_C, 11 , true, eGPIO_Mode_Input, eGPIO_Pull_Up}, // Limit switch 1
+	{eGPIO_PORT_D, 0 ,  true, eGPIO_Mode_Input, eGPIO_Pull_Up}  // Limit switch 2
 };
 
 Gpio singleLimitSwitches[] = {gpioDesc[0],
-							  gpioDesc[1],
-							  gpioDesc[2],
-							  gpioDesc[3]};
+							  gpioDesc[1]};
 
 
 StepperGPIOs* getStepperGPIOs(int idx)

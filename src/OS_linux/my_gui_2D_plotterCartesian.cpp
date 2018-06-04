@@ -74,10 +74,10 @@ class LimStepperGui
 	position currentPosition;
 
     float stepsPerOneTurn; //Number of steps for one turn of the stepper motor
-    float pitching;// Stoupani - Distance traveled by the screed per one revolution
+    float pitching;// Stoupani - Distance traveled by the screw per one revolution
     float length;
 public:
-    LimStepperGui(position _start, position _end, float _pitching = 0.1, float _stepsPerOneTurn = 200)
+    LimStepperGui(position _start, position _end, float _pitching = 0.1667, float _stepsPerOneTurn = 10)
 	: startPos(_start),
 	  endPos(_end),
 	  stepCount(0),
@@ -142,8 +142,8 @@ public:
 
     void update()
     {
-		float maxNumberOfRevolutions = length / pitching;
-    	int maxNumberOfSteps = stepsPerOneTurn * maxNumberOfRevolutions;
+		float maxNumberOfRevolutions = length / pitching;                // pitching = 2, length = 50, expect 25
+    	int maxNumberOfSteps = stepsPerOneTurn * maxNumberOfRevolutions; // Expect 1000, stepsPerOneTurn = 40
 
     	float relativeDistance = templateMap((float)stepCount, (float)0, (float)maxNumberOfSteps, 0.0f, 1.0f);
 
@@ -157,8 +157,8 @@ public:
 
 
 // HW simulation
-LimStepperGui limStepperGuiX({pos_START.x, 0, 0}, {pos_END.x, 0, 0}, 1);
-LimStepperGui limStepperGuiY({0, pos_START.y, 0}, {0, pos_END.y, 0}, 1);
+LimStepperGui limStepperGuiX({pos_START.x, 0, 0}, {pos_END.x, 0, 0}, 2, 40);
+LimStepperGui limStepperGuiY({0, pos_START.y, 0}, {0, pos_END.y, 0}, 2, 40);
 //LimStepperGui limStepperGuiZ({0, 0, pos_START.z}, {0, 0, pos_END.z}, 1);
 
 LimStepperGui * limSteppers[] = {&limStepperGuiX, &limStepperGuiY};
@@ -303,7 +303,7 @@ void addPointToDrawList(void)
 		if (oldExtrude != extrude)
 		{
 			LOG("New layer started");
-			drawList.erase(drawList.begin(), drawList.end());
+			//drawList.erase(drawList.begin(), drawList.end());
 		}
 
 		// Retraction simulation - show only printing, not moving

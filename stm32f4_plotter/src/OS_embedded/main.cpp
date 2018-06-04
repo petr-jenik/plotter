@@ -255,6 +255,7 @@ void systemInit()
 void appInit()
 {
 	// Order of initialization is important!
+	timeDelayInit();
 	stepperControl_init();
 	movementControl_init();
 	parser_init();
@@ -320,7 +321,7 @@ int main(int argc, char** argv)
 	}
 
 
-#define DEBUG_LOOP
+//#define DEBUG_LOOP
 
 	/* Start main app */
 #ifdef DEBUG_LOOP

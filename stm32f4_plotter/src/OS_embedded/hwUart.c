@@ -18,6 +18,7 @@ int dataLen = 0;
 int newDataReceived = 0;
 
 UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart6;
 DMA_HandleTypeDef hdma_usart1_rx;
 
 static void _dmaInit()
@@ -52,6 +53,8 @@ static void _dmaStart()
 
 void uartInit()
 {
+	// Setup USART1
+
 	// Set up IO
 	__GPIOB_CLK_ENABLE();
 	__USART1_CLK_ENABLE();
@@ -80,6 +83,30 @@ void uartInit()
 	_dmaInit();
 	_dmaStart();
 
+	// Setup USART6
+
+	// Set up IO
+	__GPIOC_CLK_ENABLE();
+	__USART6_CLK_ENABLE();
+
+	GPIO_InitStruct.Pin = GPIO_PIN_6 | GPIO_PIN_7;
+	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
+	GPIO_InitStruct.Alternate = GPIO_AF8_USART6;
+	HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+	//Set up the UART
+	huart6.Instance = USART6;
+	huart6.Init.BaudRate = BAUDRATE;
+	huart6.Init.WordLength = UART_WORDLENGTH_8B;
+	huart6.Init.StopBits = UART_STOPBITS_1;
+	huart6.Init.Parity = UART_PARITY_NONE;
+	huart6.Init.Mode = UART_MODE_TX_RX;
+	huart6.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+	huart6.Init.OverSampling = UART_OVERSAMPLING_16;
+	HAL_UART_Init(&huart6);
+
    	return;
 
 }
@@ -107,17 +134,20 @@ char uartGetChar(void)
 		dataStart == 0;
 	    newDataReceived = 0;
 	}
+
 	return byte;
 }
 
 void uartSendChar(char sendChar)
 {
 	HAL_UART_Transmit(&huart1, (uint8_t*)&sendChar, 1, 5);
+	HAL_UART_Transmit(&huart6, (uint8_t*)&sendChar, 1, 5);
 }
 
 void uartPrint(char *string)
 {
 	HAL_UART_Transmit(&huart1, (uint8_t*)string, strlen(string), 5);
+	HAL_UART_Transmit(&huart6, (uint8_t*)string, strlen(string), 5);
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart1)
@@ -133,4 +163,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart1)
     }
 
     newDataReceived = 1;
-  }
+
+	// Echo (send back received character)
+	uartSendChar(rxByte);
+
+}

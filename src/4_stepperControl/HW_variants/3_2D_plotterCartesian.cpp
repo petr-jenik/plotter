@@ -23,8 +23,8 @@ MechanicController mechanicController;
 
 //StepperWithLimits steppers[eStepperIdx_COUNT];
 //StepperWithOneLimitSwitch steppers[eStepperIdx_COUNT] = {1000, 1000};
-StepperWithOneLimitSwitch stepperX(10000);
-StepperWithOneLimitSwitch stepperY(10000);
+StepperWithOneLimitSwitch stepperX(1000);
+StepperWithOneLimitSwitch stepperY(1000);
 
 StepperWithLimits * pSteppers[] = {&stepperX, &stepperY};
 

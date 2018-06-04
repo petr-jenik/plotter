@@ -47,7 +47,7 @@ void Stepper::OnUpdate(int32_t numberOfSteps, bool enable)
 {
 	//this->sumError = 0;
 	this->sumError += numberOfSteps;
-	//LOG(__FUNCTION__ << " current step:" << this->sumError);
+	DBG(__FUNCTION__ << " current step:" << this->sumError);
 	this->error = numberOfSteps;
 
     // Enable or disable stepper controller - enable only once
@@ -126,13 +126,13 @@ void Stepper::moveEnd(void)
     {
         this->gpio->stepPin.turnOff();
     }
-    //LOG("current step count: " << this->currentStepCount);
-    //LOG("current error: " << this->error);
+    DBG("current step count: " << this->currentStepCount);
+    DBG("current error: " << this->error);
 }
 
 void Stepper::forceMove(int32_t relativeStepCount)
 {
-	LOG("relativeStepCount: " << relativeStepCount);
+	DBG("relativeStepCount: " << relativeStepCount);
 	this->OnUpdate(relativeStepCount, true);
 	while(this->getError() != 0 )
 	{
@@ -202,7 +202,7 @@ eStepperPosition StepperWithLimits::getPosition(void)
 {
     eStepperPosition position = eStepperPosition_Undef;
 
-    //LOG("SW1: " << this->limitSwitchGPIOs->switchPin1.isOn() << ", SW2:" << this->limitSwitchGPIOs->switchPin2.isOn());
+    DBG("SW1: " << this->limitSwitchGPIOs->switchPin1.isOn() << ", SW2:" << this->limitSwitchGPIOs->switchPin2.isOn());
 
     bool status = this->limitSwitchGPIOs->switchPin1.isOn();
     status |= this->limitSwitchGPIOs->switchPin2.isOn();
@@ -234,7 +234,7 @@ bool StepperWithLimits::Calibrate(void)
                                                 this->getPosition(),
                                                 &command);
 
-    //LOG("Calibration state:" <<  calibrationState);
+    DBG("Calibration state:" <<  calibrationState);
 
     switch(calibrationState)
     {
@@ -285,6 +285,7 @@ bool StepperWithLimits::Calibrate(void)
 StepperWithOneLimitSwitch::StepperWithOneLimitSwitch(int32_t maxStepperValue)
 {
 	this->maxStepperValue = maxStepperValue;
+	this->limitSwitch = NULL;
 }
 
 void StepperWithOneLimitSwitch::registerSingleLimitSwitchGPIO(Gpio *gpio)
@@ -299,9 +300,16 @@ eStepperPosition StepperWithOneLimitSwitch::getPosition(void)
 {
     eStepperPosition position = eStepperPosition_Undef;
 
-    if (this->limitSwitch->isOn())
+    bool isOn = this->limitSwitch->isOn();
+    //LOG("SW1: " << isOn);
+
+    if (isOn)
     {
         position = eStepperPosition_AtLimitSwitch;
+    }
+    else
+    {
+    	position = eStepperPosition_Undef;
     }
     return position;
 }
@@ -317,10 +325,14 @@ bool StepperWithOneLimitSwitch::Calibrate(void)
     	atLimitSwitch(0);
     	calibrationFinished = true;
     	this->currentStepCount = 0;
+
+    	// Stop stepper
+    	Stepper::OnUpdate(0, true);
+		Stepper::OnUpdateRegulation();
     }
     else
     {
-    	// Go to the left to hit the limit switch
+    	// Go to the left and hit the limit switch
 		Stepper::OnUpdate(-this->stepSize, true);
 		Stepper::OnUpdateRegulation();
 		calibrationFinished = false;

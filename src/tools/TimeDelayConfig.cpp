@@ -13,7 +13,7 @@ void timeDelayInit()
 {
 	globalTimeDelayConfig.resetPulseLength = 10;
 	globalTimeDelayConfig.stepPulseLength = 2;
-	globalTimeDelayConfig.waitAfterEachMovement = 1;
+	globalTimeDelayConfig.waitAfterEachMovement = 0;
 }
 
 
