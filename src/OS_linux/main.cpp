@@ -18,6 +18,8 @@
 #include "global.h"
 #include "my_gui.h"
 
+#include "gcode.h"
+
 using namespace std;
 
 void heartbeat(void)
@@ -64,7 +66,12 @@ int main(int argc, char** argv)
 	/* App init */
 	systemInit();
 
-#define DEBUG_LOOP
+	// Draw borders
+	movementControl_drawBorder();
+
+//#define DEBUG_LOOP
+
+	gcodeSetItemId(0);
 
 	/* Start main app */
 #ifdef DEBUG_LOOP

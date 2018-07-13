@@ -43,10 +43,7 @@ private:
 
 public:
   // Default constructor
-  Timer()
-  {
-	int tmp = 42;
-  }
+  Timer(){}
 
   inline void
   start(void)

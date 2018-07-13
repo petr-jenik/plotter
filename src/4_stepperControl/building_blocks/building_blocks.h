@@ -56,7 +56,6 @@ protected:
    // HW GPIOs for limit switches
     LimitSwitchGPIOs * limitSwitchGPIOs;
 
-    int32_t setpointStepperValue;  // Desired position (steps)
     int32_t maxStepperValue;       // Max value (steps)
 
     // Flags
@@ -69,6 +68,11 @@ public:
     virtual eStepperPosition getPosition(void);// <- musi vracet undef, pokud stepper nema limit switche - nebo budou limit scwitche soucasti podedenych trid?
     void OnUpdate(float relativePosition, bool enable);
     void registerLimitSwitchGPIOs(LimitSwitchGPIOs * gpio);
+    virtual ~StepperWithLimits(){};
+
+private:
+    StepperWithLimits & operator=(const StepperWithLimits&); // Assignment operator
+    StepperWithLimits(const StepperWithLimits&); // Copy constructor
 };
 
 //////////// Stepper with one limit switch (e.g. from the CD drive)
@@ -76,8 +80,11 @@ public:
 class StepperWithOneLimitSwitch : public StepperWithLimits
 {
 private:
-	   // HW GPIO used as a limit switch
-	    Gpio * limitSwitch;
+	// HW GPIO used as a limit switch
+	Gpio * limitSwitch;
+	StepperWithOneLimitSwitch & operator=(const StepperWithOneLimitSwitch&); // Assignment operator
+	StepperWithOneLimitSwitch(const StepperWithOneLimitSwitch&); // Copy constructor
+
 public:
 	StepperWithOneLimitSwitch(int32_t maxStepperValue);
     bool Calibrate(void); //Return true if calibration is done

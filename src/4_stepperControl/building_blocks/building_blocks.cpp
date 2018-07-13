@@ -181,7 +181,6 @@ void Stepper::_sleep(bool state)
 
 StepperWithLimits::StepperWithLimits()
 :limitSwitchGPIOs(NULL),
- setpointStepperValue(0),
  maxStepperValue(0),
  calibrationEnabled(false),
  calibrationState(eState_Start)
@@ -216,13 +215,36 @@ eStepperPosition StepperWithLimits::getPosition(void)
 
 void StepperWithLimits::OnUpdate(float relativePosition, bool enable)
 {
-	this->setpointStepperValue = templateMap(relativePosition,
-									 (float)0.0,
-									 (float)1.0,
-									 (float)0.0,
-									 (float)this->maxStepperValue); //TODO Proc je max stepper value o 1 vetsi nez by mela byt?
+	int32_t setpointStepperValue = templateMap(relativePosition,
+                                               (float)0.0,
+												 (float)1.0,
+												 (float)0.0,
+												 (float)this->maxStepperValue); //TODO Proc je max stepper value o 1 vetsi nez by mela byt?
 
-	int32_t diff = this->setpointStepperValue - this->currentStepCount;
+	//setpointStepperValue = templateConstrain(setpointStepperValue, minStepperValue, this->maxStepperValue);
+
+	int32_t diff = setpointStepperValue - this->currentStepCount;
+
+	if (this->getPosition() == eStepperPosition_AtLimitSwitch)
+	{
+		if (diff < 0)
+		{
+			this->getPosition();
+			// New direction will be "to the left"
+			this->currentStepCount = 0;
+		}
+		else
+		{
+			// Nothing
+			// Let stepper go right
+			//this->currentStepCount = this->maxStepperValue;
+		}
+	}
+
+	int32_t minStepperValue = 0;
+	setpointStepperValue = templateConstrain(setpointStepperValue, minStepperValue, this->maxStepperValue);
+	diff = setpointStepperValue - this->currentStepCount;
+
 	Stepper::OnUpdate(diff, enable);
 }
 
@@ -283,9 +305,9 @@ bool StepperWithLimits::Calibrate(void)
 
 
 StepperWithOneLimitSwitch::StepperWithOneLimitSwitch(int32_t maxStepperValue)
+	: limitSwitch(NULL)
 {
 	this->maxStepperValue = maxStepperValue;
-	this->limitSwitch = NULL;
 }
 
 void StepperWithOneLimitSwitch::registerSingleLimitSwitchGPIO(Gpio *gpio)
@@ -300,7 +322,27 @@ eStepperPosition StepperWithOneLimitSwitch::getPosition(void)
 {
     eStepperPosition position = eStepperPosition_Undef;
 
-    bool isOn = this->limitSwitch->isOn();
+    bool isOn = false;
+    bool isOn_old = isOn;
+
+    const int cMaxNumberOfAttempts = 10;
+    int numberOfAttempts = cMaxNumberOfAttempts;
+
+    // A result of reading of GPIO state has to be the same at least for 5 consecutive attempts
+    while (numberOfAttempts > 0)
+    {
+    	isOn = this->limitSwitch->isOn();
+    	if (isOn == isOn_old)
+    	{
+    		numberOfAttempts--;
+    	}
+    	else
+    	{
+    		numberOfAttempts = cMaxNumberOfAttempts;
+    	}
+    	isOn_old = isOn;
+    }
+
     //LOG("SW1: " << isOn);
 
     if (isOn)

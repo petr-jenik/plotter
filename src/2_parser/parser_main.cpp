@@ -67,7 +67,6 @@ void moveTo(position finalPosition, float movementSpeed, float extrudeLength)
 void parser_update(const char* pData, const unsigned int dataLength)
 {
 		gParser.newData(pData, dataLength);
-		//LOG("GCODE: " << receivedData);
 		gParser.update();
 }
 

@@ -43,6 +43,7 @@
 
 #include "global.h"
 
+#include "gcode.h"
 // ----------------------------------------------------------------------------
 //
 // Standalone STM32F4 led blink sample (trace via NONE).
@@ -262,71 +263,87 @@ void appInit()
 	reader_init();
 }
 
+class Button
+{
+public:
+
+	Button()
+	:userButton({eGPIO_PORT_A, 0, false, eGPIO_Mode_Input, eGPIO_Pull_No })
+	{
+		// User button init
+		userButton.powerUp();
+	}
+
+	// Waits for button press
+	void waitForPress()
+	{
+		while(false == userButton.isOn())
+		{
+			Timer::sleep(cTimeStepMs);
+			heartbeat_mainApp();
+		}
+	}
+
+	// Waits for button press, returns length of the press in miliseconds
+	uint32_t getPressLength()
+	{
+		uint32_t buttonPressLength = 0;
+		// Wait for user button press
+
+		waitForPress();
+
+		// Measure time till it's released
+		while(true == userButton.isOn())
+		{
+			buttonPressLength += cTimeStepMs;
+			Timer::sleep(cTimeStepMs);
+			heartbeat_mainApp();
+		}
+
+		return buttonPressLength;
+	}
+
+private:
+	Gpio userButton;//({eGPIO_PORT_A, 0, false, eGPIO_Mode_Input, eGPIO_Pull_No });
+
+	static const uint32_t cTimeStepMs = 100;
+};
 
 int main(int argc, char** argv)
 {
 	/* System init */
 	systemInit();
 
-	// User button init
-	Gpio userButton({eGPIO_PORT_A, 0, false, eGPIO_Mode_Input, eGPIO_Pull_No });
-	userButton.powerUp();
+	Button userButton;
 
 	// Wait for user button press
-	while(false == userButton.isOn())
-	{
-		Timer::sleep(100);
-		heartbeat_mainApp();
-	}
-
-
-	// TODO remove this - start
-	Timer::sleep(1000);
-
-	LimitSwitchGPIOs* pLimitSwitches1 = getLimitSwitchGPIOs(0);
-	LimitSwitchGPIOs* pLimitSwitches2 = getLimitSwitchGPIOs(1);
-
-	Gpio * pGPIOs[] =
-	{
-			&pLimitSwitches1->switchPin1,
-			&pLimitSwitches1->switchPin2,
-			&pLimitSwitches2->switchPin1,
-			&pLimitSwitches2->switchPin2
-	};
-
-	for (int i = 0 ; i < ARRAY_SIZE(pGPIOs); i++)
-	{
-		pGPIOs[i]->powerUp();
-	}
-
-	while(false == userButton.isOn())
-	{
-		for (int i = 0 ; i < ARRAY_SIZE(pGPIOs); i++)
-		{
-			(pGPIOs[i]->isOn()) ? blinkLeds[i].turnOn() : blinkLeds[i].turnOff();
-		}
-	}
-	// TODO remove this - end
+	userButton.waitForPress();
 
 	/* App init */
 	appInit();
 
-	Timer::sleep(1000);
-
-	// Wait for user button press
-	while(false == userButton.isOn())
-	{
-		Timer::sleep(100);
-		heartbeat_mainApp();
-	}
-
+	Timer::sleep(500);
 
 //#define DEBUG_LOOP
 
 	/* Start main app */
 #ifdef DEBUG_LOOP
+	userButton.waitForPress();
+
 	movementControl_showDemo();
 #else
+
+	uint32_t timeInSeconds = userButton.getPressLength() / 1000;
+
+	if (timeInSeconds < 3)
+	{
+		gcodeSetItemId(0);
+	}
+	else
+	{
+		gcodeSetItemId(1);
+	}
+
 	reader_readAndProcess();
 #endif // #ifdef DEBUG_LOOP
 

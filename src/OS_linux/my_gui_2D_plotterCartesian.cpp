@@ -38,11 +38,11 @@ float servoAngles[] = {0};
 
 const int cServoCount = ARRAY_SIZE(servoAngles);
 
-void hwServoInit(int32_t channel){};
+void hwServoInit(int32_t channel, float defaultAngle){};
 
 void hwServoSetPosition(float angle, uint32_t channel)
 {
-    if (channel < cServoCount)
+    if (channel > 0 and channel < cServoCount + 1)
     {
         DBG("channel: " << channel << ", angle: " << (int) angle);;
         servoAngles[channel] = angle;
@@ -71,6 +71,8 @@ class LimStepperGui
     int stepCount; //Number of steps
     bool directionLeft;
 
+    bool hasOneLimitSwitch;
+
 	position currentPosition;
 
     float stepsPerOneTurn; //Number of steps for one turn of the stepper motor
@@ -82,7 +84,8 @@ public:
 	  endPos(_end),
 	  stepCount(0),
 	  pitching(_pitching),
-	  stepsPerOneTurn(_stepsPerOneTurn)
+	  stepsPerOneTurn(_stepsPerOneTurn),
+	  hasOneLimitSwitch(true) //TODO add comment
 {
        length = getDistance3D(startPos, endPos);
        directionLeft = true;
@@ -137,13 +140,22 @@ public:
     {
 		float maxNumberOfRevolutions = length / pitching;
     	int maxNumberOfSteps = stepsPerOneTurn * maxNumberOfRevolutions;
-    	return (isInRange(stepCount, 0, maxNumberOfSteps) == false);
+    	if (this->hasOneLimitSwitch)
+    	{
+    		return (stepCount <= 0);
+    	}
+    	else
+    	{
+    		return (isInRange(stepCount, 0, maxNumberOfSteps) == false);
+    	}
     }
 
     void update()
     {
 		float maxNumberOfRevolutions = length / pitching;                // pitching = 2, length = 50, expect 25
     	int maxNumberOfSteps = stepsPerOneTurn * maxNumberOfRevolutions; // Expect 1000, stepsPerOneTurn = 40
+
+    	//templateConstrain()
 
     	float relativeDistance = templateMap((float)stepCount, (float)0, (float)maxNumberOfSteps, 0.0f, 1.0f);
 
@@ -192,6 +204,19 @@ UsedPinDesc_t getUsedPinDesc(Gpio* pObject)
 		if (*pObject == pStepperGPIOs->stepPin)      { return {ePin_Step,   idx};}
 		idx++;
 	}
+
+	// TODO Fix this ugly hack
+	Gpio* pLimitSwitchGPIO = NULL;
+	idx = 0;
+	while((pLimitSwitchGPIO = getSingleLimitSwitchGPIO(idx)) != NULL)
+	{
+		if (*pObject == *pLimitSwitchGPIO)
+		{
+			return  {ePin_LimSw1, idx};
+		}
+		idx++;
+	}
+
 
 	LimitSwitchGPIOs* pLimitSwitchGPIOs = NULL;
 	idx = 0;
@@ -302,7 +327,7 @@ void addPointToDrawList(void)
 		//if (currentPos.z != C.z)
 		if (oldExtrude != extrude)
 		{
-			LOG("New layer started");
+			DBG("New layer started");
 			//drawList.erase(drawList.begin(), drawList.end());
 		}
 
@@ -519,7 +544,7 @@ void update(void)
     	std::lock_guard<std::mutex> hold(drawList_lock);
 		for (auto command : drawList)
 		{
-			eColor color = (command.extrudeLength > 0)? eColor_blue : eColor_red;
+			eColor color = (command.extrudeLength > 0)?  eColor_red :eColor_blue;
 			Gui::glSelectColor(color);
 			//Gui::glSelectColor(eColor_green);
 			//if (command.extrudeLength > 0)

@@ -68,6 +68,9 @@ void MechanicController::registerServos(PlotterServo * pServos, int servosCount)
 		for (int i = 0; i < servosCount; i++)
 		{
 			servoObjectArray[i] = &(pServos[i]);
+
+			// Initialize registered servo motor object - can not be done in the constructor of the object
+			servoObjectArray[i]->init();
 		}
 		servoObjectCount = servosCount;
 	}

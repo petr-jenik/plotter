@@ -22,14 +22,13 @@ public:
 	uint32_t numberOfPushes;
 	uint32_t numberOfPops;
 
-	Queue()
+	Queue():
+		dataStart(0),
+		numberOfItems(0),
+		numberOfPushes(0),
+		numberOfPops(0)
 	{
-		dataStart = 0;
-		numberOfItems = 0;
 		memset(buffer, 0, sizeof(buffer));
-
-		numberOfPushes = 0;
-		numberOfPops = 0;
 	}
 
 	bool push(char byte)

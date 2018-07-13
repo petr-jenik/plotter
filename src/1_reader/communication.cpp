@@ -14,7 +14,7 @@
 
 //#include "app_threads.h"
 
-#define TRACE std::cout << __FUNCTION__ << std::endl
+#define TRACE //std::cout << __FUNCTION__ << std::endl
 void error(const char *msg)
 {
     std::cout << msg<< std::endl;;

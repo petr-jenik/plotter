@@ -97,8 +97,6 @@ bool readLineFromQueue(Queue &queue, char *pBuffer , uint32_t & sizeOfBuffer)
 
 void serveClient()
 {
-	int lineNumber = 0;
-
 	char buffer[MAX_LINE_LENGTH] = {0};
 
 	// Loop for data reading from client

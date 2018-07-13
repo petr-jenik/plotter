@@ -271,7 +271,7 @@ void addPointToDrawList(void)
 
 		if (currentPos.z != C.z)
 		{
-			LOG("New layer started");
+			DBG("New layer started");
 			drawList.erase(drawList.begin(), drawList.end());
 		}
 

@@ -16,7 +16,9 @@ typedef enum
     eTimer4,
 } eTimer;
 
+#define DEFAULT_PULSE_WIDTH  1500     // default pulse width when servo is attached
+
 void TIM_Timer4_Init();
-void InitializePWM();
+void InitializePWM(uint32_t defaultPulseWidth);
 void updatePulseWidth(eTimer timer, uint32_t pulse, uint32_t channel);
 #endif // HW_TIMER_H_

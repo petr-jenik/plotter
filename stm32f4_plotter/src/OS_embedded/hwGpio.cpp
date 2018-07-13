@@ -18,20 +18,19 @@ GpioDesc_t undefPin = {gpioPinUndef, gpioPortUndef, false, eGPIO_Mode_Input, eGP
 // ----------------------------------------------------------------------------
 
 Gpio::Gpio(GpioDesc_t gpioDesc)
+	:valid(true),
+	pull(gpioDesc.pull),
+	mode(gpioDesc.mode),
+	fPortNumber(gpioDesc.port),
+	fBitNumber(gpioDesc.pin),
+	fIsActiveLow(gpioDesc.activeLow),
+	fBitMask(BLINK_PIN_MASK(fBitNumber))
 {
     if ((gpioDesc.pin == gpioPinUndef) || (gpioDesc.port == gpioPortUndef))
     {
         valid = false;
         return;
     }
-
-    valid = true;
-    pull = gpioDesc.pull;
-    mode = gpioDesc.mode;
-    fPortNumber = gpioDesc.port;
-    fBitNumber = gpioDesc.pin;
-    fIsActiveLow = gpioDesc.activeLow;
-    fBitMask = BLINK_PIN_MASK(fBitNumber);
 }
 
 void
@@ -49,7 +48,7 @@ Gpio::powerUp ()
     // Configure pin in output push/pull mode
     GPIO_InitStructure.Pin = fBitMask;
     GPIO_InitStructure.Mode = mode;
-    GPIO_InitStructure.Speed = GPIO_SPEED_FAST;
+    GPIO_InitStructure.Speed = GPIO_SPEED_LOW;
     GPIO_InitStructure.Pull = pull;
     HAL_GPIO_Init (BLINK_GPIOx(fPortNumber), &GPIO_InitStructure);
 

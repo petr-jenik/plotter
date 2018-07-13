@@ -12,5 +12,6 @@
 
 bool gcodeRecvData(uint8_t *data, int * pDataLength);
 
+void gcodeSetItemId(uint8_t itemId);
 
 #endif /* SRC_1_READER_GCODE_H_ */

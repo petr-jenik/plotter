@@ -28,12 +28,14 @@ StepperWithOneLimitSwitch stepperY(1000);
 
 StepperWithLimits * pSteppers[] = {&stepperX, &stepperY};
 
+
+// Following values were determined using experimental methods (trial & fail)
 PlotterServo usedServos[] = {
-		{0/*channel*/,
-		 0/*offset*/,
-		 false/*reverse*/,
-		 0/*min angle*/,
-		 180/*max angle*/}
+		{1/*channel*/,
+		 180/*offset*/,
+		 true/*reverse*/,
+		 50/*min angle*/,
+		 65/*max angle*/}
 };
 
 void stepperControl_init(void)
@@ -91,7 +93,7 @@ bool calculatePosition(position requiredPos, float extrudeLength, MechanicComman
 
     if(!result)
     {
-    	LOG("Required position (pos: " << requiredPos << ") is not in a valid range.");
+    	DBG("Required position (pos: " << requiredPos << ") is not in a valid range.");
     	return false;
     }
 
@@ -123,8 +125,8 @@ bool isSystemReady()
 
 // TODO add speed
 void stepperControl_goToThisPosition(position newPosition,
-		                                 float extrudeLength,
-										 float speed)
+		                             float extrudeLength,
+									 float speed)
 {
 	MechanicCommand command = {0};
 
@@ -135,7 +137,7 @@ void stepperControl_goToThisPosition(position newPosition,
 	}
 	else
 	{
-		LOG("Unable to navigate to this position!");
+		DBG("Unable to navigate to this position!");
 	}
 }
 

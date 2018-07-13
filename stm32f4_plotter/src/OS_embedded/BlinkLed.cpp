@@ -37,12 +37,11 @@
 // ----------------------------------------------------------------------------
 
 BlinkLed::BlinkLed (unsigned int port, unsigned int bit, bool activeLow)
-{
-  fPortNumber = port;
-  fBitNumber = bit;
-  fIsActiveLow = activeLow;
-  fBitMask = BLINK_PIN_MASK(fBitNumber);
-}
+  : fPortNumber(port),
+    fBitNumber(bit),
+    fIsActiveLow(activeLow),
+    fBitMask(BLINK_PIN_MASK(fBitNumber))
+{}
 
 void
 BlinkLed::powerUp ()

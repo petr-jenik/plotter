@@ -27,9 +27,10 @@ void movementControl_createLine(position finalPosition,
 {
 	TRACE; // Trace macro
 
+#ifdef FLIP_IMAGE_ALONG_X_AXIS
 	// Flip image along the X axis
 	finalPosition.y *= -1;
-
+#endif //FLIP_IMAGE_ALONG_X_AXIS
 	position startPos = gCurrentPosition;
 
 #ifdef OS_LINUX
@@ -166,12 +167,19 @@ static void showDemo()
 	//printLine({-100, 10, 0}, {100, 10, 0});
 	//printCircle(80, { 0, 50, 0});
 
+	//printRectangle(40, {0,0,0});
+	//printRectangle(45, {0,0,0});
+	//printRectangle(49, {0,0,0});
+	printRectangle(45, {0,0,0});
+	//printCircle(20, { 0, 00, 0});
+	/*
 	for (int i = 1; i < 20; i += 2)
 	{
 		printRectangle(2*i, {0,0,0});
 		//printLine({-150, i, 0}, {150, i, 0});
 		//printCircle(i, { 0, 0, 0});
 	}
+	*/
 	/*
 	printCircle(10, {-100, 100, 0});
 	printCircle(10, {-100, -100, 0});
@@ -187,6 +195,13 @@ void movementControl_showDemo(void)
 		showDemo();
 	}
 }
+
+void movementControl_drawBorder(void)
+{
+	printRectangle(50, {0,0,0});
+	//printCircle(20, { 0, 00, 0});
+}
+
 
 void movementControl_init()
 {

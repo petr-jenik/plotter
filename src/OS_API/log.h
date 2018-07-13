@@ -1,7 +1,7 @@
 #pragma once
 
 #include "embedded_cout.h"
-
+#include <string.h>
 #define LOG(message) (dbgCout << message << dbgEndl)
 
 #define DBG(message) //(dbgCout << "DBG - " << message << dbgEndl)
@@ -10,17 +10,18 @@
 class Trace
 {
 public:
-	//char buffer[100];
-	const char * pName;
+	char buffer[100];
+	//const char * pName;
 	Trace(const char * name)
 	{
-		pName = name;
-		LOG("trace start:" << pName);
+		strncpy(buffer, name, sizeof(buffer));
+		buffer[sizeof(buffer) - 1] = '\0';
+		LOG("trace start:" << name);
 	}
 
 	~Trace()
 	{
-		LOG("trace end:" << pName);
+		LOG("trace end:" << buffer);
 	}
 };
 

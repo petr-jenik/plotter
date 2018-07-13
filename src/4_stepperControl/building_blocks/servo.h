@@ -28,6 +28,7 @@ public:
     PlotterServo(uint32_t _channel, float _offset, bool reverse, int _minAngle, int _maxAngle);
     void OnUpdate(ServoSetting & setting);
     void OnMove(void);
+    void init();
 };
 
 #endif /* SERVO_H_ */

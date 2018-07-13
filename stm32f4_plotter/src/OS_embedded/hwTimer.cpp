@@ -65,7 +65,7 @@ void TIM4_IRQHandler(void)
     }
 }
 
-void InitializePWM()
+void InitializePWM(uint32_t defaultPulseWidth)
 {
     __GPIOD_CLK_ENABLE();
 
@@ -81,7 +81,7 @@ void InitializePWM()
     TIM_OC_InitTypeDef outputChannelInit = {0,};
 
     outputChannelInit.OCMode = TIM_OCMODE_PWM1;
-    outputChannelInit.Pulse = 840;
+    outputChannelInit.Pulse = defaultPulseWidth;
     outputChannelInit.OCPolarity = TIM_OCPOLARITY_HIGH;
     outputChannelInit.OCFastMode = TIM_OCFAST_DISABLE;
     outputChannelInit.OCIdleState = TIM_OCIDLESTATE_SET;

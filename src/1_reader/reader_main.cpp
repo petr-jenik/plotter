@@ -35,7 +35,7 @@ void processLine(char * buffer, uint32_t bufferSize)
 {
 	parser_update(buffer, bufferSize);
 
-	LOG("Line number: " << lineNumber++ << ", data: " << buffer);
+	DBG("Line number: " << lineNumber++ << ", data: " << buffer);
 }
 
 
@@ -72,7 +72,7 @@ bool readLineFromQueue(Queue &queue, char *pBuffer , uint32_t & sizeOfBuffer)
 	}
 	else
 	{
-		LOG("End of line was not found");
+		DBG("End of line was not found");
 
 		size_t numberOfItems = queue.getNumberOfItems();
 
@@ -116,7 +116,7 @@ void serveClient()
 			receiveIsActive = false;
 		}
 
-		LOG("received data size: " << maxDataSize);
+		DBG("received data size: " << maxDataSize);
 
 		// Push received data to data FIFO (queue)
 		for (int i = 0; i < maxDataSize; i++)
@@ -133,8 +133,8 @@ void serveClient()
 			dataSize = sizeof(buffer);
 		}
 
-		LOG("numberOfPushes: " << queue.numberOfPushes);
-		LOG("numberOfPops: " << queue.numberOfPops);
+		DBG("numberOfPushes: " << queue.numberOfPushes);
+		DBG("numberOfPops: " << queue.numberOfPops);
 
 		//parser_update(line);
 

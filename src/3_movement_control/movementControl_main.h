@@ -13,6 +13,7 @@
 void movementControl_init(void);
 void movementControl_createLine(const moveCommand& cmd);
 void movementControl_showDemo(void);
+void movementControl_drawBorder(void);
 
 
 

@@ -11,12 +11,19 @@
 
 #define MIN_PULSE_WIDTH       612 // 300 //544     // the shortest pulse sent to a servo
 #define MAX_PULSE_WIDTH       2280//2500 //2700 //2400     // the longest pulse sent to a servo
-#define DEFAULT_PULSE_WIDTH  1500     // default pulse width when servo is attached
 
-void hwServoInit(int32_t channel)
+
+void hwServoInit(int32_t channel, float defaultAngle)
 {
+    // TODO Add support for other servo channels
+	UNUSED(channel);
     TIM_Timer4_Init();
-    InitializePWM();
+
+    defaultAngle = templateConstrain(defaultAngle, 0.0f, 180.0f);
+	float defaultPulseWidthUs = templateMap(defaultAngle, 0.0f, 180.0f, (float)MIN_PULSE_WIDTH, (float)MAX_PULSE_WIDTH);
+
+
+    InitializePWM((uint32_t)defaultPulseWidthUs);
 }
 
 #define microsecToTimerPulse(X) ((X * 840)/1000)
