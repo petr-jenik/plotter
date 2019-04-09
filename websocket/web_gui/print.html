@@ -16,6 +16,8 @@
         <input type="button" name=disconnectButton value="Disconnect" onClick="doDisconnect();">
         <input type="button" name=connectButton value="Connect" onClick="doConnect();">
     </p>
+    
+    <div handleFileSelect>
     <p>
         <input type="file" id="files" name="files">
     </p>
@@ -59,7 +61,7 @@
     var COMMAND_SETTING = "COMMAND_SETTING:";
     var COMMAND_GCODE = "GCODE:";
 
-    var RESULT_OK = "RESULT_OK";
+    var RESULT_OK = "OK\n";
     var RESULT_NOT_OK = "RESULT_NOT_OK";
 
     var gcode_available = false;
@@ -73,14 +75,30 @@
 
     var printEnabled = false;
 
+    function getQueryVariable(variable)
+    { 
+        var query = window.location.search.substring(1); 
+        var vars = query.split("&"); 
+        for (var i=0;i<vars.length;i++)
+        { 
+            var pair = vars[i].split("="); 
+            if (pair[0] == variable)
+            { 
+                return pair[1]; 
+            } 
+        }
+        return -1; //not found 
+    }
+
     function parseResponse(message)
     {
         if ((message == RESULT_OK) && (printEnabled == true))
         {
-            //writeToScreen("Response OK");
+            writeToScreen("Response OK");
             if (current_line < number_of_lines)
             {
-                sendCommand(COMMAND_GCODE + gcode_lines[current_line]);
+                sendCommand(gcode_lines[current_line]);
+                //sendCommand(COMMAND_GCODE + gcode_lines[current_line]);
                 current_line++;
                 updateCurrentState();
             }
@@ -100,8 +118,8 @@
         }
         else
         {
-            writeToScreen("Print enabled:" + printEnabled);
-            writeToScreen("Received invalid response: " + message); 
+            writeToScreen("Print enabled:" + printEnabled + "\n");
+            writeToScreen("Received invalid response: " + message + "\n"); 
         }   
     }
 
@@ -111,7 +129,8 @@
         {
             printEnabled = true;
             current_line = 0;
-            sendCommand(COMMAND_GCODE + gcode_lines[current_line]);
+            sendCommand(gcode_lines[current_line]);
+            //sendCommand(COMMAND_GCODE + gcode_lines[current_line]);
             current_line++;
             //for (var i = 0; i < gcode_lines.length; i++)
             //{
@@ -175,11 +194,11 @@
                 document.getElementById('file_name').innerHTML = '<div>' + escape(file.name) + '</div>';
                 
                 updateCurrentState();
-                alert("a");
+                //alert("a");
             }
         };
 
-        alert("b");
+        //alert("b");
         var blob = file.slice(start, stop + 1);
         reader.readAsBinaryString(blob);
         //document.getElementById('info').innerHTML = output.join('');
@@ -187,7 +206,7 @@
 
     function init()
     {
-        document.myform.url.value = "ws://localhost:8000/"
+        document.myform.url.value = "ws://esp8266.local:81/"
         document.myform.disconnectButton.disabled = true;
     }
 
@@ -217,7 +236,7 @@
 
     function onMessage(evt)
     {
-        //writeToScreen("response: " + evt.data + '\n');
+        writeToScreen("response: " + evt.data + '\n');
         parseResponse(evt.data);
     }
 
@@ -231,7 +250,7 @@
 
     function doSend(message)
     {
-        //writeToScreen("sent: " + message + '\n'); 
+        writeToScreen("sent: " + message + '\n'); 
         websocket.send(message);
     }
 
@@ -264,12 +283,12 @@
 
 
     window.addEventListener("load", init, false);
-    //window.addEventListener("load", doConnect, false);
+    window.addEventListener("load", doConnect, false);
 
     var files_object = document.getElementById('files')
     console.log(files_object)
     files_object.addEventListener('change', handleFileSelect, false);
-    document.getElementById('current_line').innerHTML = 42;
+    document.getElementById('current_line').innerHTML = 0;
 
 
 </script>   

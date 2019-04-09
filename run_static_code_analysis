@@ -1,0 +1,8 @@
+echo Run build wrapper
+cd Debug
+../../../../static_code_analysis/build-wrapper-linux-x86/build-wrapper-linux-x86-64 --out-dir ../bw-output make clean all
+
+cd ..
+
+echo Run sonar scanner
+../../../static_code_analysis/sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner
