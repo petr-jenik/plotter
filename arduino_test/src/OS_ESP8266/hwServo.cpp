@@ -17,7 +17,7 @@ const int cServoCount = ARRAY_SIZE(gpios);
 Servo servos[cServoCount];  // create servo object to control a servo
                 // twelve servo objects can be created on most boards
 
-void hwServoInit(int32_t channel)
+void hwServoInit(int32_t channel, float defaultAngle)
 {
 	TRACE; // Trace macro
 
@@ -30,6 +30,10 @@ void hwServoInit(int32_t channel)
 	{
 		DBG("Invalid servo channel: " << channel);
 	}
+
+	// Go to default angle
+	hwServoSetPosition(defaultAngle, channel);
+
 }
 
 

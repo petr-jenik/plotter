@@ -146,7 +146,7 @@ void appLogic_init()
 	}*/
 }
 
-//#define DEBUG_LOOP
+#define DEBUG_LOOP
 
 void appLogic_loop()
 {
