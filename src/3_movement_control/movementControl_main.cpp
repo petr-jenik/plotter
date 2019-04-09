@@ -35,7 +35,7 @@ void movementControl_createLine(position finalPosition,
 
 #ifdef OS_LINUX
 	guiCommand cmd = {extrudeLength, 1, gCurrentPosition, finalPosition};
-	//gui_add_line(cmd, eColor_green);
+	gui_add_line(cmd, eColor_green);
 #endif //OS_LINUX
 
 	// get distance between start and end points
@@ -43,13 +43,13 @@ void movementControl_createLine(position finalPosition,
 
 	if (distance == 0)
 	{
-		//LOG("distance = 0");
+		LOG("distance = 0");
 		return;
 	}
 
-	#define deltaX (finalPosition.x - startPos.x)
-	#define deltaY (finalPosition.y - startPos.y)
-	#define deltaZ (finalPosition.z - startPos.z)
+	float deltaX (finalPosition.x - startPos.x);
+	float deltaY (finalPosition.y - startPos.y);
+	float deltaZ (finalPosition.z - startPos.z);
 
 	// A close approximation to a straight line between two points
 	int numberOfSteps = (int)(SPEED_MAGICAL_CONSTANT*distance);
@@ -60,9 +60,7 @@ void movementControl_createLine(position finalPosition,
 		numberOfSteps = 1;
 	}
 
-	//LOG("numberOfSteps: " << numberOfSteps);
-
-	for (float i = 0; i < numberOfSteps+1; i++)
+	for (int i = 0; i < numberOfSteps+1; i++)
 	{
 		position currentPos;
 		currentPos.x = startPos.x + (deltaX * i)/numberOfSteps;
@@ -163,14 +161,18 @@ static void showDemo()
 		printRectangle(i, {0, 0, 0});
 	}*/
 
-	//printLine({10,0,0}, {10,100, 0});
+	printLine({10,0,0}, {10,10, 0});
+	printLine({10,10,0}, {0,10, 0});
+	printLine({0,10,0}, {10,10, 0});
+	printLine({10,10,0}, {10,0, 0});
+
 	//printLine({-100, 10, 0}, {100, 10, 0});
 	//printCircle(80, { 0, 50, 0});
 
 	//printRectangle(40, {0,0,0});
 	//printRectangle(45, {0,0,0});
 	//printRectangle(49, {0,0,0});
-	printRectangle(45, {0,0,0});
+	//printRectangle(45, {0,0,0});
 	//printCircle(20, { 0, 00, 0});
 	/*
 	for (int i = 1; i < 20; i += 2)

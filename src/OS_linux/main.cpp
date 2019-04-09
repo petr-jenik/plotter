@@ -67,11 +67,11 @@ int main(int argc, char** argv)
 	systemInit();
 
 	// Draw borders
-	movementControl_drawBorder();
+	//movementControl_drawBorder();
 
 //#define DEBUG_LOOP
 
-	gcodeSetItemId(0);
+	//gcodeSetItemId(0);
 
 	/* Start main app */
 #ifdef DEBUG_LOOP

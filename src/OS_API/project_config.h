@@ -10,6 +10,8 @@
 
 #include "global.h"
 
+//#define FLIP_IMAGE_ALONG_X_AXIS 1
+
 #define PRINTER_TYPE_2D_PLOTTER_WITH_SERVOS            1
 #define PRINTER_TYPE_2D_PLOTTER_TYPE_SCARA_ROBOT       2
 #define PRINTER_TYPE_2D_PLOTTER_CARTESIAN              3
@@ -93,6 +95,14 @@ const int STEP_SIZE = 1;
 		eStepperIdx_COUNT
 	} eStepperIdx2D;
 
+
+	const int STEPPER_X_NUMBER_OF_STEPS = 1000;
+	const int STEPPER_Y_NUMBER_OF_STEPS = 1000;
+
+	const int SERVO_ANGLE_MIN = 50;
+	const int SERVO_ANGLE_MAX = 65;
+	const int SERVO_CHANNEL = 1;
+	const int SERVO_OFFSET = 180;
 
 #elif PRINTER_TYPE == PRINTER_TYPE_3D_PRINTER_CARTESIAN
 

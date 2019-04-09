@@ -11,8 +11,8 @@ class Trace
 {
 public:
 	char buffer[100];
-	//const char * pName;
-	Trace(const char * name)
+
+	explicit Trace(const char * name)
 	{
 		strncpy(buffer, name, sizeof(buffer));
 		buffer[sizeof(buffer) - 1] = '\0';

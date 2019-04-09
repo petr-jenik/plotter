@@ -6,8 +6,9 @@
  */
 
 #include "project_config.h"
-#if PRINTER_TYPE == PRINTER_TYPE_PLOTTER_CLOCK
+#if PRINTER_TYPE == PRINTER_TYPE_2D_PLOTTER_WITH_SERVOS
 #include <mutex>
+#include <vector>
 
 #include "draw.h"
 #include "gui.h"
@@ -196,7 +197,7 @@ ServoGui * servo[] = {&servoRight, &servoLeft, &servoZ};
 
 static uint32_t cServoCount = ARRAY_SIZE(servo);
 
-void hwServoInit(int32_t channel)
+void hwServoInit(int32_t channel, float defaultAngle)
 {
     return;
 }
@@ -209,7 +210,8 @@ void sendAnglesToDiag(void)
 	static int cycleCount = 0;
 	cycleCount++;
 	char message[512] = {0};
-	sprintf(message, "start %f %f %f %d",
+	snprintf(message,  sizeof(message),
+			"start %f %f %f %d",
 			servo[0]->getAngle(),
 			servo[1]->getAngle(),
 			servo[2]->getAngle(),

@@ -74,7 +74,6 @@ float toPositiveAngle(float angle)
 float getAngle(position pos_A, position pos_B, position pos_C)
 {
     // A - base start - rotation center
-    position dA = pos_A - pos_A;
     position dB = pos_B - pos_A;
     position dC = pos_C - pos_A;
 

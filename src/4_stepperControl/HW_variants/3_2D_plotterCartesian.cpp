@@ -21,10 +21,8 @@
 
 MechanicController mechanicController;
 
-//StepperWithLimits steppers[eStepperIdx_COUNT];
-//StepperWithOneLimitSwitch steppers[eStepperIdx_COUNT] = {1000, 1000};
-StepperWithOneLimitSwitch stepperX(1000);
-StepperWithOneLimitSwitch stepperY(1000);
+StepperWithOneLimitSwitch stepperX(STEPPER_X_NUMBER_OF_STEPS);
+StepperWithOneLimitSwitch stepperY(STEPPER_Y_NUMBER_OF_STEPS);
 
 StepperWithLimits * pSteppers[] = {&stepperX, &stepperY};
 
@@ -32,10 +30,10 @@ StepperWithLimits * pSteppers[] = {&stepperX, &stepperY};
 // Following values were determined using experimental methods (trial & fail)
 PlotterServo usedServos[] = {
 		{1/*channel*/,
-		 180/*offset*/,
+		 SERVO_OFFSET/*offset*/,
 		 true/*reverse*/,
-		 50/*min angle*/,
-		 65/*max angle*/}
+		 SERVO_ANGLE_MIN/*min angle*/,
+		 SERVO_ANGLE_MAX/*max angle*/}
 };
 
 void stepperControl_init(void)

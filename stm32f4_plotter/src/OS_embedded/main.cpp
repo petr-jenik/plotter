@@ -332,7 +332,7 @@ int main(int argc, char** argv)
 
 	movementControl_showDemo();
 #else
-
+/*
 	uint32_t timeInSeconds = userButton.getPressLength() / 1000;
 
 	if (timeInSeconds < 3)
@@ -343,6 +343,9 @@ int main(int argc, char** argv)
 	{
 		gcodeSetItemId(1);
 	}
+*/
+	LOG("Device is ready");
+
 
 	reader_readAndProcess();
 #endif // #ifdef DEBUG_LOOP

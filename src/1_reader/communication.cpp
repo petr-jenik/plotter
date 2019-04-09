@@ -82,7 +82,6 @@ bool Communication::recvData(uint8_t *data, int *pDataLength)
     int maxDataSize = std::min(*pDataLength, (int)sizeof(buffer));
 
     bzero(buffer, sizeof(buffer));
-    //LOG(maxDataSize);
     int n = read(newsockfd, buffer, maxDataSize);
 
     if (n <= 0)

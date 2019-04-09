@@ -5,8 +5,8 @@
  *      Author: apollo
  */
 
-#ifndef xyz
-#define xyz
+#ifndef OS_EMBEDDED_SERIAL_H_
+#define OS_EMBEDDED_SERIAL_H_
 
 
 class Serial
@@ -16,7 +16,7 @@ public:
 	bool available();
 	char read();
 	void write(char sendChar);
-	//void writeX(char *string);
+	void write(char *string);
 };
 
 #endif /* OS_EMBEDDED_SERIAL_H_ */

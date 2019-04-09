@@ -16,7 +16,7 @@ PlotterServo::PlotterServo(uint32_t _channel,
 						   bool reverse,
 						   int _minAngle,
 						   int _maxAngle) :
-        requiredAngle(_maxAngle),
+        requiredAngle(_minAngle), // TODO 10.3.2019 - Really min angle? Default value should be configurable - for scara it is different than for pen controlling servo
 		servoAngle(_maxAngle),
 		angleOffset(_offset),
 		channel(_channel),

@@ -112,9 +112,9 @@ void path_parser::update()
 		if (this->hasAttribute(cmdData, "E") == false)
 		{
 			extrude = 0;
-			//LOG("Invalid attributes - at least E is requested for G0/G1\n");
+			LOG("Invalid attributes - at least E is requested for G0/G1\n");
 			//LOG(cmdData);
-			//return;
+			return;
 		}
 		else
 		{
@@ -136,7 +136,7 @@ void path_parser::update()
 		// Read optional parameters XY
 		if (this->hasAttribute(cmdData, "XY") == false)
 		{
-			//LOG("Invalid attributes - at least XY are requested for G0/G1\n");
+			LOG("Invalid attributes - at least XY are requested for G0/G1\n");
 			//LOG(cmdData);
 			return;
 		}
@@ -152,7 +152,6 @@ void path_parser::update()
 
 		if (cbf_moveTo != NULL)
 		{
-			//LOG(cmdData);
 			cbf_moveTo(newPosition, moveSpeed, extrude);
 		}
 		else

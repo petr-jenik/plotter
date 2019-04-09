@@ -107,7 +107,7 @@ EmbeddedCout& EmbeddedCout::operator<<(const uint16_t data)
 EmbeddedCout& EmbeddedCout::operator<<(const uint32_t data)
 {
 	char itoaBuffer[100];
-	sprintf(itoaBuffer, "%u", data);
+	snprintf(itoaBuffer, sizeof(itoaBuffer), "%u", data);
 	_add(itoaBuffer, strlen(itoaBuffer));
 	return *this;
 }
@@ -127,7 +127,7 @@ EmbeddedCout& EmbeddedCout::operator<<(const int16_t data)
 EmbeddedCout& EmbeddedCout::operator<<(const int32_t data)
 {
 	char itoaBuffer[100];
-	sprintf(itoaBuffer, "%d", data);
+	snprintf(itoaBuffer, sizeof(itoaBuffer), "%d", data);
 	_add(itoaBuffer, strlen(itoaBuffer));
 	return *this;
 }
@@ -137,7 +137,7 @@ EmbeddedCout& EmbeddedCout::operator<<(const float fData)
 {
 	//int data = (int)fData;
 	char itoaBuffer[100];
-	sprintf(itoaBuffer, "%d*10^(-6)", (int)(fData * 1000000));
+	snprintf(itoaBuffer, sizeof(itoaBuffer), "%d*10^(-6)", (int)(fData * 1000000));
 	_add(itoaBuffer, strlen(itoaBuffer));
 	return *this;
 }

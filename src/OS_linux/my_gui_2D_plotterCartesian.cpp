@@ -36,7 +36,22 @@ GpioDesc_t undefPin = {0, ePin_undef};
 
 float servoAngles[] = {0};
 
-const int cServoCount = ARRAY_SIZE(servoAngles);
+const uint32_t cServoCount = ARRAY_SIZE(servoAngles);
+
+float& servoAngle(const uint32_t channel)
+{
+	if ((channel > 0) and (channel <= cServoCount))
+	{
+		// Convert channel ID to index
+		return servoAngles[channel - 1];
+	}
+	else
+	{
+		LOG("Invalid servo channel");
+		return servoAngles[0];
+	}
+}
+
 
 void hwServoInit(int32_t channel, float defaultAngle){};
 
@@ -45,7 +60,7 @@ void hwServoSetPosition(float angle, uint32_t channel)
     if (channel > 0 and channel < cServoCount + 1)
     {
         DBG("channel: " << channel << ", angle: " << (int) angle);;
-        servoAngles[channel] = angle;
+        servoAngle(channel) = angle;
     }
     else
     {
@@ -309,7 +324,7 @@ void addPointToDrawList(void)
 {
     position C;
 
-    bool extrude = (servoAngles[0] > 90) ? false : true;
+    bool extrude = (servoAngle(SERVO_CHANNEL) > (SERVO_OFFSET - SERVO_ANGLE_MAX)) ? true : false;
 
     if (_getEndpoint(C))
     {

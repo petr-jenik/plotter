@@ -14,10 +14,12 @@
 
 EmbeddedCout dbgCout;
 
+eUart dbgUart = cUART1;
+
 void EmbeddedCout::_putChar(char c)
 {
 	// HW specific
-	uartSendChar(c);
+	uartSendChar(c, cUART1);
 }
 
 size_t EmbeddedCout::_getFreeSpaceSize()
@@ -59,7 +61,9 @@ EmbeddedCout::EmbeddedCout()
 	charIndex = 0;
 
 	//HW specific
-	uartInit();
+	UartConfig config;
+	config.baudrate = 115200;
+	uartInit(cUART1, config);
 }
 
 
@@ -106,7 +110,7 @@ EmbeddedCout& EmbeddedCout::operator<<(const uint16_t data)
 EmbeddedCout& EmbeddedCout::operator<<(const uint32_t data)
 {
 	char itoaBuffer[100];
-	sprintf(itoaBuffer, "%lu", data);
+	snprintf(itoaBuffer, sizeof(itoaBuffer), "%lu", data);
 	_add(itoaBuffer, strlen(itoaBuffer));
 	return *this;
 }
@@ -126,7 +130,7 @@ EmbeddedCout& EmbeddedCout::operator<<(const int16_t data)
 EmbeddedCout& EmbeddedCout::operator<<(const int32_t data)
 {
 	char itoaBuffer[100];
-	sprintf(itoaBuffer, "%ld", data);
+	snprintf(itoaBuffer, sizeof(itoaBuffer), "%ld", data);
 	_add(itoaBuffer, strlen(itoaBuffer));
 	return *this;
 }
@@ -143,7 +147,7 @@ EmbeddedCout& EmbeddedCout::operator<<(const float fData)
 {
 	int data = (int)fData;
 	char itoaBuffer[100];
-	sprintf(itoaBuffer, "%d*10^(-6)", data * 1000000);
+	snprintf(itoaBuffer, sizeof(itoaBuffer), "%d*10^(-6)", data * 1000000);
 	_add(itoaBuffer, strlen(itoaBuffer));
 	return *this;
 }

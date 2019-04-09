@@ -29,9 +29,9 @@ void Serial::write(char sendChar)
 {
 	std::cout << sendChar;
 }
-/*
-void Serial::writeX(char *string)
+
+void Serial::write(char *string)
 {
 	std::cout << string;
 }
-*/
+

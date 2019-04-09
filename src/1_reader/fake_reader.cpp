@@ -7,25 +7,165 @@
 
 #include "log.h"
 #include "reader_main.h"
-#include "gcode.h"
+//#include "gcode.h"
 #include <stdint.h>
 
-#include <algorithm>
+//#include <algorithm>
 
-#include "reader_main.h"
+//#include "reader_main.h"
 #include "parser_main.h"
-#include "queue.h"
+//#include "queue.h"
 
 #include "global.h"
 
-//Communication comm;
-Queue queue;
+#include "hwUart.h"
+
+const uint32_t gcommandMaxLen = 100;
+
+const eUart gcUartChannel = cUART6;
+
+typedef struct
+{
+	char data[gcommandMaxLen];
+	int dataLen;
+	bool used;
+} GcodeCommand;
+
+template <class T> class Queue
+{
+private:
+	static const uint32_t cQueueLen = 5;
+	T items[cQueueLen];
+	uint32_t dataStart;
+	uint32_t numberOfItems;
+
+public:
+	uint32_t numberOfPushes;
+	uint32_t numberOfPops;
+
+	Queue():
+		dataStart(0),
+		numberOfItems(0),
+		numberOfPushes(0),
+		numberOfPops(0)
+	{
+		for (uint32_t i = 0; i < cQueueLen; i++)
+		{
+			memset(&this->items[i], 0, sizeof(T));
+		}
+	}
+
+	bool push(T item)
+	{
+		bool retval = false;
+		if (numberOfItems < cQueueLen)
+		{
+			this->items[(dataStart + numberOfItems) % cQueueLen] = item;
+			numberOfItems++;
+			retval = true;
+			numberOfPushes++;
+		}
+		return retval;
+	}
+
+	bool pop(T& item)
+	{
+		bool retval = false;
+		if (numberOfItems > 0)
+		{
+			item = items[dataStart];
+			dataStart = (dataStart + 1) % cQueueLen;
+			numberOfItems--;
+			retval = true;
+			numberOfPops++;
+		}
+		return retval;
+	}
+
+	size_t getFreeSpaceSize(void)
+	{
+		return cQueueLen - numberOfItems;
+	}
+
+
+	size_t getNumberOfItems(void)
+	{
+		return numberOfItems;
+	}
+};
+
+Queue<GcodeCommand> queue;
+
+bool addCommandToQueue(const uint8_t* data, uint32_t dataLen)
+{
+	GcodeCommand gcmd;
+
+	bool result = false;
+
+	if (dataLen < gcommandMaxLen)
+	{
+		memcpy(gcmd.data, data, dataLen);
+		gcmd.dataLen = dataLen;
+		//_DISABLE_INTERRUPT();
+		result = queue.push(gcmd);
+
+		size_t freeItems = queue.getFreeSpaceSize();
+		if (freeItems > 0)
+		{
+			// ACK means that there is a place at least for one more command
+			uartPrint("ACK\n", gcUartChannel);
+		}
+
+		//_ENABLE_INTERRUPT();
+	}
+	else
+	{
+		result = false;
+	}
+	return result;
+}
+
+uint8_t data[gcommandMaxLen] = {0};
+uint32_t dataIndex = 0;
+uint32_t errorCountQueueFull = 0;
+uint32_t errorCountOverrun = 0;
+
+void rxCallback(uint8_t byte, RxState state)
+{
+	if (state == State_ERROR)
+	{
+		errorCountOverrun++;
+		dataIndex = 0;
+		return;
+	}
+
+	data[dataIndex] = byte;
+	dataIndex++;
+	//LOG("Data: " << (const char *)data);
+
+	// TODO - Use only \n
+	if ((byte == '\n')/* or (byte == '\r')*/ or (dataIndex >= gcommandMaxLen))
+	{
+		bool result = addCommandToQueue(data, dataIndex);
+		if (result == false)
+		{
+			errorCountQueueFull++;
+		}
+		dataIndex = 0;
+	}
+}
 
 void reader_init(void)
 {
+	//HW specific
+	UartConfig config;
+	config.baudrate = 115200;
+
+	uartInit(gcUartChannel, config);
+
+	uartRegisterRxCallback(rxCallback, gcUartChannel);
 }
 
-#define MAX_LINE_LENGTH 512
 
 uint32_t lineNumber = 0;
 
@@ -37,111 +177,42 @@ void processLine(char * buffer, uint32_t bufferSize)
 }
 
 
-bool readLineFromQueue(Queue &queue, char *pBuffer , uint32_t & sizeOfBuffer)
+/*
+void test()
 {
-	char line[MAX_LINE_LENGTH] = {0};
-	bool endOfLineFound = false;
-	int bufferSize = std::min((size_t)sizeOfBuffer, sizeof(line));
-	int minDataSize = std::min(queue.getNumberOfItems(), (size_t)bufferSize);
-	int idx = 0;
+	std::string line;
+	std::getline (std::cin, line);
 
-	bool retval = false;
-
-	// Process the whole queue
-	while((idx < minDataSize) &&
-		  (endOfLineFound == false) &&
-		  (queue.getNumberOfItems() != 0))
-	{
-		queue.pop(line[idx]);
-
-		if ('\n' == line[idx])
-		{
-			endOfLineFound = true;
-		}
-
-		idx++;
-	}
-
-	if (endOfLineFound)
-	{
-		sizeOfBuffer = idx;
-		memcpy(pBuffer, line, (size_t)idx);
-		retval = true;
-	}
-	else
-	{
-		LOG("End of line was not found");
-
-		size_t numberOfItems = queue.getNumberOfItems();
-
-		for (int i = 0; i < idx; i++)
-		{
-			queue.push(line[i]);
-		}
-
-		for (size_t i = 0; i < numberOfItems; i++)
-		{
-			char byte;
-			queue.pop(byte);
-			queue.push(byte);
-		}
-
-		retval = false;
-		sizeOfBuffer = 0;
-	}
-
-	return retval;
-}
-
-#include <unistd.h>
-
-void serveClient()
-{
-	char buffer[MAX_LINE_LENGTH] = {0};
-
-	// Loop for data reading from client
-	bool receiveIsActive = true;
-	while(receiveIsActive)
-	{
-		memset(buffer, 0, sizeof(buffer));
-		int maxDataSize = std::min(queue.getFreeSpaceSize(), sizeof(buffer));
-
-		// New client connected
-		if (gcodeRecvData((uint8_t*)buffer, &maxDataSize) == false)
-		{
-			//receiveIsActive = false;
-			// Error during reading, break internal loop
-			receiveIsActive = false;
-		}
-
-		LOG("received data size: " << maxDataSize);
-
-		// Push received data to data FIFO (queue)
-		for (int i = 0; i < maxDataSize; i++)
-		{
-			queue.push(buffer[i]);
-		}
-
-		memset(buffer, 0, sizeof(buffer));
-		uint32_t dataSize = sizeof(buffer);
-		while(readLineFromQueue(queue, buffer, dataSize))
-		{
-			processLine(buffer, maxDataSize);
-			memset(buffer, 0, sizeof(buffer));
-			dataSize = sizeof(buffer);
-		}
-
-		LOG("numberOfPushes: " << queue.numberOfPushes);
-		LOG("numberOfPops: " << queue.numberOfPops);
-	}
-}
+	addCommandToQueue((const uint8_t*)line.c_str(), line.length());
+}*/
 
 void reader_readAndProcess()
 {
-	DBG("Start server and listen for data");
+	while(1)
+	{
+		GcodeCommand gcmd;
 
-//	while(comm.listen())
-	//{
-		serveClient();
-	//}
+		//HAL_NVIC_DisableIRQ(USART6_IRQn);
+		bool cmdReceived = queue.pop(gcmd);
+		//_ENABLE_INTERRUPT();
+
+		if (cmdReceived)
+		{
+			processLine(gcmd.data, gcmd.dataLen);
+			LOG("numberOfPushes: " << queue.numberOfPushes);
+			LOG("numberOfPops: " << queue.numberOfPops);
+		}
+		else
+		{
+			static uint32_t cycleCount = 0;
+			cycleCount++;
+			if (cycleCount > 100000)
+			{
+				cycleCount = 0;
+				//LOG("numberOfPops: " << queue.numberOfPops);
+				LOG("numberOfErrors queue full: " << errorCountQueueFull);
+				LOG("numberOfErrors overrun: " << errorCountOverrun);
+			}
+		}
+	}
 }
