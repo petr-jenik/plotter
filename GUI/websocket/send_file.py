@@ -31,7 +31,7 @@ for line in raw_data.split("\n"):
 	s.send(data);
 	#response = s.recv(100)
 	#print("Response {}".format(response))
-	#time.sleep(0.05);
+	time.sleep(0.005);
 	i += 1
 
 s.close()

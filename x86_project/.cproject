@@ -25,17 +25,17 @@
 								<option id="gnu.cpp.compiler.exe.debug.option.debugging.level.788872919" name="Debug Level" superClass="gnu.cpp.compiler.exe.debug.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.dialect.std.572598630" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.c++11" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1308932124" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/1_reader}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/hwApi}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/x86_project/src/1_reader}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/x86_project/src/2_parser}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/x86_project/src/3_movement_control}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/x86_project/src/4_stepperControl}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/x86_project/src/4_stepperControl/building_blocks}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/x86_project/src/4_stepperControl/HW_variants}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/x86_project/src/4_stepperControl/mechanics}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/x86_project/src/OS_API}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/x86_project/src/tools}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/x86_project/src/OS_API/HW_API}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/x86_project/OS_linux}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.debugging.codecov.891103916" name="Generate gcov information (-ftest-coverage -fprofile-arcs)" superClass="gnu.cpp.compiler.option.debugging.codecov" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<option id="gnu.cpp.compiler.option.debugging.gprof.594700308" name="Generate gprof information (-pg)" superClass="gnu.cpp.compiler.option.debugging.gprof" useByScannerDiscovery="false" value="true" valueType="boolean"/>
@@ -49,17 +49,7 @@
 								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.exe.debug.option.optimization.level.1824981385" name="Optimization Level" superClass="gnu.c.compiler.exe.debug.option.optimization.level" useByScannerDiscovery="false" valueType="enumerated"/>
 								<option id="gnu.c.compiler.exe.debug.option.debugging.level.623521650" name="Debug Level" superClass="gnu.c.compiler.exe.debug.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.854901727" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/1_reader}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/hwApi}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
+									<listOptionValue builtIn="false" value="/x86_project/src/1_reader"/>
 								</option>
 								<option id="gnu.c.compiler.option.debugging.prof.536929764" name="Generate prof information (-p)" superClass="gnu.c.compiler.option.debugging.prof" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<option id="gnu.c.compiler.option.debugging.gprof.1741608713" name="Generate gprof information (-pg)" superClass="gnu.c.compiler.option.debugging.gprof" useByScannerDiscovery="false" value="false" valueType="boolean"/>
@@ -86,24 +76,14 @@
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.assembler.exe.debug.689379562" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.debug">
 								<option id="gnu.both.asm.option.include.paths.1792561612" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/1_reader}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/hwApi}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
+									<listOptionValue builtIn="false" value="/x86_project/src/1_reader"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1005070632" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="1_reader/communication.cpp|1_reader/reader_main.cpp|1_reader/gcode_reader.cpp|OS_linux/newMain.cpp|1_reader/arduino_reader.cpp|1_reader/communication_gcode.cpp|5_GUI|2_parser/sub/src/main.cpp|1_reader/reader.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|2_parser/sub/src/gui" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="OS_linux/newMain.cpp|src/1_reader/gcode_reader.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -132,21 +112,7 @@
 								<option id="gnu.cpp.compiler.exe.release.option.optimization.level.836731893" name="Optimization Level" superClass="gnu.cpp.compiler.exe.release.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.exe.release.option.debugging.level.523209084" name="Debug Level" superClass="gnu.cpp.compiler.exe.release.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.1421790915" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/1_reader}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_motorControl}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser/sub/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/hwApi}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/hw_api_interface}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
+									<listOptionValue builtIn="false" value="/x86_project/src/1_reader"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.dialect.std.1521363641" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.c++11" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1854377787" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" useByScannerDiscovery="false" valueType="definedSymbols">
@@ -158,20 +124,7 @@
 								<option defaultValue="gnu.c.optimization.level.most" id="gnu.c.compiler.exe.release.option.optimization.level.1862306162" name="Optimization Level" superClass="gnu.c.compiler.exe.release.option.optimization.level" useByScannerDiscovery="false" valueType="enumerated"/>
 								<option id="gnu.c.compiler.exe.release.option.debugging.level.823414113" name="Debug Level" superClass="gnu.c.compiler.exe.release.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.none" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.369631837" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/1_reader}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser/sub/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/hwApi}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/hw_api_interface}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
+									<listOptionValue builtIn="false" value="/x86_project/src/1_reader"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.43009269" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="OS_LINUX"/>
@@ -192,137 +145,14 @@
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.assembler.exe.release.813339962" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.release">
 								<option id="gnu.both.asm.option.include.paths.2032905202" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/1_reader}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/5_GUI}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_motorControl}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser/sub/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/hwApi}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/hw_api_interface}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mainApp/}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
+									<listOptionValue builtIn="false" value="/x86_project/src/1_reader"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1680689699" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="1_reader/communication.cpp|1_reader/reader_main.cpp|1_reader/gcode_reader.cpp|OS_linux/newMain.cpp|1_reader/arduino_reader.cpp|1_reader/communication_gcode.cpp|5_GUI|2_parser/sub/src/main.cpp|1_reader/reader.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|2_parser/sub/src/gui" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
-					</sourceEntries>
-				</configuration>
-			</storageModule>
-			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-		</cconfiguration>
-		<cconfiguration id="cdt.managedbuild.config.gnu.exe.debug.881614632.472279662">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="cdt.managedbuild.config.gnu.exe.debug.881614632.472279662" moduleId="org.eclipse.cdt.core.settings" name="STM32">
-				<externalSettings/>
-				<extensions>
-					<extension id="org.eclipse.cdt.core.GNU_ELF" point="org.eclipse.cdt.core.BinaryParser"/>
-					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-				</extensions>
-			</storageModule>
-			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.exe.debug.881614632.472279662" name="STM32" parent="cdt.managedbuild.config.gnu.exe.debug">
-					<folderInfo id="cdt.managedbuild.config.gnu.exe.debug.881614632.472279662." name="/" resourcePath="">
-						<toolChain id="cdt.managedbuild.toolchain.gnu.exe.debug.2040075503" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.exe.debug">
-							<targetPlatform id="cdt.managedbuild.target.gnu.platform.exe.debug.310873094" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.exe.debug"/>
-							<builder buildPath="${workspace_loc:/threads_example}/Debug" id="cdt.managedbuild.target.gnu.builder.exe.debug.898104732" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.exe.debug"/>
-							<tool id="cdt.managedbuild.tool.gnu.archiver.base.480699060" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.20058762" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug">
-								<option id="gnu.cpp.compiler.exe.debug.option.optimization.level.72497201" name="Optimization Level" superClass="gnu.cpp.compiler.exe.debug.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.exe.debug.option.debugging.level.313519744" name="Debug Level" superClass="gnu.cpp.compiler.exe.debug.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.option.dialect.std.1557657358" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.c++11" valueType="enumerated"/>
-								<option id="gnu.cpp.compiler.option.include.paths.400259294" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/1_reader}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/hwApi}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
-								</option>
-								<option id="gnu.cpp.compiler.option.debugging.codecov.2095875092" name="Generate gcov information (-ftest-coverage -fprofile-arcs)" superClass="gnu.cpp.compiler.option.debugging.codecov" useByScannerDiscovery="false" value="true" valueType="boolean"/>
-								<option id="gnu.cpp.compiler.option.debugging.gprof.1005759021" name="Generate gprof information (-pg)" superClass="gnu.cpp.compiler.option.debugging.gprof" useByScannerDiscovery="false" value="true" valueType="boolean"/>
-								<option id="gnu.cpp.compiler.option.debugging.prof.923631147" name="Generate prof information (-p)" superClass="gnu.cpp.compiler.option.debugging.prof" useByScannerDiscovery="false" value="true" valueType="boolean"/>
-								<option id="gnu.cpp.compiler.option.preprocessor.def.981401926" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" useByScannerDiscovery="false" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="OS_LINUX"/>
-								</option>
-								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1207617895" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
-							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.783216242" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug">
-								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.exe.debug.option.optimization.level.951418445" name="Optimization Level" superClass="gnu.c.compiler.exe.debug.option.optimization.level" useByScannerDiscovery="false" valueType="enumerated"/>
-								<option id="gnu.c.compiler.exe.debug.option.debugging.level.507686298" name="Debug Level" superClass="gnu.c.compiler.exe.debug.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.max" valueType="enumerated"/>
-								<option id="gnu.c.compiler.option.include.paths.750500632" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/1_reader}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/hwApi}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
-								</option>
-								<option id="gnu.c.compiler.option.debugging.prof.1734351761" name="Generate prof information (-p)" superClass="gnu.c.compiler.option.debugging.prof" useByScannerDiscovery="false" value="false" valueType="boolean"/>
-								<option id="gnu.c.compiler.option.debugging.gprof.175728094" name="Generate gprof information (-pg)" superClass="gnu.c.compiler.option.debugging.gprof" useByScannerDiscovery="false" value="false" valueType="boolean"/>
-								<option id="gnu.c.compiler.option.debugging.codecov.128878942" name="Generate gcov information (-ftest-coverage -fprofile-arcs)" superClass="gnu.c.compiler.option.debugging.codecov" useByScannerDiscovery="false" value="false" valueType="boolean"/>
-								<option id="gnu.c.compiler.option.preprocessor.def.symbols.783370122" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="OS_LINUX"/>
-								</option>
-								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1035892489" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
-							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.719592995" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug"/>
-							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1216598503" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug">
-								<option id="gnu.cpp.link.option.flags.664433416" name="Linker flags" superClass="gnu.cpp.link.option.flags" useByScannerDiscovery="false" value="-pthread" valueType="string"/>
-								<option id="gnu.cpp.link.option.libs.1497050903" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" useByScannerDiscovery="false" valueType="libs">
-									<listOptionValue builtIn="false" value="glut"/>
-									<listOptionValue builtIn="false" value="GL"/>
-								</option>
-								<option id="gnu.cpp.link.option.debugging.prof.287169158" name="Generate prof information (-p)" superClass="gnu.cpp.link.option.debugging.prof" value="true" valueType="boolean"/>
-								<option id="gnu.cpp.link.option.debugging.gprof.506745089" name="Generate gprof information (-pg)" superClass="gnu.cpp.link.option.debugging.gprof" value="true" valueType="boolean"/>
-								<option id="gnu.cpp.link.option.debugging.codecov.1524352869" name="Generate gcov information (-ftest-coverage -fprofile-arcs)" superClass="gnu.cpp.link.option.debugging.codecov" value="true" valueType="boolean"/>
-								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1037943908" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
-									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
-									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
-								</inputType>
-							</tool>
-							<tool id="cdt.managedbuild.tool.gnu.assembler.exe.debug.684095175" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.exe.debug">
-								<option id="gnu.both.asm.option.include.paths.754110321" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/1_reader}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/2_parser}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/3_movement_control}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/hwApi}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_API/HW_API}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/OS_linux}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/building_blocks}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/threads_example/src/4_stepperControl/mechanics}&quot;"/>
-								</option>
-								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1033585005" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
-							</tool>
-						</toolChain>
-					</folderInfo>
-					<sourceEntries>
-						<entry excluding="1_reader/communication.cpp|1_reader/reader_main.cpp|1_reader/gcode_reader.cpp|1_reader/arduino_reader.cpp|1_reader/communication_gcode.cpp|OS_linux|OS_embedded|5_GUI|2_parser/sub/src/main.cpp|1_reader/reader.cpp|4_stepperControl/gameOfLiveV3.cpp|4_motorControl|2_parser/sub/src/gui" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="OS_linux/newMain.cpp|src/1_reader/gcode_reader.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

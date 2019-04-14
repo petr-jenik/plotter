@@ -3,3 +3,7 @@ Release
 Debug
 *.gcode
 bw-output
+eclipse_wsp
+*.jpg
+*.png
+

@@ -12,6 +12,10 @@
 #define MAXCLISTRING          100 // Biggest string the user will type
 */
 
+#ifdef __cplusplus__
+extern "C" {
+#endif
+
 typedef struct
 {
 	uint32_t baudrate;
@@ -40,5 +44,10 @@ typedef enum
 typedef void (*RxCallback)(uint8_t rxByte, RxState state);
 
 void uartRegisterRxCallback(RxCallback callback, eUart channel);
+
+#ifdef __cplusplus__
+}
+#endif
+
 
 #endif // HW_UART_H_

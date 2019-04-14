@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>threads_example</name>
+	<name>x86_project</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -24,4 +24,16 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>OS_linux</name>
+			<type>2</type>
+			<location>/home/apollo/Dokumenty/coding/3d-tisk/plotter/x86_project/OS_linux</location>
+		</link>
+		<link>
+			<name>src</name>
+			<type>2</type>
+			<location>/home/apollo/Dokumenty/coding/3d-tisk/plotter/src</location>
+		</link>
+	</linkedResources>
 </projectDescription>
