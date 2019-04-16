@@ -61,7 +61,7 @@
     var COMMAND_SETTING = "COMMAND_SETTING:";
     var COMMAND_GCODE = "GCODE:";
 
-    var RESULT_OK = "OK\n";
+    var RESULT_OK = "OK";
     var RESULT_NOT_OK = "RESULT_NOT_OK";
 
     var gcode_available = false;
@@ -119,7 +119,7 @@
         else
         {
             writeToScreen("Print enabled:" + printEnabled + "\n");
-            writeToScreen("Received invalid response: " + message + "\n"); 
+            writeToScreen("Received invalid response: \"" + message + "\"\n"); 
         }   
     }
 

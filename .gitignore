@@ -6,4 +6,6 @@ bw-output
 eclipse_wsp
 *.jpg
 *.png
+*.pyc
+boot.py
 
