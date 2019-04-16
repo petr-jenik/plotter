@@ -76,12 +76,14 @@ void commUpdateTask()
 	}
 }
 
-
-std::thread thread_fakeUart(commUpdateTask);
-
+std::thread* thread_fakeUart = nullptr;
+//std::thread thread_fakeUart(commUpdateTask);
 
 bool uartInit(eUart channel, UartConfig& config)
 {
+	thread_fakeUart = new std::thread(commUpdateTask);
+
+	return true;
 	//thread_fakeUart.
 }
 
@@ -92,7 +94,7 @@ void uartSendChar(char sendChar, eUart channel)
 
 void uartPrint(char *string, eUart channel)
 {
-
+	comm.sendData((uint8_t*)string, strlen(string));
 }
 
 //
