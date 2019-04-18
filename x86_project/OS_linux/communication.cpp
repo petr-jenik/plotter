@@ -72,7 +72,17 @@ bool Communication::listen()
 bool Communication::sendData(uint8_t *data, int dataLength)
 {
     TRACE;
-    return false;
+
+    int n = write(newsockfd, data, dataLength);
+
+    if (n == dataLength)
+    {
+    	return true;
+    }
+	else
+	{
+		return false;
+	}
 };
 
 bool Communication::recvData(uint8_t *data, int *pDataLength)

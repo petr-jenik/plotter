@@ -309,7 +309,7 @@ private:
 	static const uint32_t cTimeStepMs = 100;
 };
 
-int main(int argc, char** argv)
+extern "C" int main (int argc, char* argv[])
 {
 	/* System init */
 	systemInit();

@@ -33,7 +33,7 @@
 		<link>
 			<name>src</name>
 			<type>2</type>
-			<location>/home/apollo/Dokumenty/coding/3d-tisk/plotter/src</location>
+			<locationURI>PARENT-1-PROJECT_LOC/src</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
