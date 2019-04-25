@@ -24,14 +24,16 @@ i = 0
 numberOfSentBytes = 0
 
 for line in raw_data.split("\n"):
-
 	data = line + '\n'
 	print("Line number: {}, data: {}".format(i, data))
-	numberOfSentBytes += len(data)
-	s.send(data);
+	
+	bytesData = data.encode("UTF-8")
+	numberOfSentBytes += len(bytesData)
+	print(type(bytesData))
+	s.send(bytesData);
 	#response = s.recv(100)
 	#print("Response {}".format(response))
-	time.sleep(0.005);
+	#time.sleep(0.005);
 	i += 1
 
 s.close()

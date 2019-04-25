@@ -1,3 +1,6 @@
+import threading
+import socket
+import time
 
 class Pin():
     def __init__(self, pinId):
@@ -19,6 +22,7 @@ class Timer():
     
     def __init__(self, channel):
         pass
+    
     def init(self, period, callback):
         self.period = period
         self.callback = callback
@@ -36,21 +40,67 @@ def restart():
     print("Restarting ... (not really)")
 
 
+
 class UART():
 
     def __init__(self, channel, rx, tx):
-        pass
-        self.len = 0
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            self.sock.connect(("localhost", 3000)) # TODO move to a variable
+        except:
+            self.sock.connect(("localhost", 3001)) # TODO move to a variable
 
-    def write(self, data):
-        print("Sending data over serial. Data: {}".format(data))
-        if (data):
-            self.len = 3
+        self.len = 0
+        self.data = b""
         
+        
+        self.lock = threading.Lock()
+        self.thread1 = threading.Thread(target = self.commUpdateThread)#, args = self)
+        self.thread1.start()
+
+    def commUpdateThread(self):
+        while(1):
+            recvByte = self.sock.recv(1)
+            
+            self.lock.acquire()
+            self.data += recvByte 
+            self.lock.release()
+
+            #print("Tralala")
+            #print("Data: {}".format(self.data))
+            #time.sleep(1)
+
+
+    def write(self, rawData):
+        #print("Sending data over serial. Data: {}".format(data))
+        self.sock.send(rawData);
+        #if (data):
+        #    self.len = 3
+
     def read(self, numberOfBytes):
-        if (self.len != 0):
-            self.len = 0
-            return b"ACK"
+        #print("Reading data")
+        retval = b""
+        
+        # mutex.acquire
+        self.lock.acquire()
+        
+        if (numberOfBytes <= len(self.data)):
+            retval = self.data[:numberOfBytes]
+            self.data = self.data[numberOfBytes:]
+        
+        #mutex.release()
+        self.lock.release()
+
+        #print("Retval: {}".format(retval))
+        return retval;
     
     def any(self):
-        return self.len
+        # mutex.acquire
+        self.lock.acquire()
+        
+        result = len(self.data)
+        
+        #mutex.release()
+        self.lock.release()
+
+        return result

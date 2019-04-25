@@ -94,7 +94,11 @@ void uartSendChar(char sendChar, eUart channel)
 
 void uartPrint(char *string, eUart channel)
 {
-	comm.sendData((uint8_t*)string, strlen(string));
+	bool result = comm.sendData((uint8_t*)string, strlen(string));
+	if (result == false)
+	{
+		DBG("Error while sending data over fake UART\n");
+	}
 }
 
 //

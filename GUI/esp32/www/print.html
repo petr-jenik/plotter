@@ -43,7 +43,7 @@
     <p>
         <input type="button" name=printButton value="PRINT" onClick="startPrint();">
         <input type="button" name=calibrateButton value="Calibrate" onClick="sendCommand(COMMAND_CALIBRATE);">
-        <input type="button" name=goToLeftButton value="Go to left" onClick="sendCommand(COMMAND_GO_TO_LEFT);">
+        <input type="button" name=setAddressButton value="Set WS address" onClick="document.myform.url.value = \"ws://localhost\";">
         <input type="button" name=goToRightButton value="Go to right" onClick="sendCommand(COMMAND_GO_TO_RIGHT);">
         <input type="button" name=connectButton value="Set configuration" onClick="sendCommand(COMMAND_SETTING);">
     </p>
@@ -277,6 +277,7 @@
 
     function sendCommand(command)
     {
+        document.myform.url.value = "ws://localhost";
         validResponseReseived = false;
         doSend(command);
     }

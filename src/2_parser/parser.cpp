@@ -58,7 +58,7 @@ void path_parser::newData(const char* pData, const size_t dataLength)
 	}
 
 	/* walk through other tokens */
-	while( token != NULL )
+	while ((token != NULL) and (i < maxNumberOfGCmdParts))
 	{
 		token = strtok(NULL, delimiters);
 		if (token != NULL)

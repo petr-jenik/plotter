@@ -9,6 +9,7 @@
 #include "reader_main.h"
 //#include "gcode.h"
 #include <stdint.h>
+#include "Timer.h"
 
 //#include <algorithm>
 
@@ -26,7 +27,7 @@ const eUart gcUartChannel = cUART6;
 
 typedef struct
 {
-	char data[gcommandMaxLen];
+	char data[gcommandMaxLen + 1]; // One extra character for string termination
 	int dataLen;
 	bool used;
 } GcodeCommand;
@@ -34,7 +35,7 @@ typedef struct
 template <class T> class Queue
 {
 private:
-	static const uint32_t cQueueLen = 5;
+	static const uint32_t cQueueLen = 50;
 	T items[cQueueLen];
 	uint32_t dataStart;
 	uint32_t numberOfItems;
@@ -102,19 +103,38 @@ bool addCommandToQueue(const uint8_t* data, uint32_t dataLen)
 
 	bool result = false;
 
-	if (dataLen < gcommandMaxLen)
+	if (dataLen <= gcommandMaxLen)
 	{
+		// Set last character to '\0' just to be sure
+		gcmd.data[sizeof(gcmd.data) - 1] = '\0';
+
 		memcpy(gcmd.data, data, dataLen);
 		gcmd.dataLen = dataLen;
 		//_DISABLE_INTERRUPT();
 		result = queue.push(gcmd);
 
-		size_t freeItems = queue.getFreeSpaceSize();
-		if (freeItems > 0)
+		if (result == true)
 		{
-			// ACK means that there is a place at least for one more command
+			// ACK means that command was added to the queue
 			uartPrint("ACK\n", gcUartChannel);
 		}
+		else
+		{
+		    // Queue is full, try it in a while
+			uartPrint("ERR\n", gcUartChannel);
+		}
+
+
+        //size_t freeItems = queue.getFreeSpaceSize();
+		//if (freeItems > 0)
+		//{
+		//	// ACK means that there is a place at least for one more command
+		//	uartPrint("ACK\n", gcUartChannel);
+		//}
+		//else
+		//{
+
+		//}
 
 		//_ENABLE_INTERRUPT();
 	}
@@ -214,5 +234,6 @@ void reader_readAndProcess()
 				LOG("numberOfErrors overrun: " << errorCountOverrun);
 			}
 		}
+		//Timer::sleep(10);
 	}
 }

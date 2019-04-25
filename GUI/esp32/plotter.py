@@ -66,8 +66,8 @@ def _recvTextCallback(webSocket, msg) :
         #print("Received message: %s" % msg)
         #print(type(msg))
         #print(len(msg))
-        
-        sendLineToPlotter(webSocket, msg)
+        print(type(msg))
+        sendLineToPlotter(webSocket, msg.encode("UTF-8"))
         #parseMessage(webSocket, msg)
 
         #print("RX - PWM value:", pwmValue)
@@ -95,11 +95,19 @@ def _closedCallback(webSocket) :
 gUart = None
 
 def sendLineToPlotter(webSocket, line):
+    
+    line = line + b"\n"
+
+    #time.sleep(0.1)
+    #TODO remove following return
+    #webSocket.SendText("OK")
+    #return
+
     global gUart
     #port = serial.Serial("/dev/ttyUSB0", 115200);
 
     gUart.write(line)
-    time.sleep(0.01)
+    #time.sleep(0.01)
 
     startTime = time.time()
     response = b""
@@ -107,14 +115,22 @@ def sendLineToPlotter(webSocket, line):
     try:
         while(1):
             numberOfRxBytes = gUart.any()
+            print(numberOfRxBytes)
             response += gUart.read(numberOfRxBytes)
 
-            if response != "":
-                print("Repsonse: {}".format(response))
+            #if response != b"":
+            print("Repsonse: {}".format(response))
 
-            if b"ACK" in response:
+            if b"ACK\n" in response:
                 break;
         
+            if b"ERR\n" in response:
+                response = b""
+                print("Error flag received - Send command again")
+                startTime = time.time()
+                gUart.write(line)
+            
+            # TODO remoe timeout function
             if (time.time() - startTime) > 0.1:
                 print("Timeout - Send command again")
                 startTime = time.time()

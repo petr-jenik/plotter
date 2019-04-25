@@ -261,16 +261,19 @@ bool _getEndpoint(position& C)
 
 void drawSteppers()
 {
-	// Draw stepper
-	Gui::glSelectColor(eColor_green);
-	limSteppers[eStepperIdx_X]->draw();
-
 	// Move Y stepper in X axis
 	position posX = limSteppers[eStepperIdx_X]->getCurrentPosition();
 	position posY = limSteppers[eStepperIdx_Y]->getCurrentPosition();
 
-	position diff = posX - posY;
+    position diff = posX - posY;
 	limSteppers[eStepperIdx_Y]->shift((position){diff.x, 0, 0});
+
+	limSteppers[eStepperIdx_X]->shift((position){0, diff.y, 0});
+
+
+	// Draw stepper
+	Gui::glSelectColor(eColor_green);
+	limSteppers[eStepperIdx_X]->draw();
 
 	Gui::glSelectColor(eColor_blue);
 	limSteppers[eStepperIdx_Y]->draw();

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>stm32f4_plotter</name>
+	<name>stm32f4_project</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -26,34 +26,15 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>src/1_reader</name>
+			<name>src</name>
 			<type>2</type>
-			<location>/home/apollo/Dokumenty/coding/3d-tisk/workspace/threads_example/src/1_reader</location>
-		</link>
-		<link>
-			<name>src/2_parser</name>
-			<type>2</type>
-			<location>/home/apollo/Dokumenty/coding/3d-tisk/workspace/threads_example/src/2_parser</location>
-		</link>
-		<link>
-			<name>src/3_movement_control</name>
-			<type>2</type>
-			<location>/home/apollo/Dokumenty/coding/3d-tisk/workspace/threads_example/src/3_movement_control</location>
-		</link>
-		<link>
-			<name>src/4_stepperControl</name>
-			<type>2</type>
-			<location>/home/apollo/Dokumenty/coding/3d-tisk/workspace/threads_example/src/4_stepperControl</location>
-		</link>
-		<link>
-			<name>src/OS_API</name>
-			<type>2</type>
-			<location>/home/apollo/Dokumenty/coding/3d-tisk/workspace/threads_example/src/OS_API</location>
-		</link>
-		<link>
-			<name>src/tools</name>
-			<type>2</type>
-			<locationURI>PARENT-1-PROJECT_LOC/src/tools</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/src</locationURI>
 		</link>
 	</linkedResources>
+	<variableList>
+		<variable>
+			<name>copy_PARENT</name>
+			<value>$%7BPARENT-2-PROJECT_LOC%7D</value>
+		</variable>
+	</variableList>
 </projectDescription>

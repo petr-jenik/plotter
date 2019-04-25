@@ -10,4 +10,7 @@ import machine
 #print("Temperature = ", temp)
 #print("Pressure = ", pressure)
 #print("Altitude = ", alt)
-import lightControl
+#import lightControl
+import plotter
+print("Starting plotter specific application...")
+plotter.start()
